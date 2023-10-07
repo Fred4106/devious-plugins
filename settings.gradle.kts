@@ -26,6 +26,7 @@
 rootProject.name = "public-plugins"
 
 include("gauntlet-extended")
+include("lucid-gear-swapper")
 
 for (project in rootProject.children) {
     project.apply {

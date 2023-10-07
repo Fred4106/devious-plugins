@@ -11,4 +11,17 @@
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/gauntlet-extended-6.1.9.jar?raw=true",
     "requires": "^1.0.0"
   }]
+}, {
+  "projectUrl": "https://discord.gg/DDY8Tr2a",
+  "provider": "lucid-soft",
+  "name": "Lucid Gear Swapper",
+  "description": "Set-up up to 6 custom gear swaps with customizable hotkeys",
+  "id": "lucidgearswapper-plugin",
+  "releases": [{
+    "date": "2023-10-07",
+    "sha512sum": "9C23034A254D5F36D5A948DC6A440FD260CB8529C9831238DC739386E461A27655246231C68EF36CB095EDBD22BC718DBD9FFC1981CD24C6AD8C6C9DD8A08181",
+    "version": "1.0.0",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-1.0.0.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
 }]
