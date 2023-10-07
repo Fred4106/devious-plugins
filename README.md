@@ -14,4 +14,4 @@ Private plugins for sale (or public plugin support / requests) available on my D
 
 
 
-  ![Discord Banner 4](https://discordapp.com/api/guilds/978715859361079307/widget.png?style=banner4)
+  [![Discord Banner 4](https://discordapp.com/api/guilds/978715859361079307/widget.png?style=banner4)](https://discord.gg/DDY8Tr2a)
