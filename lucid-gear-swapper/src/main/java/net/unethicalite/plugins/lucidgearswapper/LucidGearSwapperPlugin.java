@@ -81,7 +81,6 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     protected void shutDown()
     {
         Static.getKeyManager().unregisterKeyListener(this);
-        Static.getEventBus().unregister(this);
     }
 
     @Subscribe
@@ -107,18 +106,18 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
                 {
                     if (config.oneTickSwap())
                     {
-                        swap(gearSwapSelected);
+                        swap(gearSwapSelected, false);
                         gearSwapState = GearSwapState.FINISHED;
                     }
                     else
                     {
-                        swapHalf(gearSwapSelected, true);
+                        swap(gearSwapSelected, true);
                         gearSwapState = GearSwapState.TICK_2;
                     }
                 }
                 else if (gearSwapState == GearSwapState.TICK_2)
                 {
-                    swapHalf(gearSwapSelected, false);
+                    swap(gearSwapSelected, false);
                     gearSwapState = GearSwapState.FINISHED;
                 }
 
@@ -134,7 +133,6 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     private void pluginEnabled()
     {
         Static.getKeyManager().registerKeyListener(this);
-        Static.getEventBus().register(this);
         parseSwaps();
     }
 
@@ -151,7 +149,6 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     @Override
     public void keyTyped(KeyEvent e)
     {
-
     }
 
     @Override
@@ -201,51 +198,9 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     @Override
     public void keyReleased(KeyEvent e)
     {
-
     }
 
-    private void swap(int swapId)
-    {
-        List<Item> items = null;
-        switch (swapId)
-        {
-            case 1:
-                items = Inventory.getAll(Utils.itemConfigList(configList1, true, false));
-                break;
-            case 2:
-                items = Inventory.getAll(Utils.itemConfigList(configList2, true, false));
-                break;
-            case 3:
-                items = Inventory.getAll(Utils.itemConfigList(configList3, true, false));
-                break;
-            case 4:
-                items = Inventory.getAll(Utils.itemConfigList(configList4, true, false));
-                break;
-            case 5:
-                items = Inventory.getAll(Utils.itemConfigList(configList5, true, false));
-                break;
-            case 6:
-                items = Inventory.getAll(Utils.itemConfigList(configList6, true, false));
-                break;
-        }
-
-        if (items != null)
-        {
-            for (Item item : items)
-            {
-                if (item.hasAction("Wield"))
-                {
-                    item.interact("Wield");
-                }
-                else
-                {
-                    item.interact("Wear");
-                }
-            }
-        }
-    }
-
-    private void swapHalf(int swapId, boolean swapFirstHalf)
+    private void swap(int swapId, boolean swapFirstHalf)
     {
         List<Item> items = null;
         switch (swapId)
