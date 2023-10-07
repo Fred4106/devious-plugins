@@ -1,11 +1,11 @@
 [{
-  "projectUrl": "",
+  "projectUrl": "https://discord.gg/DDY8Tr2a",
   "provider": "lucid-soft",
   "name": "Gauntlet Extended",
   "description": "All-in-one plugin for the Gauntlet. Original plugin by xKylee.",
   "id": "gauntletextended-plugin",
   "releases": [{
-    "date": "2023-10-03",
+    "date": "2023-10-07",
     "sha512sum": "34A76F2BEB9073651BF9B4D992F63E15B44A2E3E4CE2ACFADA64626BCD51435D3182F1EE3D8EB8CCE5DBAA0E92313BF09DC626D5AD53DF3AF41FB2E32BD999D6",
     "version": "6.1.9",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/gauntlet-extended-6.1.9.jar?raw=true",
