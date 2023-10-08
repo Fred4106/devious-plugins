@@ -5,10 +5,23 @@
   "description": "All-in-one plugin for the Gauntlet. Original plugin by xKylee.",
   "id": "gauntletextended-plugin",
   "releases": [{
-    "date": "2023-10-07",
+    "date": "2023-10-08",
     "sha512sum": "34A76F2BEB9073651BF9B4D992F63E15B44A2E3E4CE2ACFADA64626BCD51435D3182F1EE3D8EB8CCE5DBAA0E92313BF09DC626D5AD53DF3AF41FB2E32BD999D6",
     "version": "6.1.9",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/gauntlet-extended-6.1.9.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://discord.gg/DDY8Tr2a",
+  "provider": "lucid-soft",
+  "name": "Lucid Animation Prayers",
+  "description": "Set up auto prayers based on animation ID",
+  "id": "lucidanimationprayers-plugin",
+  "releases": [{
+    "date": "2023-10-08",
+    "sha512sum": "9EB9C98B1BC9DA8C05EB43FDD90854CA53A39F364F8C9C9B4A0E6AA1316ED39E4960A82712598A28DD0BAA80A00EDA2DDEDC4861696BA4E61C2726D4A55E3BCC",
+    "version": "0.0.1",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-animation-prayers-0.0.1.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {
@@ -18,10 +31,23 @@
   "description": "Set-up up to 6 custom gear swaps with customizable hotkeys",
   "id": "lucidgearswapper-plugin",
   "releases": [{
-    "date": "2023-10-07",
+    "date": "2023-10-08",
     "sha512sum": "CFA85D6A9A907D8692ADA48D771F81B6CE2DD1E29BB7876460A85A288161BB06BE99DF967F42DA342448D0AAA52B89715762D8D7FB8FE3E988279A8929EA286C",
     "version": "1.0.1",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-1.0.1.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://discord.gg/DDY8Tr2a",
+  "provider": "lucid-soft",
+  "name": "Lucid Muspah",
+  "description": "Helper plugin for the Phantom Muspah (still in development)",
+  "id": "lucidmuspah-plugin",
+  "releases": [{
+    "date": "2023-10-08",
+    "sha512sum": "F8411DBC375D4077613836C039B2DA23A91D43A8D0C7DFA71F7F7B42739259ABE7D71C18F66660EC9FC5179C0188D1757E49744021ECF9673BAAE7041A5E85B1",
+    "version": "0.0.1",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-muspah-0.0.1.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }]
