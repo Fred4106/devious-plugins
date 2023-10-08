@@ -19,9 +19,22 @@
   "id": "lucidanimationprayers-plugin",
   "releases": [{
     "date": "2023-10-08",
-    "sha512sum": "9EB9C98B1BC9DA8C05EB43FDD90854CA53A39F364F8C9C9B4A0E6AA1316ED39E4960A82712598A28DD0BAA80A00EDA2DDEDC4861696BA4E61C2726D4A55E3BCC",
+    "sha512sum": "EE5628FA8194ACD4D8EDFF64DB68A4712131658E048B164C67DFF769EFA5246FE0574112281C2DD73B6DEF2AF580B9BE1D2A55AF181718366AB1C87F4C2B807C",
+    "version": "0.0.2",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-animation-prayers-0.0.2.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://discord.gg/DDY8Tr2a",
+  "provider": "lucid-soft",
+  "name": "Lucid Example",
+  "description": "An example plugin that can be copied to use as a plugin skeleton. Does nothing functionally.",
+  "id": "lucidexample-plugin",
+  "releases": [{
+    "date": "2023-10-08",
+    "sha512sum": "A25D54C4897109E4546851CD54707767550BD2B889F6DFC55AAC795E2A7B13C4529D8E3507B1B34E073F56D064A00EC7FB0B6030450A6945F9044C6C8E155A33",
     "version": "0.0.1",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-animation-prayers-0.0.1.jar?raw=true",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-example-plugin-0.0.1.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

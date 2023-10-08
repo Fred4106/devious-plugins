@@ -29,6 +29,7 @@ include("gauntlet-extended")
 include("lucid-gear-swapper")
 include("lucid-muspah")
 include("lucid-animation-prayers")
+include("lucid-example-plugin")
 
 for (project in rootProject.children) {
     project.apply {

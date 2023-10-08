@@ -1,9 +1,9 @@
 import ProjectVersions.unethicaliteVersion
 
-version = "0.0.2"
+version = "0.0.1"
 
-project.extra["PluginName"] = "Lucid Animation Prayers"
-project.extra["PluginDescription"] = "Set up auto prayers based on animation ID"
+project.extra["PluginName"] = "Lucid Example"
+project.extra["PluginDescription"] = "An example plugin that can be copied to use as a plugin skeleton. Does nothing functionally."
 
 dependencies {
     annotationProcessor(Libraries.lombok)

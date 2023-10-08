@@ -112,7 +112,7 @@ public class LucidAnimationPrayersPlugin extends Plugin
                 }
             }
 
-            scheduledPrayers.removeIf(prayer -> prayer.getActivationTick() == client.getTickCount() - 1);
+            scheduledPrayers.removeIf(prayer -> prayer.getActivationTick() <= client.getTickCount() - 1);
         }
     }
 
