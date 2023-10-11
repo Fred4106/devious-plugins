@@ -93,6 +93,17 @@ public interface LucidGearSwapperConfig extends Config
         return new Keybind(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK);
     }
     @ConfigItem(
+            name = "Equip first item to activate?",
+            description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
+            position = 2,
+            keyName = "equipFirstItem1",
+            section = swap1Section
+    )
+    default boolean equipFirstItem1()
+    {
+        return false;
+    }
+    @ConfigItem(
             name = "Gear swap 2",
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
@@ -115,6 +126,17 @@ public interface LucidGearSwapperConfig extends Config
     default Keybind swap2Hotkey()
     {
         return new Keybind(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK);
+    }
+    @ConfigItem(
+            name = "Equip first item to activate?",
+            description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
+            position = 2,
+            keyName = "equipFirstItem2",
+            section = swap2Section
+    )
+    default boolean equipFirstItem2()
+    {
+        return false;
     }
     @ConfigItem(
             name = "Gear swap 3",
@@ -141,6 +163,17 @@ public interface LucidGearSwapperConfig extends Config
         return new Keybind(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK);
     }
     @ConfigItem(
+            name = "Equip first item to activate?",
+            description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
+            position = 2,
+            keyName = "equipFirstItem3",
+            section = swap3Section
+    )
+    default boolean equipFirstItem3()
+    {
+        return false;
+    }
+    @ConfigItem(
             name = "Gear swap 4",
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
@@ -163,6 +196,17 @@ public interface LucidGearSwapperConfig extends Config
     default Keybind swap4Hotkey()
     {
         return new Keybind(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK);
+    }
+    @ConfigItem(
+            name = "Equip first item to activate?",
+            description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
+            position = 2,
+            keyName = "equipFirstItem4",
+            section = swap4Section
+    )
+    default boolean equipFirstItem4()
+    {
+        return false;
     }
     @ConfigItem(
             name = "Gear swap 5",
@@ -189,6 +233,17 @@ public interface LucidGearSwapperConfig extends Config
         return new Keybind(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK);
     }
     @ConfigItem(
+            name = "Equip first item to activate?",
+            description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
+            position = 2,
+            keyName = "equipFirstItem5",
+            section = swap5Section
+    )
+    default boolean equipFirstItem5()
+    {
+        return false;
+    }
+    @ConfigItem(
             name = "Gear swap 6",
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
@@ -211,5 +266,16 @@ public interface LucidGearSwapperConfig extends Config
     default Keybind swap6Hotkey()
     {
         return new Keybind(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK);
+    }
+    @ConfigItem(
+            name = "Equip first item to activate?",
+            description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
+            position = 2,
+            keyName = "equipFirstItem6",
+            section = swap6Section
+    )
+    default boolean equipFirstItem6()
+    {
+        return false;
     }
 }

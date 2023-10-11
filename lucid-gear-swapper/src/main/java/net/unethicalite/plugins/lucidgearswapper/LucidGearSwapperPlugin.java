@@ -3,6 +3,7 @@ package net.unethicalite.plugins.lucidgearswapper;
 import com.google.inject.Provides;
 import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -19,13 +20,14 @@ import org.pf4j.Extension;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 
 @Extension
 @PluginDescriptor(
         name = "Lucid Gear Swapper",
-        description = "Set-up up to 6 custom gear swaps with customizable hotkeys",
+        description = "Set-up up to 6 custom gear swaps with customizable hotkeys and more",
         enabledByDefault = false,
         tags = {"gear", "swap", "swapper", "hotkey"}
 )
@@ -45,19 +47,7 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     @Inject
     private OverlayManager overlayManager;
 
-    private ScheduledExecutorService executor;
-
-    private ConfigList configList1;
-
-    private ConfigList configList2;
-
-    private ConfigList configList3;
-
-    private ConfigList configList4;
-
-    private ConfigList configList5;
-
-    private ConfigList configList6;
+    private ConfigList[] configLists = new ConfigList[6];
 
     private GearSwapState gearSwapState = GearSwapState.TICK_1;
 
@@ -130,6 +120,79 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
         }
     }
 
+    @Subscribe
+    private void onContainerChanged(final ItemContainerChanged event)
+    {
+        if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
+        {
+            for (int i = 0; i < configLists.length; i++)
+            {
+                if (!isActivateOnFirstItem(i))
+                {
+                    continue;
+                }
+
+                String itemString = configLists[i].firstItemInStrings();
+
+                List<Item> equipment = Arrays.stream(event.getItemContainer().getItems()).filter(item -> item.getName().contains(itemString)).collect(Collectors.toList());
+
+                if (equipment.size() > 0)
+                {
+                    if (gearSwapSelected == -1)
+                    {
+                        gearSwapSelected = i;
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean isActivateOnFirstItem(int configListIndex)
+    {
+        switch (configListIndex)
+        {
+            case 0:
+                if (config.equipFirstItem1())
+                {
+                    return true;
+                }
+                return false;
+            case 1:
+                if (config.equipFirstItem2())
+                {
+                    return true;
+                }
+                return false;
+            case 2:
+                if (config.equipFirstItem3())
+                {
+                    return true;
+                }
+                return false;
+            case 3:
+                if (config.equipFirstItem4())
+                {
+                    return true;
+                }
+                return false;
+            case 4:
+                if (config.equipFirstItem5())
+                {
+                    return true;
+                }
+                return false;
+            case 5:
+                if (config.equipFirstItem6())
+                {
+                    return true;
+                }
+                return false;
+            default:
+                return false;
+        }
+    }
+
     private void pluginEnabled()
     {
         Static.getKeyManager().registerKeyListener(this);
@@ -138,12 +201,12 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
 
     private void parseSwaps()
     {
-        configList1 = ConfigList.parseList(config.swap1String());
-        configList2 = ConfigList.parseList(config.swap2String());
-        configList3 = ConfigList.parseList(config.swap3String());
-        configList4 = ConfigList.parseList(config.swap4String());
-        configList5 = ConfigList.parseList(config.swap5String());
-        configList6 = ConfigList.parseList(config.swap6String());
+        configLists[0] = ConfigList.parseList(config.swap1String());
+        configLists[1] = ConfigList.parseList(config.swap2String());
+        configLists[2] = ConfigList.parseList(config.swap3String());
+        configLists[3] = ConfigList.parseList(config.swap4String());
+        configLists[4] = ConfigList.parseList(config.swap5String());
+        configLists[5] = ConfigList.parseList(config.swap6String());
     }
 
     @Override
@@ -202,28 +265,7 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
 
     private void swap(int swapId, boolean swapFirstHalf)
     {
-        List<Item> items = null;
-        switch (swapId)
-        {
-            case 1:
-                items = Inventory.getAll(Utils.itemConfigList(configList1, true, false));
-                break;
-            case 2:
-                items = Inventory.getAll(Utils.itemConfigList(configList2, true, false));
-                break;
-            case 3:
-                items = Inventory.getAll(Utils.itemConfigList(configList3, true, false));
-                break;
-            case 4:
-                items = Inventory.getAll(Utils.itemConfigList(configList4, true, false));
-                break;
-            case 5:
-                items = Inventory.getAll(Utils.itemConfigList(configList5, true, false));
-                break;
-            case 6:
-                items = Inventory.getAll(Utils.itemConfigList(configList6, true, false));
-                break;
-        }
+        List<Item> items = Inventory.getAll(Utils.itemConfigList(configLists[swapId], true, false));
 
         if (items != null)
         {

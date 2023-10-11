@@ -42,4 +42,25 @@ public class Utils
             return nameablePredicate.or(identifiablePredicate);
         }
     }
+
+    public static <T extends Item> Predicate<T> firsItemConfigList(ConfigList configList,
+                                                               boolean stringContains, boolean caseSensitive)
+    {
+        final Predicate<T> identifiablePredicate = Predicates.ids(configList.getIntegers().keySet());
+
+        if (!stringContains)
+        {
+            final Predicate<T> nameablePredicate = Predicates.names(configList.getStrings().keySet());
+
+            return nameablePredicate.or(identifiablePredicate);
+        }
+        else
+        {
+            final Predicate<T> nameablePredicate = caseSensitive
+                    ? Predicates.nameContains(configList.getStrings().keySet())
+                    : Predicates.nameContains(configList.getStrings().keySet(), false);
+
+            return nameablePredicate.or(identifiablePredicate);
+        }
+    }
 }

@@ -7,6 +7,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -14,11 +15,14 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.utils.MessageUtils;
+import net.unethicalite.api.widgets.Prayers;
+import net.unethicalite.api.widgets.Widgets;
 import net.unethicalite.plugins.lucidmuspah.overlay.OverlayMuspah;
 import org.pf4j.Extension;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.List;
 
 @Extension
 @PluginDescriptor(
@@ -54,6 +58,8 @@ public class LucidMuspahPlugin extends Plugin
     private int ticksUntilAttack = -1;
 
     private int lastUpdateTick = -1;
+
+    private List<ScheduledPrayer> scheduledPrayers = new ArrayList<>();
 
     @Provides
     LucidMuspahConfig getConfig(final ConfigManager configManager)
@@ -95,32 +101,61 @@ public class LucidMuspahPlugin extends Plugin
             {
                 ticksUntilAttack--;
             }
+
+            for (ScheduledPrayer prayer : scheduledPrayers)
+            {
+                if (client.getTickCount() == prayer.getActivationTick())
+                {
+                    activatePrayer(prayer.getPrayer());
+                }
+            }
+
+            scheduledPrayers.removeIf(prayer -> prayer.getActivationTick() <= client.getTickCount() - 1);
         }
     }
 
     @Subscribe
     private void onNpcChanged(final NpcChanged event)
     {
-        if (event.getOld().getId() == NpcID.PHANTOM_MUSPAH && event.getNpc().getId() == NpcID.PHANTOM_MUSPAH_12078)
+        if (event.getNpc().getId() == NpcID.PHANTOM_MUSPAH_12078)
         {
             ticksUntilAttack = 5;
+
+            if (config.autoPray())
+            {
+                scheduledPrayers.add(new ScheduledPrayer(Prayer.PROTECT_FROM_MELEE, client.getTickCount() + 2));
+            }
+        }
+
+        if (event.getNpc().getId() == NpcID.PHANTOM_MUSPAH)
+        {
+            if (config.autoPray())
+            {
+                scheduledPrayers.add(new ScheduledPrayer(Prayer.PROTECT_FROM_MISSILES, client.getTickCount() + 2));
+            }
         }
     }
 
     @Subscribe
     private void onNpcSpawned(final NpcSpawned event)
     {
-        switch (event.getNpc().getId())
+        if (event.getNpc().getId() == NpcID.PHANTOM_MUSPAH_12078)
         {
-            case NpcID.PHANTOM_MUSPAH:
-            case NpcID.PHANTOM_MUSPAH_12078:
-            case NpcID.PHANTOM_MUSPAH_12079:
-            case NpcID.PHANTOM_MUSPAH_12080:
-            case NpcID.PHANTOM_MUSPAH_12082:
-                MessageUtils.addMessage("Npc: " + event.getNpc().getId() + " spawned named: " + event.getNpc().getName());
-                break;
+            ticksUntilAttack = 5;
+
+            if (config.autoPray())
+            {
+                scheduledPrayers.add(new ScheduledPrayer(Prayer.PROTECT_FROM_MELEE, client.getTickCount() + 2));
+            }
         }
 
+        if (event.getNpc().getId() == NpcID.PHANTOM_MUSPAH)
+        {
+            if (config.autoPray())
+            {
+                scheduledPrayers.add(new ScheduledPrayer(Prayer.PROTECT_FROM_MISSILES, client.getTickCount() + 2));
+            }
+        }
     }
 
     @Subscribe
@@ -132,10 +167,29 @@ public class LucidMuspahPlugin extends Plugin
         {
             ticksUntilAttack = 5;
         }
+
+        if (animId == MUSPAH_MAGIC_SPECIAL_ANIM)
+        {
+            scheduledPrayers.add(new ScheduledPrayer(Prayer.PROTECT_FROM_MAGIC, client.getTickCount() + 2));
+            scheduledPrayers.add(new ScheduledPrayer(Prayer.PROTECT_FROM_MISSILES, client.getTickCount() + 4));
+        }
     }
 
     public boolean inMeleeForm()
     {
         return NPCs.getNearest(NpcID.PHANTOM_MUSPAH_12078) != null;
+    }
+    private static void activatePrayer(Prayer prayer)
+    {
+        if (Prayers.isEnabled(prayer))
+        {
+            return;
+        }
+
+        Widget widget = Widgets.get(prayer.getWidgetInfo());
+        if (widget != null)
+        {
+            widget.interact(0);
+        }
     }
 }

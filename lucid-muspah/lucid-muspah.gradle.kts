@@ -1,6 +1,6 @@
 import ProjectVersions.unethicaliteVersion
 
-version = "0.0.1"
+version = "0.0.2"
 
 project.extra["PluginName"] = "Lucid Muspah"
 project.extra["PluginDescription"] = "Helper plugin for the Phantom Muspah (still in development)"

@@ -56,6 +56,15 @@ public class ConfigList
         return configList;
     }
 
+    public String firstItemInStrings()
+    {
+        for (String s : strings.keySet())
+        {
+            return s;
+        }
+        return null;
+    }
+
     public boolean isEmpty()
     {
         return strings.isEmpty() && integers.isEmpty();

@@ -63,7 +63,7 @@ public class OverlayMuspah extends Overlay
             return;
         }
 
-        String text = plugin.getTicksUntilAttack() + "";
+        String text = plugin.getTicksUntilAttack() > 1 ? (plugin.getTicksUntilAttack() - 1) + "" : "MOVE NOW";
         final Point point = Perspective.getCanvasTextLocation(client, graphics2D, player.getLocalLocation(), text, -25);
         if (point == null)
         {
@@ -74,7 +74,7 @@ public class OverlayMuspah extends Overlay
         graphics2D.setFont(new Font(Font.SANS_SERIF, 0, 12));
 
         drawOutlineAndFill(graphics2D, plugin.getTicksUntilAttack() > 1 ? Color.GREEN : Color.RED, null, 1, polygon);
-        OverlayUtil.renderTextLocation(graphics2D, point, text, plugin.getTicksUntilAttack() > 1 ? Color.BLACK : Color.RED);
+        OverlayUtil.renderTextLocation(graphics2D, point, text, plugin.getTicksUntilAttack() > 1 ? Color.GREEN : Color.RED);
         graphics2D.setFont(originalFont);
     }
 }

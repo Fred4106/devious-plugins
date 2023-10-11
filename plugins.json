@@ -5,7 +5,7 @@
   "description": "All-in-one plugin for the Gauntlet. Original plugin by xKylee.",
   "id": "gauntletextended-plugin",
   "releases": [{
-    "date": "2023-10-08",
+    "date": "2023-10-11",
     "sha512sum": "34A76F2BEB9073651BF9B4D992F63E15B44A2E3E4CE2ACFADA64626BCD51435D3182F1EE3D8EB8CCE5DBAA0E92313BF09DC626D5AD53DF3AF41FB2E32BD999D6",
     "version": "6.1.9",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/gauntlet-extended-6.1.9.jar?raw=true",
@@ -18,7 +18,7 @@
   "description": "Set up auto prayers based on animation ID",
   "id": "lucidanimationprayers-plugin",
   "releases": [{
-    "date": "2023-10-08",
+    "date": "2023-10-11",
     "sha512sum": "EE5628FA8194ACD4D8EDFF64DB68A4712131658E048B164C67DFF769EFA5246FE0574112281C2DD73B6DEF2AF580B9BE1D2A55AF181718366AB1C87F4C2B807C",
     "version": "0.0.2",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-animation-prayers-0.0.2.jar?raw=true",
@@ -31,7 +31,7 @@
   "description": "An example plugin that can be copied to use as a plugin skeleton. Does nothing functionally.",
   "id": "lucidexample-plugin",
   "releases": [{
-    "date": "2023-10-08",
+    "date": "2023-10-11",
     "sha512sum": "A25D54C4897109E4546851CD54707767550BD2B889F6DFC55AAC795E2A7B13C4529D8E3507B1B34E073F56D064A00EC7FB0B6030450A6945F9044C6C8E155A33",
     "version": "0.0.1",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-example-plugin-0.0.1.jar?raw=true",
@@ -44,10 +44,10 @@
   "description": "Set-up up to 6 custom gear swaps with customizable hotkeys",
   "id": "lucidgearswapper-plugin",
   "releases": [{
-    "date": "2023-10-08",
-    "sha512sum": "CFA85D6A9A907D8692ADA48D771F81B6CE2DD1E29BB7876460A85A288161BB06BE99DF967F42DA342448D0AAA52B89715762D8D7FB8FE3E988279A8929EA286C",
-    "version": "1.0.1",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-1.0.1.jar?raw=true",
+    "date": "2023-10-11",
+    "sha512sum": "3585776531542A4A1976A69B97A309F34FC223BB2B7C8CACA85FAD361FA9FDFE254936973FED71189DB6D6528BC972494729EBA6FA2568D4B0A3DDEE031FA642",
+    "version": "1.1.0",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-1.1.0.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {
@@ -57,10 +57,10 @@
   "description": "Helper plugin for the Phantom Muspah (still in development)",
   "id": "lucidmuspah-plugin",
   "releases": [{
-    "date": "2023-10-08",
-    "sha512sum": "F8411DBC375D4077613836C039B2DA23A91D43A8D0C7DFA71F7F7B42739259ABE7D71C18F66660EC9FC5179C0188D1757E49744021ECF9673BAAE7041A5E85B1",
-    "version": "0.0.1",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-muspah-0.0.1.jar?raw=true",
+    "date": "2023-10-11",
+    "sha512sum": "29EBAE86D626115E3AD01A75AE3DF5D66B6DD8292173E7296928C8C9BDF5C01F29F99653869D5E607ABCAFE49D4C7CE62DDC7404441F1C51A07986ACB06B13A2",
+    "version": "0.0.2",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-muspah-0.0.2.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }]
