@@ -12,6 +12,8 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.unethicalite.api.events.InventoryChanged;
+import net.unethicalite.api.items.Bank;
 import net.unethicalite.api.items.Inventory;
 import net.unethicalite.client.Static;
 import net.unethicalite.plugins.lucidgearswapper.util.ConfigList;
@@ -54,6 +56,8 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     private int gearSwapSelected = -1;
 
     private int lastUpdateTick = -1;
+
+    private int lastInventoryItemRemovedId = -1;
 
     @Provides
     LucidGearSwapperConfig getConfig(final ConfigManager configManager)
@@ -121,6 +125,20 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     }
 
     @Subscribe
+    private void onInventoryChanged(final InventoryChanged event)
+    {
+        if (event.getChangeType() == InventoryChanged.ChangeType.ITEM_REMOVED)
+        {
+            if (Bank.isOpen())
+            {
+                return;
+            }
+
+            lastInventoryItemRemovedId = event.getItemId();
+        }
+    }
+
+    @Subscribe
     private void onContainerChanged(final ItemContainerChanged event)
     {
         if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
@@ -134,11 +152,11 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
 
                 String itemString = configLists[i].firstItemInStrings();
 
-                List<Item> equipment = Arrays.stream(event.getItemContainer().getItems()).filter(item -> item.getName().contains(itemString)).collect(Collectors.toList());
+                List<Item> firstItem = Arrays.stream(event.getItemContainer().getItems()).filter(item -> item.getName().contains(itemString)).collect(Collectors.toList());
 
-                if (equipment.size() > 0)
+                if (firstItem.size() > 0)
                 {
-                    if (gearSwapSelected == -1)
+                    if (lastInventoryItemRemovedId == firstItem.get(0).getId() && gearSwapSelected == -1)
                     {
                         gearSwapSelected = i;
                     }
