@@ -45,9 +45,9 @@
   "id": "lucidgearswapper-plugin",
   "releases": [{
     "date": "2023-10-11",
-    "sha512sum": "D7A4801E16C8300724DF14794287B31DB633BF8A12D38CEB266B9B478F4BF9FC49D39AAF74D92B29A3093855F5F0B1612B2B80E06DA03E985C121FA0906D2C4A",
-    "version": "1.1.1",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-1.1.1.jar?raw=true",
+    "sha512sum": "E6207F5A45A66F23B1FF4EB220FB2A71F524A20B18E0B955C019A38E2DA75E4C09CF7185E515C17871D6250CD4E7C981516B61C663D8FCD533B682DBE69C4743",
+    "version": "1.1.2",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-1.1.2.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

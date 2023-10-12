@@ -1,6 +1,6 @@
 import ProjectVersions.unethicaliteVersion
 
-version = "1.1.1"
+version = "1.1.2"
 
 project.extra["PluginName"] = "Lucid Gear Swapper"
 project.extra["PluginDescription"] = "Set-up up to 6 custom gear swaps with customizable hotkeys"

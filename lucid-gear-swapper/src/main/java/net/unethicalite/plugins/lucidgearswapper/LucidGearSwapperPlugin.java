@@ -242,32 +242,32 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
 
         if (config.swap1Hotkey().matches(e))
         {
-            gearSwapSelected = 1;
+            gearSwapSelected = 0;
         }
 
         if (config.swap2Hotkey().matches(e))
         {
-            gearSwapSelected = 2;
+            gearSwapSelected = 1;
         }
 
         if (config.swap3Hotkey().matches(e))
         {
-            gearSwapSelected = 3;
+            gearSwapSelected = 2;
         }
 
         if (config.swap4Hotkey().matches(e))
         {
-            gearSwapSelected = 4;
+            gearSwapSelected = 3;
         }
 
         if (config.swap5Hotkey().matches(e))
         {
-            gearSwapSelected = 5;
+            gearSwapSelected = 4;
         }
 
         if (config.swap6Hotkey().matches(e))
         {
-            gearSwapSelected = 6;
+            gearSwapSelected = 5;
         }
 
         if (gearSwapSelected != -1)
