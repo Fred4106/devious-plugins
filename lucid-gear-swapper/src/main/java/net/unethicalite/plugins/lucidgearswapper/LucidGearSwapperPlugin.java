@@ -55,8 +55,6 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
 
     private int gearSwapSelected = -1;
 
-    private int lastUpdateTick = -1;
-
     private int lastInventoryItemRemovedId = -1;
 
     @Provides
@@ -91,35 +89,31 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     @Subscribe
     private void onGameTick(final GameTick event)
     {
-        if (lastUpdateTick != client.getTickCount())
+        if (gearSwapSelected != -1)
         {
-            lastUpdateTick = client.getTickCount();
-            if (gearSwapSelected != -1)
+            if (gearSwapState == GearSwapState.TICK_1)
             {
-                if (gearSwapState == GearSwapState.TICK_1)
-                {
-                    if (config.oneTickSwap())
-                    {
-                        swap(gearSwapSelected, false);
-                        gearSwapState = GearSwapState.FINISHED;
-                    }
-                    else
-                    {
-                        swap(gearSwapSelected, true);
-                        gearSwapState = GearSwapState.TICK_2;
-                    }
-                }
-                else if (gearSwapState == GearSwapState.TICK_2)
+                if (config.oneTickSwap())
                 {
                     swap(gearSwapSelected, false);
                     gearSwapState = GearSwapState.FINISHED;
                 }
-
-                if (gearSwapState == GearSwapState.FINISHED)
+                else
                 {
-                    gearSwapSelected = -1;
-                    gearSwapState = GearSwapState.TICK_1;
+                    swap(gearSwapSelected, true);
+                    gearSwapState = GearSwapState.TICK_2;
                 }
+            }
+            else if (gearSwapState == GearSwapState.TICK_2)
+            {
+                swap(gearSwapSelected, false);
+                gearSwapState = GearSwapState.FINISHED;
+            }
+
+            if (gearSwapState == GearSwapState.FINISHED)
+            {
+                gearSwapSelected = -1;
+                gearSwapState = GearSwapState.TICK_1;
             }
         }
     }
