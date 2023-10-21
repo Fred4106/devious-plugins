@@ -2,16 +2,14 @@ package net.unethicalite.plugins.exampleplugin;
 
 import com.google.inject.Provides;
 import net.runelite.api.*;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.unethicalite.api.utils.MessageUtils;
 import org.pf4j.Extension;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.logging.Logger;
 
 @Extension
 @PluginDescriptor(
@@ -28,16 +26,9 @@ public class LucidExamplePlugin extends Plugin
     private Client client;
 
     @Inject
-    private ClientThread clientThread;
-
-    @Inject
     private net.unethicalite.plugins.exampleplugin.LucidExampleConfig config;
 
-    @Inject
-    private OverlayManager overlayManager;
-
-    private int lastUpdateTick = -1;
-
+    private Logger log = Logger.getLogger(getName());
 
     @Provides
     net.unethicalite.plugins.exampleplugin.LucidExampleConfig getConfig(final ConfigManager configManager)
@@ -48,28 +39,17 @@ public class LucidExamplePlugin extends Plugin
     @Override
     protected void startUp()
     {
-        clientThread.invoke(this::pluginEnabled);
+        log.info(getName() + " Started");
+
+        if (client.getGameState() == GameState.LOGGED_IN)
+        {
+            MessageUtils.addMessage(getName() + " Started");
+        }
     }
 
     @Override
     protected void shutDown()
     {
-
-    }
-
-    @Subscribe
-    private void onGameTick(final GameTick event)
-    {
-        if (lastUpdateTick != client.getTickCount())
-        {
-            lastUpdateTick = client.getTickCount();
-
-            // Do something this tick
-        }
-    }
-
-    private void pluginEnabled()
-    {
-
+        log.info(getName() + " Stopped");
     }
 }
