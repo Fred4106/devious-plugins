@@ -11,14 +11,19 @@ import net.runelite.client.config.ConfigManager
 import net.runelite.client.eventbus.Subscribe
 import net.runelite.client.plugins.Plugin
 import net.runelite.client.plugins.PluginDescriptor
+import net.runelite.client.plugins.PluginInstantiationException
+import net.runelite.client.plugins.PluginManager
+import net.runelite.client.plugins.gpu.GpuPlugin
 import net.unethicalite.api.commons.Rand
 import net.unethicalite.api.input.Keyboard
 import net.unethicalite.api.items.Inventory
+import net.unethicalite.api.movement.Movement
 import net.unethicalite.api.widgets.Dialog
 import org.pf4j.Extension
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
+import javax.swing.SwingUtilities
 import kotlin.math.floor
 
 @Extension
@@ -34,17 +39,24 @@ class LucidSpicesPlugin : Plugin()
     @Inject
     private lateinit var client: Client
 
+    @Inject
+    private lateinit var pluginManager: PluginManager
+
     private var lastHeal = 0
     private var lastInteract = 0
+
+    private var shutdown = false
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     override fun startUp() {
         log.info("Started Lucid Spices")
+        shutdown = false
     }
 
     override fun shutDown() {
         log.info("Stopped Lucid Spices")
+        shutdown = true
     }
 
     @Provides
@@ -55,6 +67,20 @@ class LucidSpicesPlugin : Plugin()
     @Subscribe
     private fun onGameTick(event: GameTick)
     {
+        if (shutdown)
+        {
+            SwingUtilities.invokeLater {
+                try {
+                    pluginManager.setPluginEnabled(this, false)
+                    pluginManager.stopPlugin(this)
+                } catch (ex: PluginInstantiationException) {
+                    log.error("error stopping plugin", ex)
+                }
+            }
+        }
+
+        runAwayIfLowHealth()
+
         handleHealing()
 
         if (config.fullAuto())
@@ -87,6 +113,41 @@ class LucidSpicesPlugin : Plugin()
         useItemOnWallObject(food, curtain)
 
         lastHeal = client.tickCount
+    }
+
+    private fun runAwayIfLowHealth()
+    {
+        val cat = getCat()?: return
+        val food = getFood()
+
+        val hpPercentage = floor(cat.healthRatio.toDouble() / cat.healthScale.toDouble() * 100).toInt()
+
+        if (hpPercentage !in 1 until config.healPercent())
+        {
+            return
+        }
+
+        if (food != null)
+        {
+            return
+        }
+
+        if (client.localPlayer.worldLocation.x < 3100)
+        {
+            return
+        }
+
+        shutdown = true
+
+        when (client.localPlayer.orientation)
+        {
+            1536 -> Movement.walk(client.localPlayer.worldLocation.dx(-3))
+            1024 -> Movement.walk(client.localPlayer.worldLocation.dy(-3))
+            512 -> Movement.walk(client.localPlayer.worldLocation.dx(3))
+            0 -> Movement.walk(client.localPlayer.worldLocation.dy(3))
+        }
+
+        return
     }
 
     private fun handleEnteringFight()

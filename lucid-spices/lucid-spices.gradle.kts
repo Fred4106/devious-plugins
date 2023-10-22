@@ -1,6 +1,6 @@
 import ProjectVersions.unethicaliteVersion
 
-version = "0.0.1"
+version = "0.0.2"
 project.extra["PluginName"] = "Lucid Spices"
 project.extra["PluginDescription"] = "A plugin to help you gather spices for stews and not kill your cat in the process"
 
