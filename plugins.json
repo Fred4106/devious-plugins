@@ -14,14 +14,14 @@
 }, {
   "projectUrl": "https://discord.gg/DDY8Tr2a",
   "provider": "lucid-soft",
-  "name": "Lucid Animation Prayers",
-  "description": "Set up auto prayers based on animation ID",
-  "id": "lucidanimationprayers-plugin",
+  "name": "Lucid Custom Prayers",
+  "description": "Set up auto prayers based on various event IDs",
+  "id": "lucidcustomprayers-plugin",
   "releases": [{
     "date": "2023-10-21",
-    "sha512sum": "EE5628FA8194ACD4D8EDFF64DB68A4712131658E048B164C67DFF769EFA5246FE0574112281C2DD73B6DEF2AF580B9BE1D2A55AF181718366AB1C87F4C2B807C",
-    "version": "0.0.2",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-animation-prayers-0.0.2.jar?raw=true",
+    "sha512sum": "625B08A0CACEA375813D2AB52A3782A609351FC336972B1FAB88199E7DEFDC13C5CAAACFA16C33AA5788D6CD937804E7EAD486AC402FF37A5849EC95285F6627",
+    "version": "0.0.3",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-custom-prayers-0.0.3.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

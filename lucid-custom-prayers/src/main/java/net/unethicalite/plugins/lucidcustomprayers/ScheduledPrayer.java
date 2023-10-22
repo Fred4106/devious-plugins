@@ -1,4 +1,4 @@
-package net.unethicalite.plugins.lucidanimationprayers;
+package net.unethicalite.plugins.lucidcustomprayers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,4 +12,6 @@ public class ScheduledPrayer
     private Prayer prayer;
 
     private int activationTick;
+
+    private boolean toggle;
 }

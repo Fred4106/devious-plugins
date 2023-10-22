@@ -28,7 +28,7 @@ rootProject.name = "public-plugins"
 include("gauntlet-extended")
 include("lucid-gear-swapper")
 include("lucid-muspah")
-include("lucid-animation-prayers")
+include("lucid-custom-prayers")
 include("lucid-example-plugin")
 include("lucid-spices")
 
