@@ -30,6 +30,7 @@ include("lucid-gear-swapper")
 include("lucid-muspah")
 include("lucid-animation-prayers")
 include("lucid-example-plugin")
+include("lucid-spices")
 
 for (project in rootProject.children) {
     project.apply {

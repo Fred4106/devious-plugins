@@ -63,4 +63,17 @@
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-muspah-0.0.2.jar?raw=true",
     "requires": "^1.0.0"
   }]
+}, {
+  "projectUrl": "https://discord.gg/DDY8Tr2a",
+  "provider": "lucid-soft",
+  "name": "Lucid Spices",
+  "description": "A plugin to help you gather spices for stews and not kill your cat in the process",
+  "id": "lucidspices-plugin",
+  "releases": [{
+    "date": "2023-10-21",
+    "sha512sum": "307E82D9372B2FF75A40AC195AD9590D04A1B8D7ADAEC43A25CAF5F6866C823528BB0C97C99C524FE05D38C81C3773508D366FFD8124DD048763F6228069166B",
+    "version": "0.0.1",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-spices-0.0.1.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
 }]
