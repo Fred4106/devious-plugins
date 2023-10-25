@@ -183,8 +183,6 @@ public class LucidCustomPrayersPlugin extends Plugin
     @Subscribe
     private void onGameTick(final GameTick event)
     {
-        MessageUtils.addMessage("Scheduled: " + scheduledPrayers.size());
-
         for (ScheduledPrayer prayer : scheduledPrayers)
         {
             if (client.getTickCount() == prayer.getActivationTick())
