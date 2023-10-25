@@ -31,6 +31,7 @@ include("lucid-muspah")
 include("lucid-custom-prayers")
 include("lucid-example-plugin")
 include("lucid-spices")
+include("unethical-agility")
 
 for (project in rootProject.children) {
     project.apply {

@@ -45,6 +45,22 @@ public class LucidCustomPrayersPlugin extends Plugin
 
     private List<ScheduledPrayer> scheduledPrayers = new ArrayList<>();
 
+    private int lastAnimationChanged = 0;
+
+    private int lastNpcSpawned = 0;
+
+    private int lastNpcDespawned = 0;
+
+    private int lastNpcChanged = 0;
+
+    private int lastProjectileSpawned = 0;
+
+    private int lastGraphicsCreated = 0;
+
+    private int lastGameObjectSpawned = 0;
+
+
+
     @Provides
     LucidCustomPrayersConfig getConfig(final ConfigManager configManager)
     {
@@ -71,7 +87,11 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        eventFired(EventType.ANIMATION_CHANGED, event.getActor().getAnimation());
+        if (lastAnimationChanged != client.getTickCount())
+        {
+            eventFired(EventType.ANIMATION_CHANGED, event.getActor().getAnimation());
+            lastAnimationChanged = client.getTickCount();
+        }
     }
 
     @Subscribe
@@ -82,7 +102,11 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        eventFired(EventType.NPC_SPAWNED, event.getNpc().getId());
+        if (lastNpcSpawned != client.getTickCount())
+        {
+            eventFired(EventType.NPC_SPAWNED, event.getNpc().getId());
+            lastNpcSpawned = client.getTickCount();
+        }
     }
 
     @Subscribe
@@ -93,7 +117,11 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        eventFired(EventType.NPC_DESPAWNED, event.getNpc().getId());
+        if (lastNpcDespawned != client.getTickCount())
+        {
+            eventFired(EventType.NPC_DESPAWNED, event.getNpc().getId());
+            lastNpcDespawned = client.getTickCount();
+        }
     }
 
     @Subscribe
@@ -104,25 +132,41 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        eventFired(EventType.NPC_CHANGED, event.getOld().getId());
+        if (lastNpcChanged != client.getTickCount())
+        {
+            eventFired(EventType.NPC_CHANGED, event.getOld().getId());
+            lastNpcChanged = client.getTickCount();
+        }
     }
 
     @Subscribe
     private void onProjectile(final ProjectileSpawned event)
     {
-        eventFired(EventType.PROJECTILE_SPAWNED, event.getProjectile().getId());
+        if (lastProjectileSpawned != client.getTickCount())
+        {
+            eventFired(EventType.PROJECTILE_SPAWNED, event.getProjectile().getId());
+            lastProjectileSpawned = client.getTickCount();
+        }
     }
 
     @Subscribe
     private void onGraphics(final GraphicsObjectCreated event)
     {
-        eventFired(EventType.GRAPHICS_CREATED, event.getGraphicsObject().getId());
+        if (lastGraphicsCreated != client.getTickCount())
+        {
+            eventFired(EventType.GRAPHICS_CREATED, event.getGraphicsObject().getId());
+            lastGraphicsCreated = client.getTickCount();
+        }
     }
 
     @Subscribe
     private void onGameObjectSpawned(final GameObjectSpawned event)
     {
-        eventFired(EventType.GAME_OBJECT_SPAWNED, event.getGameObject().getId());
+        if (lastGameObjectSpawned != client.getTickCount())
+        {
+            eventFired(EventType.GAME_OBJECT_SPAWNED, event.getGameObject().getId());
+            lastGameObjectSpawned = client.getTickCount();
+        }
     }
 
     @Subscribe
@@ -139,6 +183,8 @@ public class LucidCustomPrayersPlugin extends Plugin
     @Subscribe
     private void onGameTick(final GameTick event)
     {
+        MessageUtils.addMessage("Scheduled: " + scheduledPrayers.size());
+
         for (ScheduledPrayer prayer : scheduledPrayers)
         {
             if (client.getTickCount() == prayer.getActivationTick())
@@ -290,7 +336,7 @@ public class LucidCustomPrayersPlugin extends Plugin
 
         if (stringList.contains(","))
         {
-            String[] intStrings = stringList.split(",");
+            String[] intStrings = stringList.trim().split(",");
             for (String s : intStrings)
             {
                 try
