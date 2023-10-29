@@ -186,8 +186,8 @@ class LucidCannonReloaderPlugin : Plugin()
         if (targetWorldPoint == cannonLocation)
         {
             client.createMenuEntry(1)
-                .setOption("<col=00ff00>Lucid Cannon Reloader</col>")
-                .setTarget("Un-claim Cannon")
+                .setOption("Un-claim Cannon")
+                .setTarget("<col=00ff00>Lucid Cannon Reloader</col>")
                 .setType(MenuAction.RUNELITE)
                 .onClick {
                     cannonLocation = null
@@ -197,8 +197,8 @@ class LucidCannonReloaderPlugin : Plugin()
         else
         {
             client.createMenuEntry(1)
-                .setOption("<col=00ff00>Lucid Cannon Reloader</col>")
-                .setTarget("Claim Cannon")
+                .setOption("Claim Cannon")
+                .setTarget("<col=00ff00>Lucid Cannon Reloader</col>")
                 .setType(MenuAction.RUNELITE)
                 .onClick {
                     cannonLocation = targetWorldPoint

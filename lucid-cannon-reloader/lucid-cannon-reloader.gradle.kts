@@ -1,6 +1,6 @@
 import ProjectVersions.unethicaliteVersion
 
-version = "0.0.1"
+version = "0.0.2"
 project.extra["PluginName"] = "Lucid Cannon Reloader"
 project.extra["PluginDescription"] = "A plugin that will reload your cannon so you don't have to"
 
