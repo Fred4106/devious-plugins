@@ -19,9 +19,9 @@
   "id": "lucidcannonreloader-plugin",
   "releases": [{
     "date": "2023-10-29",
-    "sha512sum": "18194C76092CB9A2016696D6272EDBB07FA6A0077F2618F4D6FF6CE5D16DF08D296615BC2879D89AEDEA1E86EEE194D579AA95E07310B74D381C66CD66F9F1F2",
-    "version": "0.0.2",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-cannon-reloader-0.0.2.jar?raw=true",
+    "sha512sum": "990CA92D6085DFCFE3ADDF155A121D97A5B12B6E2BBDB810980DA4F2F2A2BBF88F3D4281409A1349BB9A35C7C9D7B3F6645B8B5F08C4D8FB7ED435B3670C2EA6",
+    "version": "0.0.3",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-cannon-reloader-0.0.3.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

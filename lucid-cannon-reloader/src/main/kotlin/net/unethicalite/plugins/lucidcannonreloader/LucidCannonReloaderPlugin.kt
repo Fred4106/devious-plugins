@@ -14,7 +14,6 @@ import net.runelite.client.eventbus.Subscribe
 import net.runelite.client.events.ConfigChanged
 import net.runelite.client.plugins.Plugin
 import net.runelite.client.plugins.PluginDescriptor
-import net.runelite.client.plugins.PluginManager
 import net.unethicalite.api.commons.Rand
 import net.unethicalite.api.items.Inventory
 import net.unethicalite.api.utils.MessageUtils
@@ -26,7 +25,7 @@ import javax.inject.Inject
 @PluginDescriptor(
     name = "Lucid Cannon Reloader",
     description = "A plugin that will reload your cannon so you don't have to",
-    tags = ["lucid", "spice", "spices", "cat", "hellrat"])
+    tags = ["lucid", "cannon", "cball", "reload"])
 
 class LucidCannonReloaderPlugin : Plugin()
 {
