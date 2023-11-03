@@ -32,6 +32,7 @@ include("lucid-custom-prayers")
 include("lucid-example-plugin")
 include("lucid-spices")
 include("lucid-cannon-reloader")
+include("lucid-disable-rendering")
 
 for (project in rootProject.children) {
     project.apply {
