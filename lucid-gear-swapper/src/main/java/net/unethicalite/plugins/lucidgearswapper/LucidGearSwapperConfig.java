@@ -57,6 +57,8 @@ public interface LucidGearSwapperConfig extends Config
             keyName = "swap6Section"
     )
     String swap6Section = "Custom Swap 6";
+
+    // General
     @ConfigItem(
             name = "1 tick swap",
             description = "Swaps in 1 tick if enabled and 2 if disabled",
@@ -69,11 +71,46 @@ public interface LucidGearSwapperConfig extends Config
         return true;
     }
     @ConfigItem(
+            name = "Slot to copy to",
+            description =  "Select a slot to copy your current Equipment to",
+            position = 1,
+            keyName = "slotToCopyTo",
+            section = generalSection
+    )
+    default GearSlot slotToCopyTo()
+    {
+        return GearSlot.GEAR_SLOT_1;
+    }
+    @ConfigItem(
+            name = "Copy current gear",
+            description =  "Copies your currently equipped gear to the selected preset slot",
+            position = 2,
+            keyName = "copyGearButton",
+            section = generalSection
+    )
+    default Button copyGearButton()
+    {
+        return new Button();
+    }
+
+    // Gear Swap 1
+    @ConfigItem(
+            name = "Enable Swap",
+            description = "Enables or disables this swap entirely",
+            position = 0,
+            keyName = "swap1Enabled",
+            section = swap1Section
+    )
+    default boolean swap1Enabled()
+    {
+        return false;
+    }
+    @ConfigItem(
             name = "Gear swap 1",
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
                     + "comma.",
-            position = 0,
+            position = 1,
             keyName = "swap1String",
             section = swap1Section
     )
@@ -84,7 +121,7 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Gear swap 1 Hotkey",
             description = "Hotkey for gear swap 1",
-            position = 1,
+            position = 2,
             keyName = "swap1Hotkey",
             section = swap1Section
     )
@@ -95,11 +132,24 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Equip first item to activate?",
             description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
-            position = 2,
+            position = 3,
             keyName = "equipFirstItem1",
             section = swap1Section
     )
     default boolean equipFirstItem1()
+    {
+        return false;
+    }
+
+    // Gear Swap 2
+    @ConfigItem(
+            name = "Enable Swap",
+            description = "Enables or disables this swap entirely",
+            position = 0,
+            keyName = "swap2Enabled",
+            section = swap2Section
+    )
+    default boolean swap2Enabled()
     {
         return false;
     }
@@ -108,7 +158,7 @@ public interface LucidGearSwapperConfig extends Config
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
                     + "comma.",
-            position = 0,
+            position = 1,
             keyName = "swap2String",
             section = swap2Section
     )
@@ -119,7 +169,7 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Gear swap 2 Hotkey",
             description = "Hotkey for gear swap 2",
-            position = 1,
+            position = 2,
             keyName = "swap2Hotkey",
             section = swap2Section
     )
@@ -130,11 +180,24 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Equip first item to activate?",
             description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
-            position = 2,
+            position = 3,
             keyName = "equipFirstItem2",
             section = swap2Section
     )
     default boolean equipFirstItem2()
+    {
+        return false;
+    }
+
+    // Gear Swap 3
+    @ConfigItem(
+            name = "Enable Swap",
+            description = "Enables or disables this swap entirely",
+            position = 0,
+            keyName = "swap3Enabled",
+            section = swap3Section
+    )
+    default boolean swap3Enabled()
     {
         return false;
     }
@@ -143,7 +206,7 @@ public interface LucidGearSwapperConfig extends Config
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
                     + "comma.",
-            position = 0,
+            position = 1,
             keyName = "swap3String",
             section = swap3Section
     )
@@ -154,7 +217,7 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Gear swap 3 Hotkey",
             description = "Hotkey for gear swap 3",
-            position = 1,
+            position = 2,
             keyName = "swap3Hotkey",
             section = swap3Section
     )
@@ -165,11 +228,24 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Equip first item to activate?",
             description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
-            position = 2,
+            position = 3,
             keyName = "equipFirstItem3",
             section = swap3Section
     )
     default boolean equipFirstItem3()
+    {
+        return false;
+    }
+
+    // Gear Swap 4
+    @ConfigItem(
+            name = "Enable Swap",
+            description = "Enables or disables this swap entirely",
+            position = 0,
+            keyName = "swap4Enabled",
+            section = swap4Section
+    )
+    default boolean swap4Enabled()
     {
         return false;
     }
@@ -178,7 +254,7 @@ public interface LucidGearSwapperConfig extends Config
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
                     + "comma.",
-            position = 0,
+            position = 1,
             keyName = "swap4String",
             section = swap4Section
     )
@@ -189,7 +265,7 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Gear swap 4 Hotkey",
             description = "Hotkey for gear swap 4",
-            position = 1,
+            position = 2,
             keyName = "swap4Hotkey",
             section = swap4Section
     )
@@ -200,11 +276,24 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Equip first item to activate?",
             description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
-            position = 2,
+            position = 3,
             keyName = "equipFirstItem4",
             section = swap4Section
     )
     default boolean equipFirstItem4()
+    {
+        return false;
+    }
+
+    // Gear Swap 5
+    @ConfigItem(
+            name = "Enable Swap",
+            description = "Enables or disables this swap entirely",
+            position = 0,
+            keyName = "swap5Enabled",
+            section = swap5Section
+    )
+    default boolean swap5Enabled()
     {
         return false;
     }
@@ -213,7 +302,7 @@ public interface LucidGearSwapperConfig extends Config
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
                     + "comma.",
-            position = 0,
+            position = 1,
             keyName = "swap5String",
             section = swap5Section
     )
@@ -224,7 +313,7 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Gear swap 5 Hotkey",
             description = "Hotkey for gear swap 5",
-            position = 1,
+            position = 2,
             keyName = "swap5Hotkey",
             section = swap5Section
     )
@@ -235,11 +324,23 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Equip first item to activate?",
             description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
-            position = 2,
+            position = 3,
             keyName = "equipFirstItem5",
             section = swap5Section
     )
     default boolean equipFirstItem5()
+    {
+        return false;
+    }
+    // Gear Swap 6
+    @ConfigItem(
+            name = "Enable Swap",
+            description = "Enables or disables this swap entirely",
+            position = 0,
+            keyName = "swap6Enabled",
+            section = swap6Section
+    )
+    default boolean swap6Enabled()
     {
         return false;
     }
@@ -248,7 +349,7 @@ public interface LucidGearSwapperConfig extends Config
             description = "Names or IDs of your gear swap. Names match any item containing the name, meaning "
                     + "'Dharok's platelegs' matches all degradation values. Separate by line, semicolon or "
                     + "comma.",
-            position = 0,
+            position = 1,
             keyName = "swap6String",
             section = swap6Section
     )
@@ -259,7 +360,7 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Gear swap 6 Hotkey",
             description = "Hotkey for gear swap 6",
-            position = 1,
+            position = 2,
             keyName = "swap6Hotkey",
             section = swap6Section
     )
@@ -270,12 +371,19 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigItem(
             name = "Equip first item to activate?",
             description = "Allows you to equip the first item listed in the swap to on top of being able to use the hotkey",
-            position = 2,
+            position = 3,
             keyName = "equipFirstItem6",
             section = swap6Section
     )
     default boolean equipFirstItem6()
     {
         return false;
+    }
+
+    // Enums
+
+    enum GearSlot
+    {
+        GEAR_SLOT_1, GEAR_SLOT_2, GEAR_SLOT_3, GEAR_SLOT_4, GEAR_SLOT_5, GEAR_SLOT_6
     }
 }

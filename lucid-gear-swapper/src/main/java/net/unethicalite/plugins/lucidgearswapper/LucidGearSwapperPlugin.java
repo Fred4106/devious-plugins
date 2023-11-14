@@ -2,6 +2,7 @@ package net.unethicalite.plugins.lucidgearswapper;
 
 import com.google.inject.Provides;
 import net.runelite.api.*;
+import net.runelite.api.events.ConfigButtonClicked;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
@@ -14,7 +15,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.unethicalite.api.events.InventoryChanged;
 import net.unethicalite.api.items.Bank;
+import net.unethicalite.api.items.Equipment;
 import net.unethicalite.api.items.Inventory;
+import net.unethicalite.api.utils.MessageUtils;
 import net.unethicalite.client.Static;
 import net.unethicalite.plugins.lucidgearswapper.util.ConfigList;
 import net.unethicalite.plugins.lucidgearswapper.util.Utils;
@@ -23,13 +26,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Extension
 @PluginDescriptor(
         name = "Lucid Gear Swapper",
-        description = "Set-up up to 6 custom gear swaps with customizable hotkeys and more",
+        description = "Set-up up to 6 custom gear swaps with customizable hotkeys or trigger them via weapon equip",
         enabledByDefault = false,
         tags = {"gear", "swap", "swapper", "hotkey"}
 )
@@ -47,6 +51,9 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     private LucidGearSwapperConfig config;
 
     @Inject
+    private ConfigManager configManager;
+
+    @Inject
     private OverlayManager overlayManager;
 
     private ConfigList[] configLists = new ConfigList[6];
@@ -57,7 +64,11 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
 
     private int lastInventoryItemRemovedId = -1;
 
-    @Provides
+    private final List<Integer> slotOrderToCopy = List.of(EquipmentInventorySlot.WEAPON.getSlotIdx(), EquipmentInventorySlot.SHIELD.getSlotIdx(), EquipmentInventorySlot.HEAD.getSlotIdx(), EquipmentInventorySlot.BODY.getSlotIdx(),
+                                                         EquipmentInventorySlot.LEGS.getSlotIdx(), EquipmentInventorySlot.CAPE.getSlotIdx(), EquipmentInventorySlot.BOOTS.getSlotIdx(), EquipmentInventorySlot.AMULET.getSlotIdx(),
+                                                         EquipmentInventorySlot.GLOVES.getSlotIdx(), EquipmentInventorySlot.RING.getSlotIdx(), EquipmentInventorySlot.AMMO.getSlotIdx());
+
+                                                         @Provides
     LucidGearSwapperConfig getConfig(final ConfigManager configManager)
     {
         return configManager.getConfig(LucidGearSwapperConfig.class);
@@ -119,6 +130,39 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     }
 
     @Subscribe
+    private void onConfigButtonClicked(final ConfigButtonClicked event)
+    {
+        if (!event.getGroup().equals("lucid-gear-swapper"))
+        {
+            return;
+        }
+
+        if (!event.getKey().equals("copyGearButton"))
+        {
+            return;
+        }
+
+        if (client == null || client.getGameState() != GameState.LOGGED_IN)
+        {
+            return;
+        }
+
+        int slotSelected = getSlotFromGearSlotSelected(config.slotToCopyTo());
+
+        if (slotSelected != 0)
+        {
+            final List<Item> equippedGear = Equipment.getAll();
+            equippedGear.sort(Comparator.comparing(item -> slotOrderToCopy.indexOf(item.getSlot())));
+
+            String equippedItemsString = equippedGear.stream().map(Item::getName).collect(Collectors.joining(","));
+            String key = "swap" + slotSelected + "String";
+            configManager.setConfiguration("lucid-gear-swapper", key, equippedItemsString);
+            MessageUtils.addMessage("Copied Equipment to Preset Slot " + slotSelected);
+        }
+
+    }
+
+    @Subscribe
     private void onInventoryChanged(final InventoryChanged event)
     {
         if (event.getChangeType() == InventoryChanged.ChangeType.ITEM_REMOVED)
@@ -152,7 +196,10 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
                 {
                     if (lastInventoryItemRemovedId == firstItem.get(0).getId() && gearSwapSelected == -1)
                     {
-                        gearSwapSelected = i;
+                        if (isSlotEnabled(gearSwapSelected))
+                        {
+                            gearSwapSelected = i;
+                        }
                     }
                     return;
                 }
@@ -234,32 +281,32 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
             return;
         }
 
-        if (config.swap1Hotkey().matches(e))
+        if (config.swap1Hotkey().matches(e) && config.swap1Enabled())
         {
             gearSwapSelected = 0;
         }
 
-        if (config.swap2Hotkey().matches(e))
+        if (config.swap2Hotkey().matches(e) && config.swap2Enabled())
         {
             gearSwapSelected = 1;
         }
 
-        if (config.swap3Hotkey().matches(e))
+        if (config.swap3Hotkey().matches(e) && config.swap3Enabled())
         {
             gearSwapSelected = 2;
         }
 
-        if (config.swap4Hotkey().matches(e))
+        if (config.swap4Hotkey().matches(e) && config.swap4Enabled())
         {
             gearSwapSelected = 3;
         }
 
-        if (config.swap5Hotkey().matches(e))
+        if (config.swap5Hotkey().matches(e) && config.swap5Enabled())
         {
             gearSwapSelected = 4;
         }
 
-        if (config.swap6Hotkey().matches(e))
+        if (config.swap6Hotkey().matches(e) && config.swap6Enabled())
         {
             gearSwapSelected = 5;
         }
@@ -310,6 +357,48 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
                     }
                 }
             }
+        }
+    }
+
+    private int getSlotFromGearSlotSelected(LucidGearSwapperConfig.GearSlot slot)
+    {
+        switch (slot)
+        {
+            case GEAR_SLOT_1:
+                return 1;
+            case GEAR_SLOT_2:
+                return 2;
+            case GEAR_SLOT_3:
+                return 3;
+            case GEAR_SLOT_4:
+                return 4;
+            case GEAR_SLOT_5:
+                return 5;
+            case GEAR_SLOT_6:
+                return 6;
+            default:
+                return 0;
+        }
+    }
+
+    private boolean isSlotEnabled(int slot)
+    {
+        switch (slot)
+        {
+            case 0:
+                return config.swap1Enabled();
+            case 1:
+                return config.swap2Enabled();
+            case 2:
+                return config.swap3Enabled();
+            case 3:
+                return config.swap4Enabled();
+            case 4:
+                return config.swap5Enabled();
+            case 5:
+                return config.swap6Enabled();
+            default:
+                return false;
         }
     }
 
