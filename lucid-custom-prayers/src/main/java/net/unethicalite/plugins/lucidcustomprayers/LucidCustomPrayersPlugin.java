@@ -45,21 +45,23 @@ public class LucidCustomPrayersPlugin extends Plugin
 
     private List<ScheduledPrayer> scheduledPrayers = new ArrayList<>();
 
-    private int lastAnimationChanged = 0;
+    private List<Integer> animationsThisTick = new ArrayList<>();
 
-    private int lastNpcSpawned = 0;
+    private List<Integer> npcsSpawnedThisTick = new ArrayList<>();
 
-    private int lastNpcDespawned = 0;
+    private List<Integer> npcsDespawnedThisTick = new ArrayList<>();
 
-    private int lastNpcChanged = 0;
+    private List<Integer> npcsChangedThisTick = new ArrayList<>();
 
-    private int lastProjectileSpawned = 0;
+    private List<Integer> projectilesMovedThisTick = new ArrayList<>();
 
-    private int lastGraphicsCreated = 0;
+    private List<Integer> graphicsCreatedThisTick = new ArrayList<>();
 
-    private int lastGameObjectSpawned = 0;
+    private List<Integer> gameObjectsSpawnedThisTick = new ArrayList<>();
 
+    private List<Integer> npcsInteractingWithYouThisTick = new ArrayList<>();
 
+    private List<Integer> npcsYouInteractedWithThisTick = new ArrayList<>();
 
     @Provides
     LucidCustomPrayersConfig getConfig(final ConfigManager configManager)
@@ -87,10 +89,12 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        if (lastAnimationChanged != client.getTickCount())
+        int animId = event.getActor().getAnimation();
+
+        if (!animationsThisTick.contains(animId))
         {
-            eventFired(EventType.ANIMATION_CHANGED, event.getActor().getAnimation());
-            lastAnimationChanged = client.getTickCount();
+            eventFired(EventType.ANIMATION_CHANGED, animId);
+            animationsThisTick.add(animId);
         }
     }
 
@@ -102,10 +106,12 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        if (lastNpcSpawned != client.getTickCount())
+        int npcId = event.getNpc().getId();
+
+        if (!npcsSpawnedThisTick.contains(npcId))
         {
-            eventFired(EventType.NPC_SPAWNED, event.getNpc().getId());
-            lastNpcSpawned = client.getTickCount();
+            eventFired(EventType.NPC_SPAWNED, npcId);
+            npcsSpawnedThisTick.add(npcId);
         }
     }
 
@@ -117,10 +123,12 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        if (lastNpcDespawned != client.getTickCount())
+        int npcId = event.getNpc().getId();
+
+        if (!npcsDespawnedThisTick.contains(npcId))
         {
-            eventFired(EventType.NPC_DESPAWNED, event.getNpc().getId());
-            lastNpcDespawned = client.getTickCount();
+            eventFired(EventType.NPC_DESPAWNED, npcId);
+            npcsDespawnedThisTick.add(npcId);
         }
     }
 
@@ -132,40 +140,78 @@ public class LucidCustomPrayersPlugin extends Plugin
             return;
         }
 
-        if (lastNpcChanged != client.getTickCount())
+        int npcId = event.getNpc().getId();
+
+        if (!npcsChangedThisTick.contains(npcId))
         {
-            eventFired(EventType.NPC_CHANGED, event.getOld().getId());
-            lastNpcChanged = client.getTickCount();
+            eventFired(EventType.NPC_CHANGED, npcId);
+            npcsChangedThisTick.add(npcId);
         }
     }
 
     @Subscribe
     private void onProjectile(final ProjectileSpawned event)
     {
-        if (lastProjectileSpawned != client.getTickCount())
+        int projectileId = event.getProjectile().getId();
+
+        if (!projectilesMovedThisTick.contains(projectileId))
         {
-            eventFired(EventType.PROJECTILE_SPAWNED, event.getProjectile().getId());
-            lastProjectileSpawned = client.getTickCount();
+            eventFired(EventType.PROJECTILE_SPAWNED, projectileId);
+            projectilesMovedThisTick.add(projectileId);
         }
     }
 
     @Subscribe
     private void onGraphics(final GraphicsObjectCreated event)
     {
-        if (lastGraphicsCreated != client.getTickCount())
+        int graphicsId = event.getGraphicsObject().getId();
+
+        if (!graphicsCreatedThisTick.contains(graphicsId))
         {
-            eventFired(EventType.GRAPHICS_CREATED, event.getGraphicsObject().getId());
-            lastGraphicsCreated = client.getTickCount();
+            eventFired(EventType.GRAPHICS_CREATED, graphicsId);
+            graphicsCreatedThisTick.add(graphicsId);
         }
     }
 
     @Subscribe
     private void onGameObjectSpawned(final GameObjectSpawned event)
     {
-        if (lastGameObjectSpawned != client.getTickCount())
+        int objectId = event.getGameObject().getId();
+
+        if (!gameObjectsSpawnedThisTick.contains(objectId))
         {
-            eventFired(EventType.GAME_OBJECT_SPAWNED, event.getGameObject().getId());
-            lastGameObjectSpawned = client.getTickCount();
+            eventFired(EventType.GAME_OBJECT_SPAWNED, objectId);
+            gameObjectsSpawnedThisTick.add(objectId);
+        }
+    }
+
+    @Subscribe
+    private void onInteractingChanged(final InteractingChanged event)
+    {
+        Actor source = event.getSource();
+        Actor interacting = event.getSource().getInteracting();
+
+        if (interacting == null)
+        {
+            return;
+        }
+
+        if (interacting == client.getLocalPlayer() && !(source instanceof Player))
+        {
+            if (!npcsInteractingWithYouThisTick.contains(source.getId()))
+            {
+                eventFired(EventType.OTHER_INTERACT_YOU, source.getId());
+                npcsInteractingWithYouThisTick.add(source.getId());
+            }
+        }
+
+        if (source == client.getLocalPlayer() && !(interacting instanceof Player))
+        {
+            if (!npcsYouInteractedWithThisTick.contains(interacting.getId()))
+            {
+                eventFired(EventType.YOU_INTERACT_OTHER, interacting.getId());
+                npcsYouInteractedWithThisTick.add(interacting.getId());
+            }
         }
     }
 
@@ -192,6 +238,16 @@ public class LucidCustomPrayersPlugin extends Plugin
         }
 
         scheduledPrayers.removeIf(prayer -> prayer.getActivationTick() <= client.getTickCount() - 1);
+
+        animationsThisTick.clear();
+        npcsSpawnedThisTick.clear();
+        npcsDespawnedThisTick.clear();
+        npcsChangedThisTick.clear();
+        projectilesMovedThisTick.clear();
+        graphicsCreatedThisTick.clear();
+        gameObjectsSpawnedThisTick.clear();
+        npcsInteractingWithYouThisTick.clear();
+        npcsYouInteractedWithThisTick.clear();
     }
 
     private void parsePrayers()
@@ -416,6 +472,11 @@ public class LucidCustomPrayersPlugin extends Plugin
 
     private void eventFired(EventType type, int id)
     {
+        if (config.debugMode())
+        {
+            MessageUtils.addMessage("Event Type: " + type.name() + ",  ID: " + id + ", Tick: " + client.getTickCount());
+        }
+
         List<CustomPrayer> prayers = eventMap.get(type);
         if (prayers == null || prayers.isEmpty())
         {

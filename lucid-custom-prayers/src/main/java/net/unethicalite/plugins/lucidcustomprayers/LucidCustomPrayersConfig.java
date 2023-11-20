@@ -7,6 +7,26 @@ import net.runelite.client.config.*;
 public interface LucidCustomPrayersConfig extends Config
 {
     @ConfigSection(
+            name = "General",
+            description = "Settings that don't belong to a specific preset",
+            position = 0,
+            keyName = "generalSection"
+    )
+    String generalSection = "General";
+
+    @ConfigItem(
+            name = "Toggle Debug Mode",
+            description = "Toggle Debug Mode on to see events being fired in your chatbox",
+            position = 0,
+            keyName = "debugMode",
+            section = generalSection
+    )
+    default boolean debugMode()
+    {
+        return false;
+    }
+
+    @ConfigSection(
             name = "Custom Prayer 1",
             description = "Custom Prayer 1",
             position = 1,
