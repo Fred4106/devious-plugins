@@ -472,7 +472,7 @@ public class LucidCustomPrayersPlugin extends Plugin
 
     private void eventFired(EventType type, int id)
     {
-        if (config.debugMode())
+        if (config.debugMode() && isEventDebugged(type))
         {
             MessageUtils.addMessage("Event Type: " + type.name() + ",  ID: " + id + ", Tick: " + client.getTickCount());
         }
@@ -492,4 +492,30 @@ public class LucidCustomPrayersPlugin extends Plugin
         }
     }
 
+    private boolean isEventDebugged(EventType type)
+    {
+        switch (type)
+        {
+            case ANIMATION_CHANGED:
+                return config.debugAnimationChanged();
+            case NPC_SPAWNED:
+                return config.debugNpcSpawned();
+            case NPC_DESPAWNED:
+                return config.debugNpcDespawned();
+            case NPC_CHANGED:
+                return config.debugNpcChanged();
+            case PROJECTILE_SPAWNED:
+                return config.debugProjectileSpawned();
+            case GRAPHICS_CREATED:
+                return config.debugGraphicsCreated();
+            case GAME_OBJECT_SPAWNED:
+                return config.debugGameObjectSpawned();
+            case OTHER_INTERACT_YOU:
+                return config.debugOtherInteractYou();
+            case YOU_INTERACT_OTHER:
+                return config.debugYouInteractOther();
+            default:
+                return false;
+        }
+    }
 }

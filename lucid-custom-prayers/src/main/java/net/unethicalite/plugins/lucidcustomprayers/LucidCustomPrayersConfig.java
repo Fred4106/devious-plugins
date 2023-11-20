@@ -26,6 +26,114 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Debug Animation Changed",
+            description = "Toggle Debug Output for Animation Changed Event",
+            position = 1,
+            keyName = "debugAnimationChanged",
+            section = generalSection
+    )
+    default boolean debugAnimationChanged()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug NPC Spawned",
+            description = "Toggle Debug Output for NPC Spawned Event",
+            position = 2,
+            keyName = "debugNpcSpawned",
+            section = generalSection
+    )
+    default boolean debugNpcSpawned()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug NPC Despawned",
+            description = "Toggle Debug Output for NPC Despawned Event",
+            position = 3,
+            keyName = "debugNpcDespawned",
+            section = generalSection
+    )
+    default boolean debugNpcDespawned()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug NPC Changed",
+            description = "Toggle Debug Output for NPC Changed Event",
+            position = 4,
+            keyName = "debugNpcChanged",
+            section = generalSection
+    )
+    default boolean debugNpcChanged()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug Projectile Spawned",
+            description = "Toggle Debug Output for Projectile Spawned Event",
+            position = 5,
+            keyName = "debugProjectileSpawned",
+            section = generalSection
+    )
+    default boolean debugProjectileSpawned()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug Graphics Created",
+            description = "Toggle Debug Output for Graphics Created Event",
+            position = 6,
+            keyName = "debugGraphicsCreated",
+            section = generalSection
+    )
+    default boolean debugGraphicsCreated()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug GameObject Spawned",
+            description = "Toggle Debug Output for GameObject Spawned Event",
+            position = 7,
+            keyName = "debugGameObjectSpawned",
+            section = generalSection
+    )
+    default boolean debugGameObjectSpawned()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug Other Interact You",
+            description = "Toggle Debug Output for Other Interact You Event",
+            position = 8,
+            keyName = "debugOtherInteractYou",
+            section = generalSection
+    )
+    default boolean debugOtherInteractYou()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Debug You Interact Other",
+            description = "Toggle Debug Output for You Interact Other Event",
+            position = 9,
+            keyName = "debugYouInteractOther",
+            section = generalSection
+    )
+    default boolean debugYouInteractOther()
+    {
+        return false;
+    }
+
     @ConfigSection(
             name = "Custom Prayer 1",
             description = "Custom Prayer 1",

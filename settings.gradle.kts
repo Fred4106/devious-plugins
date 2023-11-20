@@ -33,7 +33,6 @@ include("lucid-example-plugin")
 include("lucid-spices")
 include("lucid-cannon-reloader")
 include("lucid-disable-rendering")
-include("lucid-leagues-helper")
 
 for (project in rootProject.children) {
     project.apply {
