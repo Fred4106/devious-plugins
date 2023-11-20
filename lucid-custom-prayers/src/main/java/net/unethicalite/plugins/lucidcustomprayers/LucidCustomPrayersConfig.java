@@ -134,6 +134,18 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Debug Item Equipped",
+            description = "Toggle Debug Output for Item Equipped Event",
+            position = 10,
+            keyName = "debugItemEquipped",
+            section = generalSection
+    )
+    default boolean debugItemEquipped()
+    {
+        return false;
+    }
+
     @ConfigSection(
             name = "Custom Prayer 1",
             description = "Custom Prayer 1",

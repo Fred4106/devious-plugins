@@ -10,6 +10,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.unethicalite.api.items.Equipment;
 import net.unethicalite.api.utils.MessageUtils;
 import net.unethicalite.api.widgets.Prayers;
 import net.unethicalite.api.widgets.Widgets;
@@ -62,6 +63,8 @@ public class LucidCustomPrayersPlugin extends Plugin
     private List<Integer> npcsInteractingWithYouThisTick = new ArrayList<>();
 
     private List<Integer> npcsYouInteractedWithThisTick = new ArrayList<>();
+
+    private List<Item> equippedGearLastTick = new ArrayList<>();
 
     @Provides
     LucidCustomPrayersConfig getConfig(final ConfigManager configManager)
@@ -229,6 +232,9 @@ public class LucidCustomPrayersPlugin extends Plugin
     @Subscribe
     private void onGameTick(final GameTick event)
     {
+
+        checkItemEquips();
+
         for (ScheduledPrayer prayer : scheduledPrayers)
         {
             if (client.getTickCount() == prayer.getActivationTick())
@@ -249,6 +255,27 @@ public class LucidCustomPrayersPlugin extends Plugin
         npcsInteractingWithYouThisTick.clear();
         npcsYouInteractedWithThisTick.clear();
     }
+
+    private void checkItemEquips()
+    {
+        final List<Item> equipment = Equipment.getAll();
+
+        for (Item item : equipment)
+        {
+            if (item == null)
+            {
+                continue;
+            }
+
+            if (equippedGearLastTick.isEmpty() || !equippedGearLastTick.contains(item))
+            {
+                eventFired(EventType.ITEM_EQUIPPED, item.getId());
+            }
+        }
+
+        equippedGearLastTick = equipment;
+    }
+
 
     private void parsePrayers()
     {
@@ -514,6 +541,8 @@ public class LucidCustomPrayersPlugin extends Plugin
                 return config.debugOtherInteractYou();
             case YOU_INTERACT_OTHER:
                 return config.debugYouInteractOther();
+            case ITEM_EQUIPPED:
+                return config.debugItemEquipped();
             default:
                 return false;
         }

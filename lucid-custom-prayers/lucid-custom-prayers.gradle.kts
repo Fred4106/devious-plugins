@@ -1,6 +1,6 @@
 import ProjectVersions.unethicaliteVersion
 
-version = "0.0.7"
+version = "0.0.8"
 
 project.extra["PluginName"] = "Lucid Custom Prayers"
 project.extra["PluginDescription"] = "Set up auto prayers based on various event IDs"
