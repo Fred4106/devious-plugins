@@ -18,4 +18,4 @@ plugin description.**
     - Lucid Muspah (Still in development)
     - Lucid DT2 Bosses (Coming soon)
 
-  [![Discord Banner 4](https://discordapp.com/api/guilds/978715859361079307/widget.png?style=banner4)](https://discord.gg/ksXbJvqh)
+  [![Discord Banner 4](https://discordapp.com/api/guilds/978715859361079307/widget.png?style=banner4)](https://discord.gg/jj2kFyeBv9)
