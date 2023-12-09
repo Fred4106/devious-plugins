@@ -654,6 +654,10 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         exportableConfig.setPrayer(3, config.activated4(), config.pray4Ids(), config.pray4delays(), config.pray4choice(), config.eventType4(), config.toggle4());
         exportableConfig.setPrayer(4, config.activated5(), config.pray5Ids(), config.pray5delays(), config.pray5choice(), config.eventType5(), config.toggle5());
         exportableConfig.setPrayer(5, config.activated6(), config.pray6Ids(), config.pray6delays(), config.pray6choice(), config.eventType6(), config.toggle6());
+        exportableConfig.setPrayer(6, config.activated7(), config.pray7Ids(), config.pray7delays(), config.pray7choice(), config.eventType7(), config.toggle7());
+        exportableConfig.setPrayer(7, config.activated8(), config.pray8Ids(), config.pray8delays(), config.pray8choice(), config.eventType8(), config.toggle8());
+        exportableConfig.setPrayer(8, config.activated9(), config.pray9Ids(), config.pray9delays(), config.pray9choice(), config.eventType9(), config.toggle9());
+        exportableConfig.setPrayer(9, config.activated10(), config.pray10Ids(), config.pray10delays(), config.pray10choice(), config.eventType10(), config.toggle10());
 
         if (!PRESET_DIR.exists())
         {
@@ -694,7 +698,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                 log.info("Loaded preset: " + presetNameFormatted);
             }
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 10; i++)
             {
                 configManager.setConfiguration("lucid-custom-prayers", "activated" + (i + 1), loadedConfig.getPrayerEnabled()[i]);
                 configManager.setConfiguration("lucid-custom-prayers", "pray" + (i + 1) + "Ids", loadedConfig.getPrayerIds()[i]);
