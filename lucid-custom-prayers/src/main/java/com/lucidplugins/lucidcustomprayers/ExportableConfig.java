@@ -26,12 +26,12 @@ public class ExportableConfig
 
     public ExportableConfig()
     {
-        this.prayerEnabled = new boolean[6];
-        this.prayerIds = new String[6];
-        this.prayerDelays = new String[6];
-        this.prayChoice = new Prayer[6];
-        this.eventType = new EventType[6];
-        this.toggle = new boolean[6];
+        this.prayerEnabled = new boolean[10];
+        this.prayerIds = new String[10];
+        this.prayerDelays = new String[10];
+        this.prayChoice = new Prayer[10];
+        this.eventType = new EventType[10];
+        this.toggle = new boolean[10];
     }
 
     public void setPrayer(int index, final boolean prayerEnabled, final String prayerIds, final String prayerDelays, final Prayer prayChoice,
