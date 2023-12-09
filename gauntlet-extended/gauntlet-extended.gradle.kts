@@ -1,22 +1,7 @@
-import ProjectVersions.unethicaliteVersion
-
-version = "6.1.9"
+version = "6.2.0"
 
 project.extra["PluginName"] = "Gauntlet Extended"
 project.extra["PluginDescription"] = "All-in-one plugin for the Gauntlet. Original plugin by xKylee."
-
-dependencies {
-    annotationProcessor(Libraries.lombok)
-    annotationProcessor(Libraries.pf4j)
-
-    compileOnly("net.unethicalite:runelite-api:${unethicaliteVersion}")
-    compileOnly("net.unethicalite:runelite-client:${unethicaliteVersion}")
-
-    compileOnly(Libraries.guice)
-    compileOnly(Libraries.lombok)
-    compileOnly(Libraries.pf4j)
-    compileOnly(Libraries.rxjava)
-}
 
 tasks {
     jar {

@@ -1,22 +1,7 @@
-import ProjectVersions.unethicaliteVersion
-
-version = "0.0.8"
+version = "1.0.8"
 
 project.extra["PluginName"] = "Lucid Custom Prayers"
 project.extra["PluginDescription"] = "Set up auto prayers based on various event IDs"
-
-dependencies {
-    annotationProcessor(Libraries.lombok)
-    annotationProcessor(Libraries.pf4j)
-
-    compileOnly("net.unethicalite:runelite-api:${unethicaliteVersion}")
-    compileOnly("net.unethicalite:runelite-client:${unethicaliteVersion}")
-
-    compileOnly(Libraries.guice)
-    compileOnly(Libraries.lombok)
-    compileOnly(Libraries.pf4j)
-    compileOnly(Libraries.rxjava)
-}
 
 tasks {
     jar {

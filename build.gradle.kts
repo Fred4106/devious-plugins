@@ -8,19 +8,20 @@ buildscript {
 }
 
 plugins {
-    `java-library`
-    checkstyle
     kotlin("jvm") version "1.6.21"
+    kotlin("kapt") version "1.6.21"
 }
 
 project.extra["GithubUrl"] = "https://github.com/lucid-plugins/public-plugins"
 project.extra["GithubUserName"] = "lucid-plugins"
 project.extra["GithubRepoName"] = "public-plugins"
 
+apply<JavaLibraryPlugin>()
 apply<BootstrapPlugin>()
+apply<CheckstylePlugin>()
 
 allprojects {
-    group = "net.unethicalite"
+    group = "com.lucidplugins"
 
     project.extra["PluginProvider"] = "lucid-soft"
     project.extra["ProjectSupportUrl"] = "https://discord.gg/DDY8Tr2a"
@@ -28,13 +29,14 @@ allprojects {
 
     apply<JavaPlugin>()
     apply(plugin = "java-library")
-    apply(plugin = "kotlin")
     apply(plugin = "checkstyle")
+    apply(plugin = "kotlin")
 
     repositories {
         mavenCentral()
         mavenLocal()
     }
+
 
     dependencies {
         annotationProcessor(Libraries.lombok)
@@ -45,6 +47,8 @@ allprojects {
         compileOnly("net.unethicalite:runelite-client:$unethicaliteVersion+")
         compileOnly("net.unethicalite.rs:runescape-api:$unethicaliteVersion+")
 
+        compileOnly(Libraries.okhttp3)
+        compileOnly(Libraries.gson)
         compileOnly(Libraries.guice)
         compileOnly(Libraries.javax)
         compileOnly(Libraries.lombok)
@@ -57,6 +61,15 @@ allprojects {
     }
 
     tasks {
+
+        compileKotlin {
+            kotlinOptions {
+                jvmTarget = "11"
+                freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
+            }
+            sourceCompatibility = "11"
+        }
+
         withType<JavaCompile> {
             options.encoding = "UTF-8"
         }
@@ -68,8 +81,5 @@ allprojects {
             fileMode = 420
         }
 
-        compileKotlin {
-            kotlinOptions.jvmTarget = "11"
-        }
     }
 }

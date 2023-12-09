@@ -1,22 +1,7 @@
-import ProjectVersions.unethicaliteVersion
-
-version = "1.1.4"
+version = "2.1.4"
 
 project.extra["PluginName"] = "Lucid Gear Swapper"
 project.extra["PluginDescription"] = "Set-up up to 6 custom gear swaps with customizable hotkeys or trigger them via weapon equip"
-
-dependencies {
-    annotationProcessor(Libraries.lombok)
-    annotationProcessor(Libraries.pf4j)
-
-    compileOnly("net.unethicalite:runelite-api:${unethicaliteVersion}")
-    compileOnly("net.unethicalite:runelite-client:${unethicaliteVersion}")
-
-    compileOnly(Libraries.guice)
-    compileOnly(Libraries.lombok)
-    compileOnly(Libraries.pf4j)
-    compileOnly(Libraries.rxjava)
-}
 
 tasks {
     jar {

@@ -1,22 +1,7 @@
-import ProjectVersions.unethicaliteVersion
-
-version = "0.0.1"
+version = "1.0.1"
 
 project.extra["PluginName"] = "Lucid Example"
 project.extra["PluginDescription"] = "An example plugin that can be copied to use as a plugin skeleton. Does nothing functionally."
-
-dependencies {
-    annotationProcessor(Libraries.lombok)
-    annotationProcessor(Libraries.pf4j)
-
-    compileOnly("net.unethicalite:runelite-api:${unethicaliteVersion}")
-    compileOnly("net.unethicalite:runelite-client:${unethicaliteVersion}")
-
-    compileOnly(Libraries.guice)
-    compileOnly(Libraries.lombok)
-    compileOnly(Libraries.pf4j)
-    compileOnly(Libraries.rxjava)
-}
 
 tasks {
     jar {
