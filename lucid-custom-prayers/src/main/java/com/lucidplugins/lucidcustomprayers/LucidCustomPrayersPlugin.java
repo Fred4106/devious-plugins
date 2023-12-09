@@ -1,6 +1,8 @@
 package com.lucidplugins.lucidcustomprayers;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Provides;
 import com.lucidplugins.api.item.SlottedItem;
 import com.lucidplugins.api.util.CombatUtils;
@@ -14,15 +16,30 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import org.pf4j.Extension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
 
 @Extension
 @PluginDescriptor(
@@ -31,7 +48,7 @@ import java.util.stream.Collectors;
         enabledByDefault = false,
         tags = {"prayer", "swap"}
 )
-public class LucidCustomPrayersPlugin extends Plugin
+public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 {
 
     @Inject
@@ -42,6 +59,11 @@ public class LucidCustomPrayersPlugin extends Plugin
 
     @Inject
     private LucidCustomPrayersConfig config;
+
+    @Inject ConfigManager configManager;
+
+    @Inject
+    private KeyManager keyManager;
 
     private Map<EventType, List<CustomPrayer>> eventMap = new HashMap<>();
 
@@ -69,6 +91,16 @@ public class LucidCustomPrayersPlugin extends Plugin
 
     private List<String> lastEquipmentList = new ArrayList<>();
 
+    public static final File PRESET_DIR = new File(RUNELITE_DIR, "lucid-custom-prayers");
+
+    public static final String FILENAME_SPECIAL_CHAR_REGEX = "[^a-zA-Z\\d:]";
+
+    public final GsonBuilder builder = new GsonBuilder()
+            .setPrettyPrinting();
+    public final Gson gson = builder.create();
+
+    public Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
     @Provides
     LucidCustomPrayersConfig getConfig(final ConfigManager configManager)
     {
@@ -78,13 +110,15 @@ public class LucidCustomPrayersPlugin extends Plugin
     @Override
     protected void startUp()
     {
+
+        keyManager.registerKeyListener(this);
         parsePrayers();
     }
 
     @Override
     protected void shutDown()
     {
-
+        keyManager.unregisterKeyListener(this);
     }
 
     @Subscribe
@@ -574,5 +608,109 @@ public class LucidCustomPrayersPlugin extends Plugin
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        if (config.loadPresetHotkey().matches(e))
+        {
+            loadPreset();
+        }
+
+        if (config.savePresetHotkey().matches(e))
+        {
+            savePreset();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+
+    }
+
+    private void savePreset()
+    {
+        String presetName = config.presetName();
+        String presetNameFormatted = presetName.replaceAll(FILENAME_SPECIAL_CHAR_REGEX, "").replaceAll(" ", "_").toLowerCase();
+
+        if (presetNameFormatted.isEmpty())
+        {
+            return;
+        }
+
+        ExportableConfig exportableConfig = new ExportableConfig();
+
+        exportableConfig.setPrayer(0, config.activated1(), config.pray1Ids(), config.pray1delays(), config.pray1choice(), config.eventType1(), config.toggle1());
+        exportableConfig.setPrayer(1, config.activated2(), config.pray2Ids(), config.pray2delays(), config.pray2choice(), config.eventType2(), config.toggle2());
+        exportableConfig.setPrayer(2, config.activated3(), config.pray3Ids(), config.pray3delays(), config.pray3choice(), config.eventType3(), config.toggle3());
+        exportableConfig.setPrayer(3, config.activated4(), config.pray4Ids(), config.pray4delays(), config.pray4choice(), config.eventType4(), config.toggle4());
+        exportableConfig.setPrayer(4, config.activated5(), config.pray5Ids(), config.pray5delays(), config.pray5choice(), config.eventType5(), config.toggle5());
+        exportableConfig.setPrayer(5, config.activated6(), config.pray6Ids(), config.pray6delays(), config.pray6choice(), config.eventType6(), config.toggle6());
+
+        if (!PRESET_DIR.exists())
+        {
+            PRESET_DIR.mkdirs();
+        }
+
+        File saveFile = new File(PRESET_DIR, presetNameFormatted + ".json");
+        try (FileWriter fw = new FileWriter(saveFile))
+        {
+            fw.write(gson.toJson(exportableConfig));
+            fw.close();
+            JOptionPane.showMessageDialog(null, "Successfully saved preset '" + presetNameFormatted + "' at " + saveFile.getAbsolutePath(), "Preset Save Success", INFORMATION_MESSAGE);
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Save Preset Error", WARNING_MESSAGE);
+            log.error(e.getMessage());
+        }
+    }
+
+    private void loadPreset()
+    {
+        String presetName = config.presetName();
+        String presetNameFormatted = presetName.replaceAll(FILENAME_SPECIAL_CHAR_REGEX, "").replaceAll(" ", "_").toLowerCase();
+
+        if (presetNameFormatted.isEmpty())
+        {
+            return;
+        }
+
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader(PRESET_DIR + "/" + presetNameFormatted + ".json"));
+            ExportableConfig loadedConfig = gson.fromJson(br, ExportableConfig.class);
+            br.close();
+            if (loadedConfig != null)
+            {
+                log.info("Loaded preset: " + presetNameFormatted);
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                configManager.setConfiguration("lucid-custom-prayers", "activated" + (i + 1), loadedConfig.getPrayerEnabled()[i]);
+                configManager.setConfiguration("lucid-custom-prayers", "pray" + (i + 1) + "Ids", loadedConfig.getPrayerIds()[i]);
+                configManager.setConfiguration("lucid-custom-prayers", "pray" + (i + 1) + "delays", loadedConfig.getPrayerDelays()[i]);
+                configManager.setConfiguration("lucid-custom-prayers", "pray" + (i + 1) + "choice", loadedConfig.getPrayChoice()[i]);
+                configManager.setConfiguration("lucid-custom-prayers", "eventType" + (i + 1), loadedConfig.getEventType()[i]);
+                configManager.setConfiguration("lucid-custom-prayers", "toggle" + (i + 1), loadedConfig.getToggle()[i]);
+            }
+
+            JOptionPane.showMessageDialog(null, "Successfully loaded preset '" + presetNameFormatted + "'", "Preset Load Success", INFORMATION_MESSAGE);
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Preset Load Error", WARNING_MESSAGE);
+            log.error(e.getMessage());
+        }
+
     }
 }
