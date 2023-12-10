@@ -15,45 +15,54 @@ public interface LucidGearSwapperConfig extends Config
             keyName = "generalSection"
     )
     String generalSection = "General";
+
+    @ConfigSection(
+            name = "Preset Loading/Saving",
+            description = "Save/Load a custom preset",
+            position = 1,
+            keyName = "generalSection"
+    )
+    String presetSection = "Preset Loading/Saving";
+
     @ConfigSection(
             name = "Custom Swap 1",
             description = "Gear Swap # 1",
-            position = 1,
+            position = 2,
             keyName = "swap1Section"
     )
     String swap1Section = "Custom Swap 1";
     @ConfigSection(
             name = "Custom Swap 2",
             description = "Gear Swap # 2",
-            position = 2,
+            position = 3,
             keyName = "swap2Section"
     )
     String swap2Section = "Custom Swap 2";
     @ConfigSection(
             name = "Custom Swap 3",
             description = "Gear Swap # 3",
-            position = 3,
+            position = 4,
             keyName = "swap3Section"
     )
     String swap3Section = "Custom Swap 3";
     @ConfigSection(
             name = "Custom Swap 4",
             description = "Gear Swap # 4",
-            position = 4,
+            position = 5,
             keyName = "swap3Section"
     )
     String swap4Section = "Custom Swap 4";
     @ConfigSection(
             name = "Custom Swap 5",
             description = "Gear Swap # 5",
-            position = 5,
+            position = 6,
             keyName = "swap5Section"
     )
     String swap5Section = "Custom Swap 5";
     @ConfigSection(
             name = "Custom Swap 6",
             description = "Gear Swap # 6",
-            position = 6,
+            position = 7,
             keyName = "swap6Section"
     )
     String swap6Section = "Custom Swap 6";
@@ -91,6 +100,44 @@ public interface LucidGearSwapperConfig extends Config
     default Keybind copyGearHotkey()
     {
         return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
+    }
+
+    // Preset Loading/Saving
+
+    @ConfigItem(
+            name = "Preset Name",
+            description = "Name of the preset (replaces all non-alphanumerical characters with a space)",
+            position = 0,
+            keyName = "presetName",
+            section = presetSection
+    )
+    default String presetName()
+    {
+        return "";
+    }
+
+    @ConfigItem(
+            name = "Load Preset Hotkey",
+            description =  "Loads the preset with the saved preset in your runelite/lucid-gear-swapper/ folder",
+            position = 1,
+            keyName = "loadPresetHotkey",
+            section = presetSection
+    )
+    default Keybind loadPresetHotkey()
+    {
+        return new Keybind(KeyEvent.VK_F9, InputEvent.CTRL_DOWN_MASK);
+    }
+
+    @ConfigItem(
+            name = "Save Preset Hotkey",
+            description =  "Saves the preset as a JSON file to your runelite/lucid-gear-swapper/ folder",
+            position = 2,
+            keyName = "savePresetHotkey",
+            section = presetSection
+    )
+    default Keybind savePresetHotkey()
+    {
+        return new Keybind(KeyEvent.VK_F10, InputEvent.CTRL_DOWN_MASK);
     }
 
     // Gear Swap 1

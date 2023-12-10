@@ -1,6 +1,8 @@
 package com.lucidplugins.lucidgearswapper;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Provides;
 import com.lucidplugins.api.item.SlottedItem;
 import com.lucidplugins.api.util.EquipmentUtils;
@@ -20,13 +22,25 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.pf4j.Extension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
 
 @Extension
 @PluginDescriptor(
@@ -69,6 +83,18 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     private final List<Integer> slotOrderToCopy = List.of(EquipmentInventorySlot.WEAPON.getSlotIdx(), EquipmentInventorySlot.SHIELD.getSlotIdx(), EquipmentInventorySlot.HEAD.getSlotIdx(), EquipmentInventorySlot.BODY.getSlotIdx(),
             EquipmentInventorySlot.LEGS.getSlotIdx(), EquipmentInventorySlot.CAPE.getSlotIdx(), EquipmentInventorySlot.BOOTS.getSlotIdx(), EquipmentInventorySlot.AMULET.getSlotIdx(),
             EquipmentInventorySlot.GLOVES.getSlotIdx(), EquipmentInventorySlot.RING.getSlotIdx(), EquipmentInventorySlot.AMMO.getSlotIdx());
+
+    public static final String GROUP_NAME = "lucid-gear-swapper";
+
+    public static final File PRESET_DIR = new File(RUNELITE_DIR, GROUP_NAME);
+
+    public static final String FILENAME_SPECIAL_CHAR_REGEX = "[^a-zA-Z\\d:]";
+
+    public final GsonBuilder builder = new GsonBuilder()
+            .setPrettyPrinting();
+    public final Gson gson = builder.create();
+
+    public Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Provides
     LucidGearSwapperConfig getConfig(final ConfigManager configManager)
@@ -263,6 +289,16 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     @Override
     public void keyPressed(KeyEvent e)
     {
+        if (config.loadPresetHotkey().matches(e))
+        {
+            loadPreset();
+        }
+
+        if (config.savePresetHotkey().matches(e))
+        {
+            savePreset();
+        }
+
         if (config.copyGearHotkey().matches(e))
         {
             if (client == null || client.getGameState() != GameState.LOGGED_IN)
@@ -438,5 +474,80 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     enum GearSwapState
     {
         TICK_1, TICK_2, FINISHED
+    }
+
+    private void savePreset()
+    {
+        String presetName = config.presetName();
+        String presetNameFormatted = presetName.replaceAll(FILENAME_SPECIAL_CHAR_REGEX, "").replaceAll(" ", "_").toLowerCase();
+
+        if (presetNameFormatted.isEmpty())
+        {
+            return;
+        }
+
+        ExportableConfig exportableConfig = new ExportableConfig();
+
+        exportableConfig.setSwap(0, config.swap1Enabled(), config.swap1String(), config.swap1Hotkey(), config.equipFirstItem1());
+        exportableConfig.setSwap(1, config.swap2Enabled(), config.swap2String(), config.swap2Hotkey(), config.equipFirstItem2());
+        exportableConfig.setSwap(2, config.swap3Enabled(), config.swap3String(), config.swap3Hotkey(), config.equipFirstItem3());
+        exportableConfig.setSwap(3, config.swap4Enabled(), config.swap4String(), config.swap4Hotkey(), config.equipFirstItem4());
+        exportableConfig.setSwap(4, config.swap5Enabled(), config.swap5String(), config.swap5Hotkey(), config.equipFirstItem5());
+        exportableConfig.setSwap(5, config.swap6Enabled(), config.swap6String(), config.swap6Hotkey(), config.equipFirstItem6());
+
+        if (!PRESET_DIR.exists())
+        {
+            PRESET_DIR.mkdirs();
+        }
+
+        File saveFile = new File(PRESET_DIR, presetNameFormatted + ".json");
+        try (FileWriter fw = new FileWriter(saveFile))
+        {
+            fw.write(gson.toJson(exportableConfig));
+            fw.close();
+            JOptionPane.showMessageDialog(null, "Successfully saved preset '" + presetNameFormatted + "' at " + saveFile.getAbsolutePath(), "Preset Save Success", INFORMATION_MESSAGE);
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Save Preset Error", WARNING_MESSAGE);
+            log.error(e.getMessage());
+        }
+    }
+
+    private void loadPreset()
+    {
+        String presetName = config.presetName();
+        String presetNameFormatted = presetName.replaceAll(FILENAME_SPECIAL_CHAR_REGEX, "").replaceAll(" ", "_").toLowerCase();
+
+        if (presetNameFormatted.isEmpty())
+        {
+            return;
+        }
+
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader(PRESET_DIR + "/" + presetNameFormatted + ".json"));
+            ExportableConfig loadedConfig = gson.fromJson(br, ExportableConfig.class);
+            br.close();
+            if (loadedConfig != null)
+            {
+                log.info("Loaded preset: " + presetNameFormatted);
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                configManager.setConfiguration(GROUP_NAME, "swap" + (i + 1) + "Enabled", loadedConfig.getSwapEnabled()[i]);
+                configManager.setConfiguration(GROUP_NAME, "swap" + (i + 1) + "String", loadedConfig.getSwapString()[i]);
+                configManager.setConfiguration(GROUP_NAME, "swap" + (i + 1) + "Hotkey", loadedConfig.getSwapHotkey()[i]);
+                configManager.setConfiguration(GROUP_NAME, "equipFirstItem" + (i + 1), loadedConfig.getEquipFirstItem()[i]);
+            }
+
+            JOptionPane.showMessageDialog(null, "Successfully loaded preset '" + presetNameFormatted + "'", "Preset Load Success", INFORMATION_MESSAGE);
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Preset Load Error", WARNING_MESSAGE);
+            log.error(e.getMessage());
+        }
     }
 }
