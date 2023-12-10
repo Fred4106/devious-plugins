@@ -83,11 +83,11 @@
   "description": "Set-up up to 6 custom gear swaps with customizable hotkeys or trigger them via weapon equip",
   "id": "lucidgearswapper-plugin",
   "releases": [{
-    "date": "2023-12-10",
-    "sha512sum": "669F45E9DFB632730966C62C771678201424EBAD1C9FBB13D2D98AEB6A23F37FE655062CE9FE135914C2008313982549B789C70A70DCBDA164FD8ADDCC925900",
-    "version": "2.2.4",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-2.2.4.jar?raw=true",
-    "requires": "^1.0.0"
+      "date": "2023-12-10",
+      "sha512sum": "C8384025FC5667DF8306C7138427EB18FB5ED40A272D5A166B080FA3C436F7837B9760592432630A87D4CF7C62368F37F16A32722022B8C44546E3B6E8D31B03",
+      "version": "2.2.5",
+      "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-2.2.5.jar?raw=true",
+      "requires": "^1.0.0"
   }]
 }, {
   "projectUrl": "https://discord.gg/DDY8Tr2a",

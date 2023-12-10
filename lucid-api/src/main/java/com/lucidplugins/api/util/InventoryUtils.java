@@ -52,7 +52,7 @@ public class InventoryUtils
 
     public static boolean itemHasAction(Client client, int itemId, String action)
     {
-        return Arrays.stream(client.getItemDefinition(itemId).getInventoryActions()).anyMatch(a -> a.equalsIgnoreCase(action));
+        return Arrays.stream(client.getItemDefinition(itemId).getInventoryActions()).anyMatch(a -> a != null && a.equalsIgnoreCase(action));
     }
 
     public static void itemInteract(int itemId, String action)
