@@ -136,6 +136,11 @@ public class LucidDiscordLoggerPlugin extends Plugin
 
         String webhookURL = getWebhookURL(messageType);
 
+        if (Strings.isNullOrEmpty(webhookURL))
+        {
+            return;
+        }
+
         sendWebhook(webhookURL, webhookBody);
     }
 

@@ -501,7 +501,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         {
             if (client.getGameState() == GameState.LOGGED_IN)
             {
-                MessageUtils.addMessage(client, "If delays are specified, delays and ids list must be the same length!");
+                clientThread.invoke(() -> MessageUtils.addMessage(client, "If delays are specified, delays and ids list must be the same length!"));
             }
             delays.clear();
         }
