@@ -19,9 +19,9 @@
   "id": "lucidcannonreloader-plugin",
   "releases": [{
     "date": "2023-12-10",
-    "sha512sum": "186FEA59EF32209D0F95440C7CC1C63782A2B3DF369A6BCCFFDB3C8FB9D8D4AF5E89A917164AF023F9E5CE2527246F68F56AE60B2F3CF08A2CAA31FC010A8364",
-    "version": "1.0.3",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-cannon-reloader-1.0.3.jar?raw=true",
+    "sha512sum": "8CDF699EE013FA46DED92C8A88A84501CA6D9EA0E103E69405E0CA92D549FBD0F4612C1E5DF26364522F6EAB37CE5586AC1C8629ADC13C847815EFFECAEF6733",
+    "version": "1.0.4",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-cannon-reloader-1.0.4.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {
@@ -83,11 +83,11 @@
   "description": "Set-up up to 6 custom gear swaps with customizable hotkeys or trigger them via weapon equip",
   "id": "lucidgearswapper-plugin",
   "releases": [{
-      "date": "2023-12-10",
-      "sha512sum": "C8384025FC5667DF8306C7138427EB18FB5ED40A272D5A166B080FA3C436F7837B9760592432630A87D4CF7C62368F37F16A32722022B8C44546E3B6E8D31B03",
-      "version": "2.2.5",
-      "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-2.2.5.jar?raw=true",
-      "requires": "^1.0.0"
+    "date": "2023-12-10",
+    "sha512sum": "C8384025FC5667DF8306C7138427EB18FB5ED40A272D5A166B080FA3C436F7837B9760592432630A87D4CF7C62368F37F16A32722022B8C44546E3B6E8D31B03",
+    "version": "2.2.5",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-2.2.5.jar?raw=true",
+    "requires": "^1.0.0"
   }]
 }, {
   "projectUrl": "https://discord.gg/DDY8Tr2a",

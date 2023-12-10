@@ -95,22 +95,23 @@ public class LucidCannonReloaderPlugin extends Plugin
     private void onGameTick(GameTick event)
     {
         final GameObject cannon = getCannon();
+        final GameObject brokenCannon = getBrokenCannon();
 
         if (!goodReloadRange || !goodDelayRange)
         {
             return;
         }
 
-        if (cannon == null)
+        if (cannon == null && brokenCannon == null)
         {
             return;
         }
 
-        if (GameObjectUtils.hasAction(client, cannon.getId(), "Repair"))
+        if (GameObjectUtils.hasAction(client, brokenCannon.getId(), "Repair"))
         {
             if (ticksSinceLastRepairAttempt() > 3)
             {
-                GameObjectUtils.interact(cannon, "Repair");
+                GameObjectUtils.interact(brokenCannon, "Repair");
                 lastRepairAttempt = client.getTickCount();
             }
         }
@@ -175,8 +176,8 @@ public class LucidCannonReloaderPlugin extends Plugin
     private void onMenuOpened(MenuOpened event)
     {
         final Optional<MenuEntry> fireEntry = Arrays.stream(event.getMenuEntries()).filter(menuEntry -> {
-            return menuEntry.getOption().equals("Fire") &&
-                    menuEntry.getTarget().contains("Dwarf multicannon");
+            return (menuEntry.getOption().equals("Fire") || menuEntry.getOption().equals("Repair"))  &&
+                    (menuEntry.getTarget().contains("Dwarf multicannon") || menuEntry.getTarget().contains("Broken multicannon"));
         }).findFirst();
 
         if (fireEntry.isEmpty())
@@ -259,6 +260,11 @@ public class LucidCannonReloaderPlugin extends Plugin
     private GameObject getCannon()
     {
         return new GameObjectQuery().filter(gameObject -> gameObject.getName().contains("Dwarf multicannon") && gameObject.getWorldLocation().dx(-1).dy(-1).equals(cannonLocation)).result(client).first();
+    }
+
+    private GameObject getBrokenCannon()
+    {
+        return new GameObjectQuery().filter(gameObject -> gameObject.getName().contains("Broken multicannon") && gameObject.getWorldLocation().dx(-1).dy(-1).equals(cannonLocation)).result(client).first();
     }
 
 
