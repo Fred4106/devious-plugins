@@ -1,4 +1,4 @@
-version = "1.0.4"
+version = "1.0.5"
 project.extra["PluginName"] = "Lucid Cannon Reloader"
 project.extra["PluginDescription"] = "A plugin that will reload your cannon so you don't have to"
 

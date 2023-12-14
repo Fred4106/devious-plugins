@@ -107,7 +107,7 @@ public class LucidCannonReloaderPlugin extends Plugin
             return;
         }
 
-        if (GameObjectUtils.hasAction(client, brokenCannon.getId(), "Repair"))
+        if (brokenCannon != null && GameObjectUtils.hasAction(client, brokenCannon.getId(), "Repair"))
         {
             if (ticksSinceLastRepairAttempt() > 3)
             {
@@ -130,7 +130,11 @@ public class LucidCannonReloaderPlugin extends Plugin
         {
             if (ticksSinceLastReloadAttempt() > nextReloadDelay)
             {
-                GameObjectUtils.interact(cannon, "Fire");
+                if (cannon != null)
+                {
+                    GameObjectUtils.interact(cannon, "Fire");
+                }
+
                 lastReloadAttempt = client.getTickCount();
                 nextReloadAmount = nextInt(config.minCannonballAmount(), config.maxCannonballAmount());
                 nextReloadDelay = nextInt(config.minReloadDelay(), config.maxReloadDelay());
