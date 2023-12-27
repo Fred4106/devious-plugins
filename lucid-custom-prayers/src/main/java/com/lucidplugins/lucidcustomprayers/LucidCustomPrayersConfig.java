@@ -88,9 +88,21 @@ public interface LucidCustomPrayersConfig extends Config
     }
 
     @ConfigItem(
+            name = "Ignore non-target events",
+            description = "Don't debug events if you're not the target",
+            position = 1,
+            keyName = "hideNonTargetEventsDebug",
+            section = generalSection
+    )
+    default boolean hideNonTargetEventsDebug()
+    {
+        return false;
+    }
+
+    @ConfigItem(
             name = "Debug Animation Changed",
             description = "Toggle Debug Output for Animation Changed Event",
-            position = 1,
+            position = 2,
             keyName = "debugAnimationChanged",
             section = generalSection
     )
@@ -102,7 +114,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug NPC Spawned",
             description = "Toggle Debug Output for NPC Spawned Event",
-            position = 2,
+            position = 3,
             keyName = "debugNpcSpawned",
             section = generalSection
     )
@@ -114,7 +126,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug NPC Despawned",
             description = "Toggle Debug Output for NPC Despawned Event",
-            position = 3,
+            position = 4,
             keyName = "debugNpcDespawned",
             section = generalSection
     )
@@ -126,7 +138,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug NPC Changed",
             description = "Toggle Debug Output for NPC Changed Event",
-            position = 4,
+            position = 5,
             keyName = "debugNpcChanged",
             section = generalSection
     )
@@ -138,7 +150,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug Projectile Spawned",
             description = "Toggle Debug Output for Projectile Spawned Event",
-            position = 5,
+            position = 6,
             keyName = "debugProjectileSpawned",
             section = generalSection
     )
@@ -150,7 +162,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug Graphics Created",
             description = "Toggle Debug Output for Graphics Created Event",
-            position = 6,
+            position = 7,
             keyName = "debugGraphicsCreated",
             section = generalSection
     )
@@ -162,7 +174,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug GameObject Spawned",
             description = "Toggle Debug Output for GameObject Spawned Event",
-            position = 7,
+            position = 8,
             keyName = "debugGameObjectSpawned",
             section = generalSection
     )
@@ -174,7 +186,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug Other Interact You",
             description = "Toggle Debug Output for Other Interact You Event",
-            position = 8,
+            position = 9,
             keyName = "debugOtherInteractYou",
             section = generalSection
     )
@@ -186,7 +198,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug You Interact Other",
             description = "Toggle Debug Output for You Interact Other Event",
-            position = 9,
+            position = 10,
             keyName = "debugYouInteractOther",
             section = generalSection
     )
@@ -198,7 +210,7 @@ public interface LucidCustomPrayersConfig extends Config
     @ConfigItem(
             name = "Debug Item Equipped",
             description = "Toggle Debug Output for Item Equipped Event",
-            position = 10,
+            position = 11,
             keyName = "debugItemEquipped",
             section = generalSection
     )
@@ -314,6 +326,19 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+            + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents1",
+            section = prayer1Section
+    )
+    default boolean ignoreNonTargetEvents1()
+    {
+        return false;
+    }
+
     // Prayer 2
     @ConfigItem(
             name = "Enable This Preset?",
@@ -380,6 +405,19 @@ public interface LucidCustomPrayersConfig extends Config
             section = prayer2Section
     )
     default boolean toggle2()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents2",
+            section = prayer2Section
+    )
+    default boolean ignoreNonTargetEvents2()
     {
         return false;
     }
@@ -453,6 +491,19 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents3",
+            section = prayer3Section
+    )
+    default boolean ignoreNonTargetEvents3()
+    {
+        return false;
+    }
+
     // Prayer 4
     @ConfigItem(
             name = "Enable This Preset?",
@@ -518,6 +569,19 @@ public interface LucidCustomPrayersConfig extends Config
             section = prayer4Section
     )
     default boolean toggle4()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents4",
+            section = prayer4Section
+    )
+    default boolean ignoreNonTargetEvents4()
     {
         return false;
     }
@@ -591,6 +655,19 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents5",
+            section = prayer5Section
+    )
+    default boolean ignoreNonTargetEvents5()
+    {
+        return false;
+    }
+
     // Prayer 6
     @ConfigItem(
             name = "Enable This Preset?",
@@ -659,6 +736,21 @@ public interface LucidCustomPrayersConfig extends Config
     {
         return false;
     }
+
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents6",
+            section = prayer6Section
+    )
+    default boolean ignoreNonTargetEvents6()
+    {
+        return false;
+    }
+
+    // Prayer 7
 
     @ConfigSection(
             name = "Custom Prayer 7",
@@ -736,6 +828,21 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents7",
+            section = prayer7Section
+    )
+    default boolean ignoreNonTargetEvents7()
+    {
+        return false;
+    }
+
+    // Prayer 8
+
     @ConfigSection(
             name = "Custom Prayer 8",
             description = "Custom Prayer 8",
@@ -810,6 +917,21 @@ public interface LucidCustomPrayersConfig extends Config
     {
         return false;
     }
+
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents8",
+            section = prayer8Section
+    )
+    default boolean ignoreNonTargetEvents8()
+    {
+        return false;
+    }
+
+    // Prayer 9
 
     @ConfigSection(
             name = "Custom Prayer 9",
@@ -887,6 +1009,20 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents9",
+            section = prayer9Section
+    )
+    default boolean ignoreNonTargetEvents9()
+    {
+        return false;
+    }
+
+    // Prayer 10
 
     @ConfigSection(
             name = "Custom Prayer 10",
@@ -963,4 +1099,16 @@ public interface LucidCustomPrayersConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Ignore non-target NPC events?",
+            description = "Having this on will ignore certain incoming events if youre not being targeted by the npc performing the action.<br>"
+                    + "Having it disabled will not ignore any events at all.",
+            position = 6,
+            keyName = "ignoreNonTargetEvents10",
+            section = prayer10Section
+    )
+    default boolean ignoreNonTargetEvents10()
+    {
+        return false;
+    }
 }

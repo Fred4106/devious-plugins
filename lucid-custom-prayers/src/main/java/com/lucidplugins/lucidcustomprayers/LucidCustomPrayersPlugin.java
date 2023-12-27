@@ -133,7 +133,16 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 
         if (!animationsThisTick.contains(animId))
         {
-            eventFired(EventType.ANIMATION_CHANGED, animId);
+            if (event.getActor() instanceof NPC)
+            {
+                final NPC npc = (NPC) event.getActor();
+                eventFired(EventType.ANIMATION_CHANGED, animId, npc.getInteracting() == client.getLocalPlayer());
+            }
+            else
+            {
+                eventFired(EventType.ANIMATION_CHANGED, animId, false);
+            }
+
             animationsThisTick.add(animId);
         }
     }
@@ -150,7 +159,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 
         if (!npcsSpawnedThisTick.contains(npcId))
         {
-            eventFired(EventType.NPC_SPAWNED, npcId);
+            eventFired(EventType.NPC_SPAWNED, npcId, false);
             npcsSpawnedThisTick.add(npcId);
         }
     }
@@ -167,7 +176,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 
         if (!npcsDespawnedThisTick.contains(npcId))
         {
-            eventFired(EventType.NPC_DESPAWNED, npcId);
+            eventFired(EventType.NPC_DESPAWNED, npcId, false);
             npcsDespawnedThisTick.add(npcId);
         }
     }
@@ -184,7 +193,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 
         if (!npcsChangedThisTick.contains(npcId))
         {
-            eventFired(EventType.NPC_CHANGED, npcId);
+            eventFired(EventType.NPC_CHANGED, npcId, event.getNpc().getInteracting() == client.getLocalPlayer());
             npcsChangedThisTick.add(npcId);
         }
     }
@@ -202,7 +211,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         int projectileId = event.getProjectile().getId();
         if (!projectilesSpawnedThisTick.contains(projectileId))
         {
-            eventFired(EventType.PROJECTILE_SPAWNED, projectileId);
+            eventFired(EventType.PROJECTILE_SPAWNED, projectileId, event.getProjectile().getTarget() == client.getLocalPlayer().getLocalLocation());
             projectilesSpawnedThisTick.add(projectileId);
         }
     }
@@ -214,7 +223,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 
         if (!graphicsCreatedThisTick.contains(graphicsId))
         {
-            eventFired(EventType.GRAPHICS_CREATED, graphicsId);
+            eventFired(EventType.GRAPHICS_CREATED, graphicsId, false);
             graphicsCreatedThisTick.add(graphicsId);
         }
     }
@@ -226,7 +235,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 
         if (!gameObjectsSpawnedThisTick.contains(objectId))
         {
-            eventFired(EventType.GAME_OBJECT_SPAWNED, objectId);
+            eventFired(EventType.GAME_OBJECT_SPAWNED, objectId, false);
             gameObjectsSpawnedThisTick.add(objectId);
         }
     }
@@ -246,7 +255,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         {
             if (!npcsInteractingWithYouThisTick.contains(source.getId()))
             {
-                eventFired(EventType.OTHER_INTERACT_YOU, source.getId());
+                eventFired(EventType.OTHER_INTERACT_YOU, source.getId(), true);
                 npcsInteractingWithYouThisTick.add(source.getId());
             }
         }
@@ -255,7 +264,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         {
             if (!npcsYouInteractedWithThisTick.contains(interacting.getId()))
             {
-                eventFired(EventType.YOU_INTERACT_OTHER, interacting.getId());
+                eventFired(EventType.YOU_INTERACT_OTHER, interacting.getId(), interacting.getInteracting() == client.getLocalPlayer());
                 npcsYouInteractedWithThisTick.add(interacting.getId());
             }
         }
@@ -319,7 +328,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                 String name = client.getItemComposition(slottedItem.getItem().getId()).getName();
                 if (!lastEquipmentList.contains(name))
                 {
-                    eventFired(EventType.ITEM_EQUIPPED, slottedItem.getItem().getId());
+                    eventFired(EventType.ITEM_EQUIPPED, slottedItem.getItem().getId(), false);
                 }
             }
             lastEquipmentList.clear();
@@ -344,6 +353,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         Prayer prayChoice = null;
         EventType type = EventType.ANIMATION_CHANGED;
         boolean toggle = false;
+        boolean ignoreNonTargetEvent = false;
 
         switch (id)
         {
@@ -355,6 +365,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray1choice();
                     type = config.eventType1();
                     toggle = config.toggle1();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents1();
                 }
                 break;
             case 2:
@@ -365,6 +376,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray2choice();
                     type = config.eventType2();
                     toggle = config.toggle2();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents2();
                 }
                 break;
             case 3:
@@ -375,6 +387,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray3choice();
                     type = config.eventType3();
                     toggle = config.toggle3();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents3();
                 }
                 break;
             case 4:
@@ -385,6 +398,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray4choice();
                     type = config.eventType4();
                     toggle = config.toggle4();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents4();
                 }
                 break;
             case 5:
@@ -395,6 +409,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray5choice();
                     type = config.eventType5();
                     toggle = config.toggle5();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents5();
                 }
                 break;
             case 6:
@@ -405,6 +420,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray6choice();
                     type = config.eventType6();
                     toggle = config.toggle6();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents6();
                 }
                 break;
             case 7:
@@ -415,6 +431,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray7choice();
                     type = config.eventType7();
                     toggle = config.toggle7();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents7();
                 }
                 break;
             case 8:
@@ -425,6 +442,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray8choice();
                     type = config.eventType8();
                     toggle = config.toggle8();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents8();
                 }
                 break;
             case 9:
@@ -435,6 +453,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray9choice();
                     type = config.eventType9();
                     toggle = config.toggle9();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents9();
                 }
                 break;
             case 10:
@@ -445,6 +464,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                     prayChoice = config.pray10choice();
                     type = config.eventType10();
                     toggle = config.toggle10();
+                    ignoreNonTargetEvent = config.ignoreNonTargetEvents10();
                 }
                 break;
         }
@@ -454,7 +474,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
             return;
         }
 
-        populatePrayersList(ids, delays, prayChoice, type, toggle);
+        populatePrayersList(ids, delays, prayChoice, type, toggle, ignoreNonTargetEvent);
     }
 
     private List<Integer> intListFromString(String stringList)
@@ -495,7 +515,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         return ints;
     }
 
-    private void populatePrayersList(List<Integer> ids, List<Integer> delays, Prayer prayer, EventType type, boolean toggle)
+    private void populatePrayersList(List<Integer> ids, List<Integer> delays, Prayer prayer, EventType type, boolean toggle, boolean ignoreNonTargetEvent)
     {
         if (!delays.isEmpty() && delays.size() != ids.size())
         {
@@ -517,11 +537,11 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         {
             if (!delays.isEmpty())
             {
-                prayerList.add(new CustomPrayer(ids.get(i), prayer, delays.get(i), toggle));
+                prayerList.add(new CustomPrayer(ids.get(i), prayer, delays.get(i), toggle, ignoreNonTargetEvent));
             }
             else
             {
-                prayerList.add(new CustomPrayer(ids.get(i), prayer, 0, toggle));
+                prayerList.add(new CustomPrayer(ids.get(i), prayer, 0, toggle, ignoreNonTargetEvent));
             }
         }
 
@@ -540,11 +560,14 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
         }
     }
 
-    private void eventFired(EventType type, int id)
+    private void eventFired(EventType type, int id, boolean isTargetingPlayer)
     {
         if (config.debugMode() && isEventDebugged(type))
         {
-            MessageUtils.addMessage(client, "Event Type: " + type.name() + ",  ID: " + id + ", Tick: " + client.getTickCount());
+            if ((config.hideNonTargetEventsDebug() && isTargetingPlayer) || !config.hideNonTargetEventsDebug())
+            {
+                MessageUtils.addMessage(client, "Event Type: " + type.name() + ",  ID: " + id + ", Tick: " + client.getTickCount() + ", Targeting player: " + isTargetingPlayer);
+            }
         }
 
         List<CustomPrayer> prayers = eventMap.get(type);
@@ -553,10 +576,18 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
             return;
         }
 
-        for (CustomPrayer prayer : prayers)
+        for (final CustomPrayer prayer : prayers)
         {
             if (prayer.getActivationId() == id)
             {
+                if (prayer.isIgnoreNonTargetEvent())
+                {
+                    if (!isTargetingPlayer)
+                    {
+                        continue;
+                    }
+                }
+
                 scheduledPrayers.add(new ScheduledPrayer(prayer.getPrayerToActivate(), client.getTickCount() + prayer.getTickDelay(), prayer.isToggle()));
             }
         }
@@ -648,16 +679,16 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
 
         ExportableConfig exportableConfig = new ExportableConfig();
 
-        exportableConfig.setPrayer(0, config.activated1(), config.pray1Ids(), config.pray1delays(), config.pray1choice(), config.eventType1(), config.toggle1());
-        exportableConfig.setPrayer(1, config.activated2(), config.pray2Ids(), config.pray2delays(), config.pray2choice(), config.eventType2(), config.toggle2());
-        exportableConfig.setPrayer(2, config.activated3(), config.pray3Ids(), config.pray3delays(), config.pray3choice(), config.eventType3(), config.toggle3());
-        exportableConfig.setPrayer(3, config.activated4(), config.pray4Ids(), config.pray4delays(), config.pray4choice(), config.eventType4(), config.toggle4());
-        exportableConfig.setPrayer(4, config.activated5(), config.pray5Ids(), config.pray5delays(), config.pray5choice(), config.eventType5(), config.toggle5());
-        exportableConfig.setPrayer(5, config.activated6(), config.pray6Ids(), config.pray6delays(), config.pray6choice(), config.eventType6(), config.toggle6());
-        exportableConfig.setPrayer(6, config.activated7(), config.pray7Ids(), config.pray7delays(), config.pray7choice(), config.eventType7(), config.toggle7());
-        exportableConfig.setPrayer(7, config.activated8(), config.pray8Ids(), config.pray8delays(), config.pray8choice(), config.eventType8(), config.toggle8());
-        exportableConfig.setPrayer(8, config.activated9(), config.pray9Ids(), config.pray9delays(), config.pray9choice(), config.eventType9(), config.toggle9());
-        exportableConfig.setPrayer(9, config.activated10(), config.pray10Ids(), config.pray10delays(), config.pray10choice(), config.eventType10(), config.toggle10());
+        exportableConfig.setPrayer(0, config.activated1(), config.pray1Ids(), config.pray1delays(), config.pray1choice(), config.eventType1(), config.toggle1(), config.ignoreNonTargetEvents1());
+        exportableConfig.setPrayer(1, config.activated2(), config.pray2Ids(), config.pray2delays(), config.pray2choice(), config.eventType2(), config.toggle2(), config.ignoreNonTargetEvents2());
+        exportableConfig.setPrayer(2, config.activated3(), config.pray3Ids(), config.pray3delays(), config.pray3choice(), config.eventType3(), config.toggle3(), config.ignoreNonTargetEvents3());
+        exportableConfig.setPrayer(3, config.activated4(), config.pray4Ids(), config.pray4delays(), config.pray4choice(), config.eventType4(), config.toggle4(), config.ignoreNonTargetEvents4());
+        exportableConfig.setPrayer(4, config.activated5(), config.pray5Ids(), config.pray5delays(), config.pray5choice(), config.eventType5(), config.toggle5(), config.ignoreNonTargetEvents5());
+        exportableConfig.setPrayer(5, config.activated6(), config.pray6Ids(), config.pray6delays(), config.pray6choice(), config.eventType6(), config.toggle6(), config.ignoreNonTargetEvents6());
+        exportableConfig.setPrayer(6, config.activated7(), config.pray7Ids(), config.pray7delays(), config.pray7choice(), config.eventType7(), config.toggle7(), config.ignoreNonTargetEvents7());
+        exportableConfig.setPrayer(7, config.activated8(), config.pray8Ids(), config.pray8delays(), config.pray8choice(), config.eventType8(), config.toggle8(), config.ignoreNonTargetEvents8());
+        exportableConfig.setPrayer(8, config.activated9(), config.pray9Ids(), config.pray9delays(), config.pray9choice(), config.eventType9(), config.toggle9(), config.ignoreNonTargetEvents9());
+        exportableConfig.setPrayer(9, config.activated10(), config.pray10Ids(), config.pray10delays(), config.pray10choice(), config.eventType10(), config.toggle10(), config.ignoreNonTargetEvents10());
 
         if (!PRESET_DIR.exists())
         {
@@ -706,6 +737,7 @@ public class LucidCustomPrayersPlugin extends Plugin implements KeyListener
                 configManager.setConfiguration("lucid-custom-prayers", "pray" + (i + 1) + "choice", loadedConfig.getPrayChoice()[i]);
                 configManager.setConfiguration("lucid-custom-prayers", "eventType" + (i + 1), loadedConfig.getEventType()[i]);
                 configManager.setConfiguration("lucid-custom-prayers", "toggle" + (i + 1), loadedConfig.getToggle()[i]);
+                configManager.setConfiguration("lucid-custom-prayers", "ignoreNonTargetEvents" + (i + 1), loadedConfig.getIgnoreNonTargetEvents()[i]);
             }
 
             JOptionPane.showMessageDialog(null, "Successfully loaded preset '" + presetNameFormatted + "'", "Preset Load Success", INFORMATION_MESSAGE);
