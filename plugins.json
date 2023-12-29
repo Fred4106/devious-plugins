@@ -97,9 +97,9 @@
   "id": "lucidmuspah-plugin",
   "releases": [{
     "date": "2023-12-29",
-    "sha512sum": "DD295D370EFDED8640FC3C85D6ACB994B5224E45ED33BC19B36E15C1A338192A61FC5A7B2B4573BBB100BE8BB9BAB8616C4651A57DF25D03F570C885C6D7E253",
-    "version": "1.0.2",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-muspah-1.0.2.jar?raw=true",
+    "sha512sum": "7C882C3EC350A89BA7B0D990A1B4A14BED6C38304B6D48DCA60C11E99FD6772DDC6410B27A928B3877C0791368405D8FE3BA65148E9E74D26766493B14D04099",
+    "version": "1.0.3",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-muspah-1.0.3.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

@@ -123,6 +123,14 @@ public class LucidMuspahPlugin extends Plugin
             }
         }
 
+        if (event.getNpc().getId() == NpcID.PHANTOM_MUSPAH_12079)
+        {
+            if (config.autoPray())
+            {
+                scheduledPrayers.add(new ScheduledPrayer(Prayer.PROTECT_FROM_MISSILES, client.getTickCount() + 2));
+            }
+        }
+
         if (event.getNpc().getId() == NpcID.PHANTOM_MUSPAH)
         {
             if (config.autoPray())
