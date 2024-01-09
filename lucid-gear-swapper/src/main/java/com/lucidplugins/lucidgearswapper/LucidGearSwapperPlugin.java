@@ -21,6 +21,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.unethicalite.api.items.Inventory;
 import org.pf4j.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -369,36 +367,41 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
     private void swap(int swapId, boolean swapFirstHalf)
     {
         List<String> itemList = parseList(configs[swapId]);
-        List<SlottedItem> items = InventoryUtils.getAll(item -> itemList.contains(client.getItemDefinition(item.getItem().getId()).getName()));/*Inventory.getAll(Utils.itemConfigList(configLists[swapId], true, false))*/;
+        List<Item> items = new ArrayList<>();
+        for (String item : itemList)
+        {
+            Optional<Item> slottedItem = Inventory.getAll(it -> it.getName().toLowerCase().contains(item)).stream().findFirst();
+            slottedItem.ifPresent(items::add);
+        }
 
-        if (items != null)
+        if (!items.isEmpty())
         {
             if (swapFirstHalf)
             {
                 for (int i = 0; i < items.size() / 2; i++)
                 {
-                    SlottedItem item = items.get(i);
-                    if (InventoryUtils.itemHasAction(client, item.getItem().getId(), "Wield"))
+                    Item item = items.get(i);
+                    if (InventoryUtils.itemHasAction(client, item.getId(), "Wield"))
                     {
-                        InventoryUtils.itemInteract(item.getItem().getId(), "Wield");
+                        InventoryUtils.itemInteract(item.getId(), "Wield");
                     }
-                    else if (InventoryUtils.itemHasAction(client, item.getItem().getId(), "Wear"))
+                    else if (InventoryUtils.itemHasAction(client, item.getId(), "Wear"))
                     {
-                        InventoryUtils.itemInteract(item.getItem().getId(), "Wear");
+                        InventoryUtils.itemInteract(item.getId(), "Wear");
                     }
                 }
             }
             else
             {
-                for (SlottedItem item : items)
+                for (Item item : items)
                 {
-                    if (InventoryUtils.itemHasAction(client, item.getItem().getId(), "Wield"))
+                    if (InventoryUtils.itemHasAction(client, item.getId(), "Wield"))
                     {
-                        InventoryUtils.itemInteract(item.getItem().getId(), "Wield");
+                        InventoryUtils.itemInteract(item.getId(), "Wield");
                     }
-                    else if (InventoryUtils.itemHasAction(client, item.getItem().getId(), "Wear"))
+                    else if (InventoryUtils.itemHasAction(client, item.getId(), "Wear"))
                     {
-                        InventoryUtils.itemInteract(item.getItem().getId(), "Wear");
+                        InventoryUtils.itemInteract(item.getId(), "Wear");
                     }
                 }
             }

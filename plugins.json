@@ -5,7 +5,7 @@
   "description": "All-in-one plugin for the Gauntlet. Original plugin by xKylee.",
   "id": "gauntletextended-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "96ABDB5CB1038C1DBEED54A1118D69BCFB028865C243796395FE7B7EF5EE08FD7E9F5BB69A4CD59FA9459C35F13D69DCA144A52B65AB85BA89AE55007BAD1C1F",
     "version": "6.2.0",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/gauntlet-extended-6.2.0.jar?raw=true",
@@ -18,7 +18,7 @@
   "description": "A plugin that will reload your cannon so you don't have to",
   "id": "lucidcannonreloader-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "F23AD789EEECA10320D6EFAD268EF3146310F10BF8E2CAFA726EB2E111BCB1E33998AE9A1E92E50565598DB56B4F2BC3306347097D8C2DE7E5C4F510313353DA",
     "version": "1.0.5",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-cannon-reloader-1.0.5.jar?raw=true",
@@ -31,7 +31,7 @@
   "description": "Set up auto prayers based on various event IDs",
   "id": "lucidcustomprayers-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "1E6B6A74AA5B6A7468D767813F9B915DDEF8B76B074136AFAC0F99A76109193692F5E7E1DD0AFEA9FB0E5EC7E1EBF2D35C09BD4979113C44BF060117561FB28F",
     "version": "2.1.4",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-custom-prayers-2.1.4.jar?raw=true",
@@ -44,7 +44,7 @@
   "description": "Disabled rendering graphics on the client while plugin is enabled.",
   "id": "luciddisablerendering-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "DB29304A4A62D6CAFF8F6A1FB5DC26978DB34C915D9F74988CF934E368A23B6858A80F9CA62B685DF3D3C240B3138DCFC5EE756E28163D38676ACE57F0D4667C",
     "version": "1.0.1",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-disable-rendering-1.0.1.jar?raw=true",
@@ -57,7 +57,7 @@
   "description": "A plugin that sends various messages to a specified Discord webhook URL",
   "id": "luciddiscordlogger-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "09FF263AAE7091A7CA0DAAB238C259AC068BCCB6D2384587D573D85194F0A0B9891C924E6EE0068AD9FC8F017D8FF444EAC9F36E055B589436B24DD2ABB98108",
     "version": "1.0.2",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-discord-logger-1.0.2.jar?raw=true",
@@ -70,7 +70,7 @@
   "description": "An example plugin that can be copied to use as a plugin skeleton. Does nothing functionally.",
   "id": "lucidexample-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "C2C13C73C6339309C1666CC48CF02885FFC187981EA32D60B7F021B25FD3C3002F134D2E1E88A884C7B7B70D6EE4269BAD49E5700191DD457F354D8599B30ECB",
     "version": "1.0.1",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-example-plugin-1.0.1.jar?raw=true",
@@ -83,10 +83,10 @@
   "description": "Set-up up to 6 custom gear swaps with customizable hotkeys or trigger them via weapon equip",
   "id": "lucidgearswapper-plugin",
   "releases": [{
-    "date": "2023-12-29",
-    "sha512sum": "E583F2063ABFBC8D52AA5F449020500C24221954C8DECF71877895261F0970D287F0A5EC2473FCC4750A7B7A11B3310176E1C378EAFF5092D158EC7B31FF50A1",
-    "version": "2.2.5",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-2.2.5.jar?raw=true",
+    "date": "2024-01-09",
+    "sha512sum": "3FCCE4600603824154C08C98DEED2D4A41EC734FC2182C0909D337FB17B3919FB5D75292487AC1950ABB5E71D9F918398D2822D695535E526F5C1E1BD36AACA3",
+    "version": "2.2.6",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-gear-swapper-2.2.6.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {
@@ -96,7 +96,7 @@
   "description": "Helper plugin for the Phantom Muspah (still in development)",
   "id": "lucidmuspah-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "7C882C3EC350A89BA7B0D990A1B4A14BED6C38304B6D48DCA60C11E99FD6772DDC6410B27A928B3877C0791368405D8FE3BA65148E9E74D26766493B14D04099",
     "version": "1.0.3",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-muspah-1.0.3.jar?raw=true",
@@ -109,7 +109,7 @@
   "description": "A plugin to help you gather spices for stews and not kill your cat in the process",
   "id": "lucidspices-plugin",
   "releases": [{
-    "date": "2023-12-29",
+    "date": "2024-01-09",
     "sha512sum": "435C6B4BAF3D3C84C6026774F779A46E792F0A3BAC74A299C3F199C9D22DED51656DCA1C3D22AF7FDC4571BB2E80709220DE5F98390D348F40B205BEA21DB726",
     "version": "1.0.2",
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-spices-1.0.2.jar?raw=true",
