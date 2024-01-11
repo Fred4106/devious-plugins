@@ -1,7 +1,7 @@
-version = "2.2.6"
+version = "2.2.7"
 
 project.extra["PluginName"] = "Lucid Gear Swapper"
-project.extra["PluginDescription"] = "Set-up up to 6 custom gear swaps with customizable hotkeys or trigger them via weapon equip"
+project.extra["PluginDescription"] = "Set-up up an unlimited amount of custom gear swaps with customizable hotkeys or trigger them via weapon equip"
 
 tasks {
     jar {

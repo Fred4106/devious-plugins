@@ -43,7 +43,7 @@ import static net.runelite.client.RuneLite.RUNELITE_DIR;
 @Extension
 @PluginDescriptor(
         name = "Lucid Gear Swapper",
-        description = "Set-up up to 6 custom gear swaps with customizable hotkeys or trigger them via weapon equip",
+        description = "Set-up up an unlimited amount of custom gear swaps with customizable hotkeys or trigger them via weapon equip",
         enabledByDefault = false,
         tags = {"gear", "swap", "swapper", "hotkey"}
 )
@@ -370,8 +370,11 @@ public class LucidGearSwapperPlugin extends Plugin implements KeyListener
         List<Item> items = new ArrayList<>();
         for (String item : itemList)
         {
-            Optional<Item> slottedItem = Inventory.getAll(it -> it.getName().toLowerCase().contains(item)).stream().findFirst();
-            slottedItem.ifPresent(items::add);
+            Item slottedItem = Inventory.getFirst(it -> it.getName().toLowerCase().contains(item.toLowerCase()));
+            if (slottedItem != null)
+            {
+                items.add(slottedItem);
+            }
         }
 
         if (!items.isEmpty())
