@@ -11,59 +11,51 @@ public interface LucidGearSwapperConfig extends Config
     @ConfigSection(
             name = "General",
             description = "General settings",
-            position = 0,
-            keyName = "generalSection"
+            position = 0
     )
     String generalSection = "General";
 
     @ConfigSection(
             name = "Preset Loading/Saving",
             description = "Save/Load a custom preset",
-            position = 1,
-            keyName = "generalSection"
+            position = 1
     )
     String presetSection = "Preset Loading/Saving";
 
     @ConfigSection(
             name = "Custom Swap 1",
             description = "Gear Swap # 1",
-            position = 2,
-            keyName = "swap1Section"
+            position = 2
     )
     String swap1Section = "Custom Swap 1";
     @ConfigSection(
             name = "Custom Swap 2",
             description = "Gear Swap # 2",
-            position = 3,
-            keyName = "swap2Section"
+            position = 3
     )
     String swap2Section = "Custom Swap 2";
     @ConfigSection(
             name = "Custom Swap 3",
             description = "Gear Swap # 3",
-            position = 4,
-            keyName = "swap3Section"
+            position = 4
     )
     String swap3Section = "Custom Swap 3";
     @ConfigSection(
             name = "Custom Swap 4",
             description = "Gear Swap # 4",
-            position = 5,
-            keyName = "swap3Section"
+            position = 5
     )
     String swap4Section = "Custom Swap 4";
     @ConfigSection(
             name = "Custom Swap 5",
             description = "Gear Swap # 5",
-            position = 6,
-            keyName = "swap5Section"
+            position = 6
     )
     String swap5Section = "Custom Swap 5";
     @ConfigSection(
             name = "Custom Swap 6",
             description = "Gear Swap # 6",
-            position = 7,
-            keyName = "swap6Section"
+            position = 7
     )
     String swap6Section = "Custom Swap 6";
 
@@ -188,6 +180,30 @@ public interface LucidGearSwapperConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Activate spec?",
+            description = "Activates special attack on first tick of swap",
+            position = 4,
+            keyName = "activateSpec1",
+            section = swap1Section
+    )
+    default boolean activateSpec1()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Spec threshold",
+            description = "Only activates spec if >= this %",
+            position = 5,
+            keyName = "specThreshold1",
+            section = swap1Section
+    )
+    default int specThreshold1()
+    {
+        return 0;
+    }
+
     // Gear Swap 2
     @ConfigItem(
             name = "Enable Swap",
@@ -234,6 +250,30 @@ public interface LucidGearSwapperConfig extends Config
     default boolean equipFirstItem2()
     {
         return false;
+    }
+
+    @ConfigItem(
+            name = "Activate spec?",
+            description = "Activates special attack on first tick of swap",
+            position = 4,
+            keyName = "activateSpec2",
+            section = swap2Section
+    )
+    default boolean activateSpec2()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Spec threshold",
+            description = "Only activates spec if >= this %",
+            position = 5,
+            keyName = "specThreshold2",
+            section = swap2Section
+    )
+    default int specThreshold2()
+    {
+        return 0;
     }
 
     // Gear Swap 3
@@ -284,6 +324,30 @@ public interface LucidGearSwapperConfig extends Config
         return false;
     }
 
+    @ConfigItem(
+            name = "Activate spec?",
+            description = "Activates special attack on first tick of swap",
+            position = 4,
+            keyName = "activateSpec3",
+            section = swap3Section
+    )
+    default boolean activateSpec3()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Spec threshold",
+            description = "Only activates spec if >= this %",
+            position = 5,
+            keyName = "specThreshold3",
+            section = swap3Section
+    )
+    default int specThreshold3()
+    {
+        return 0;
+    }
+
     // Gear Swap 4
     @ConfigItem(
             name = "Enable Swap",
@@ -330,6 +394,30 @@ public interface LucidGearSwapperConfig extends Config
     default boolean equipFirstItem4()
     {
         return false;
+    }
+
+    @ConfigItem(
+            name = "Activate spec?",
+            description = "Activates special attack on first tick of swap",
+            position = 4,
+            keyName = "activateSpec4",
+            section = swap4Section
+    )
+    default boolean activateSpec4()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Spec threshold",
+            description = "Only activates spec if >= this %",
+            position = 5,
+            keyName = "specThreshold4",
+            section = swap4Section
+    )
+    default int specThreshold4()
+    {
+        return 0;
     }
 
     // Gear Swap 5
@@ -379,6 +467,31 @@ public interface LucidGearSwapperConfig extends Config
     {
         return false;
     }
+
+    @ConfigItem(
+            name = "Activate spec?",
+            description = "Activates special attack on first tick of swap",
+            position = 4,
+            keyName = "activateSpec5",
+            section = swap5Section
+    )
+    default boolean activateSpec5()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Spec threshold",
+            description = "Only activates spec if >= this %",
+            position = 5,
+            keyName = "specThreshold5",
+            section = swap5Section
+    )
+    default int specThreshold5()
+    {
+        return 0;
+    }
+
     // Gear Swap 6
     @ConfigItem(
             name = "Enable Swap",
@@ -425,6 +538,30 @@ public interface LucidGearSwapperConfig extends Config
     default boolean equipFirstItem6()
     {
         return false;
+    }
+
+    @ConfigItem(
+            name = "Activate spec?",
+            description = "Activates special attack on first tick of swap",
+            position = 4,
+            keyName = "activateSpec6",
+            section = swap6Section
+    )
+    default boolean activateSpec6()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Spec threshold",
+            description = "Only activates spec if >= this %",
+            position = 5,
+            keyName = "specThreshold6",
+            section = swap6Section
+    )
+    default int specThreshold6()
+    {
+        return 0;
     }
 
     // Enums

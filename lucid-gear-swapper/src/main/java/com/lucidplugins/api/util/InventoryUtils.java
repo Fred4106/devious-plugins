@@ -64,4 +64,8 @@ public class InventoryUtils
         }
     }
 
+    public static Item getFirstItem(String name)
+    {
+        return Inventory.getFirst(item -> item.getName().toLowerCase().contains(name.toLowerCase()));
+    }
 }
