@@ -92,6 +92,19 @@
 }, {
   "projectUrl": "https://discord.gg/DDY8Tr2a",
   "provider": "lucid-soft",
+  "name": "Lucid Hotkeys",
+  "description": "Setup hotkeys that can do a variety of different actions.",
+  "id": "lucidhotkeys-plugin",
+  "releases": [{
+    "date": "2024-01-13",
+    "sha512sum": "9D52345388B423001E93AABE3BAD72CAF22BADE74A9183F0D9FEF258DB2EE48FCEAE36B94C863AB2D14A4C30674C0DC13AC97FAFEA336B726D89EF09E6B47AB2",
+    "version": "1.0.0",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-hotkeys-1.0.0.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://discord.gg/DDY8Tr2a",
+  "provider": "lucid-soft",
   "name": "Lucid Muspah",
   "description": "Helper plugin for the Phantom Muspah (still in development)",
   "id": "lucidmuspah-plugin",
