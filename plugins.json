@@ -97,9 +97,9 @@
   "id": "lucidhotkeys-plugin",
   "releases": [{
     "date": "2024-01-14",
-    "sha512sum": "B7E0E0A3D8BB596E913AA20C692E226E7FAF75BCEB71C69138A1FC63F412F1929D450A4B5A7EF0E2FB94DA0A951D7412B473D4BB296FFE87021C2C1247ADCDD6",
-    "version": "1.0.3",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-hotkeys-1.0.3.jar?raw=true",
+    "sha512sum": "9F0CF31D857B4496F03D05B4C0727F6810A0929D188C486E4791D3D102A935DADD56C2D8E1C389CA1585F5F813FD0AC7C5D643FDE6474877BF32FC1500DC7A6E",
+    "version": "1.0.4",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-hotkeys-1.0.4.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

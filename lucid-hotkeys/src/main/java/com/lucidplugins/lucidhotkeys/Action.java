@@ -34,6 +34,9 @@ public enum Action
 
     ACTIVATE_PRAYER(26, 2),
     TOGGLE_PRAYER(27, 2),
+    TOGGLE_SPEC(28, 1),
+    WALK_SCENE_LOCATION(29, 3),
+
     ;
 
     int id;

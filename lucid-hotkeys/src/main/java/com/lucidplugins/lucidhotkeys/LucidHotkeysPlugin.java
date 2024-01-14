@@ -1064,6 +1064,28 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return param1Int > param2Int;
                 default:
                 return false;
+            case LOCAL_PLAYER_SCENE_LOCATION_EQUALS:
+                return client.getLocalPlayer().getLocalLocation().getSceneX() == param1Int &&
+                        client.getLocalPlayer().getLocalLocation().getSceneY() == param2Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_NOT_EQUALS:
+                return client.getLocalPlayer().getLocalLocation().getSceneX() != param1Int ||
+                        client.getLocalPlayer().getLocalLocation().getSceneY() != param2Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_X_EQUALS:
+                return client.getLocalPlayer().getLocalLocation().getSceneX() == param1Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_X_NOT_EQUALS:
+                return client.getLocalPlayer().getLocalLocation().getSceneX() != param1Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_X_GREATER_THAN:
+                return client.getLocalPlayer().getLocalLocation().getSceneX() > param1Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_X_LESS_THAN:
+                return client.getLocalPlayer().getLocalLocation().getSceneX() < param1Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_Y_EQUALS:
+                return client.getLocalPlayer().getLocalLocation().getSceneY() == param1Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_Y_NOT_EQUALS:
+                return client.getLocalPlayer().getLocalLocation().getSceneY() != param1Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_Y_GREATER_THAN:
+                return client.getLocalPlayer().getLocalLocation().getSceneY() > param1Int;
+            case LOCAL_PLAYER_SCENE_LOCATION_Y_LESS_THAN:
+                return client.getLocalPlayer().getLocalLocation().getSceneY() < param1Int;
         }
     }
 
@@ -1307,6 +1329,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 {
                     NpcUtils.interact(toTargetNpc2, actionParams[1]);
                 }
+                break;
             case ACTIVATE_PRAYER:
                 Prayer pToActivate = CombatUtils.prayerForName(actionParams[1]);
                 if (pToActivate != null)
@@ -1320,6 +1343,13 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 {
                     CombatUtils.togglePrayer(client, pToToggle);
                 }
+                break;
+            case TOGGLE_SPEC:
+                CombatUtils.toggleSpec();
+                break;
+            case WALK_SCENE_LOCATION:
+                LocalPoint lp = LocalPoint.fromScene(param1Int, param2Int);
+                InteractionUtils.walk(WorldPoint.fromLocal(client, lp));
                 break;
         }
     }
@@ -1414,6 +1444,8 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 "lastPlayerAnimationId",
                 "lpWorldX",
                 "lpWorldY",
+                "lpSceneX",
+                "lpSceneY",
                 "tickCount",
                 "metronomeCount",
                 "tickDelay",
@@ -1452,6 +1484,10 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return String.valueOf(client.getLocalPlayer().getWorldLocation().getX());
             case "lpWorldY":
                 return String.valueOf(client.getLocalPlayer().getWorldLocation().getY());
+            case "lpSceneX":
+                return String.valueOf(client.getLocalPlayer().getLocalLocation().getSceneX());
+            case "lpSceneY":
+                return String.valueOf(client.getLocalPlayer().getLocalLocation().getSceneY());
             case "tickCount":
                 return String.valueOf(client.getTickCount());
             case "metronomeCount":
