@@ -425,6 +425,13 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             tickDelay--;
         }
 
+        if (client.getLocalPlayer().getAnimation() != -1)
+        {
+            lastPlayerAnimationTick = client.getTickCount();
+            lastPlayerAnimationId = client.getLocalPlayer().getAnimation();
+            playerAnimationTimes.put(client.getLocalPlayer().getAnimation(), client.getTickCount());
+        }
+
         if (tickMetronomeCount > 0)
         {
             tickMetronomeCount--;
@@ -478,15 +485,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
     @Subscribe
     private void onAnimationChanged(final AnimationChanged event)
     {
-        if (event.getActor() == client.getLocalPlayer())
-        {
-            if (client.getLocalPlayer().getAnimation() != -1)
-            {
-                lastPlayerAnimationTick = client.getTickCount();
-                lastPlayerAnimationId = client.getLocalPlayer().getAnimation();
-                playerAnimationTimes.put(client.getLocalPlayer().getAnimation(), client.getTickCount());
-            }
-        }
+
     }
 
     private int ticksSinceLastPlayerAnimation()
