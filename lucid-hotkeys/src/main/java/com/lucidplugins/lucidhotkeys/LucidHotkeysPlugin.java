@@ -427,9 +427,9 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
 
         if (client.getLocalPlayer().getAnimation() != -1)
         {
-            lastPlayerAnimationTick = client.getTickCount();
+            lastPlayerAnimationTick = client.getTickCount() + 1;
             lastPlayerAnimationId = client.getLocalPlayer().getAnimation();
-            playerAnimationTimes.put(client.getLocalPlayer().getAnimation(), client.getTickCount());
+            playerAnimationTimes.put(client.getLocalPlayer().getAnimation(), client.getTickCount() + 1);
         }
 
         if (tickMetronomeCount > 0)
