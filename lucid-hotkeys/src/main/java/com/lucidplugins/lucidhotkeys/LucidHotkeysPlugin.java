@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -603,10 +604,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (preconditionParams[1].contains("%"))
             {
-                String varValue = userVariables.get(preconditionParams[1].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                String varValue = getVarValue(preconditionParams[1].replaceAll("%", ""));
+                if (varValue != null)
                 {
-                    param1Int = Integer.parseInt(varValue);
+                    if (isNumeric(varValue))
+                    {
+                        param1Int = Integer.parseInt(varValue);
+                    }
+                    else
+                    {
+                        preconditionParams[1] = varValue;
+                    }
                 }
             }
             else if (isNumeric(preconditionParams[1]))
@@ -619,10 +627,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (preconditionParams[2].contains("%"))
             {
-                String varValue = userVariables.get(preconditionParams[2].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                String varValue = getVarValue(preconditionParams[2].replaceAll("%", ""));
+                if (varValue != null)
                 {
-                    param2Int = Integer.parseInt(varValue);
+                    if (isNumeric(varValue))
+                    {
+                        param2Int = Integer.parseInt(varValue);
+                    }
+                    else
+                    {
+                        preconditionParams[2] = varValue;
+                    }
                 }
             }
             else if (isNumeric(preconditionParams[2]))
@@ -635,10 +650,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (preconditionParams[3].contains("%"))
             {
-                String varValue = userVariables.get(preconditionParams[3].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                String varValue = getVarValue(preconditionParams[3].replaceAll("%", ""));
+                if (varValue != null)
                 {
-                    param3Int = Integer.parseInt(varValue);
+                    if (isNumeric(varValue))
+                    {
+                        param3Int = Integer.parseInt(varValue);
+                    }
+                    else
+                    {
+                        preconditionParams[3] = varValue;
+                    }
                 }
             }
             else if (isNumeric(preconditionParams[3]))
@@ -651,10 +673,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (preconditionParams[4].contains("%"))
             {
-                String varValue = userVariables.get(preconditionParams[4].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                String varValue = getVarValue(preconditionParams[4].replaceAll("%", ""));
+                if (varValue != null)
                 {
-                    param4Int = Integer.parseInt(varValue);
+                    if (isNumeric(varValue))
+                    {
+                        param4Int = Integer.parseInt(varValue);
+                    }
+                    else
+                    {
+                        preconditionParams[4] = varValue;
+                    }
                 }
             }
             else if (isNumeric(preconditionParams[4]))
@@ -944,12 +973,12 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case HAS_NAMED_ITEM_EQUIPPED:
                 return !EquipmentUtils.getAll(item -> {
                     String name = client.getItemDefinition(item.getItem().getId()).getName();
-                    return name != null && name.toLowerCase().contains(preconditionParams[1]);
+                    return name != null && name.toLowerCase().contains(preconditionParams[1].toLowerCase());
                 }).isEmpty();
             case DOESNT_HAVE_NAMED_ITEM_EQUIPPED:
                 return EquipmentUtils.getAll(item -> {
                     String name = client.getItemDefinition(item.getItem().getId()).getName();
-                    return name != null && name.toLowerCase().contains(preconditionParams[1]);
+                    return name != null && name.toLowerCase().contains(preconditionParams[1].toLowerCase());
                 }).isEmpty();
             case HAS_ID_ITEM_EQUIPPED:
                 final int p1Int2 = param1Int;
@@ -967,7 +996,51 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case TICK_METRONOME_VALUE_LESS_THAN:
                 return tickMetronomeCount < param1Int;
 
-            default:
+            case NAMED_NPC_TARGETING_YOU:
+                return NpcUtils.getNearest(npc -> npc.getName() != null && npc.getName().toLowerCase().contains(preconditionParams[1].toLowerCase())
+                        && npc.getInteracting() == client.getLocalPlayer()) != null;
+            case ID_NPC_TARGETING_YOU:
+                final int p1Int4 = param1Int;
+                return NpcUtils.getNearest(npc -> npc.getId() == p1Int4
+                        && npc.getInteracting() == client.getLocalPlayer()) != null;
+            case ANY_NPC_TARGETING_YOU:
+                return NpcUtils.getNearest(npc -> npc.getInteracting() == client.getLocalPlayer()) != null;
+            case TARGETING_NAMED_NPC:
+                return client.getLocalPlayer().getInteracting() != null &&
+                        client.getLocalPlayer().getInteracting() instanceof NPC &&
+                        ((NPC) client.getLocalPlayer().getInteracting()).getName().toLowerCase().contains(preconditionParams[1].toLowerCase());
+            case TARGETING_ANY_NPC:
+                return client.getLocalPlayer().getInteracting() != null &&
+                        client.getLocalPlayer().getInteracting() instanceof NPC;
+            case NAMED_PLAYER_TARGETING_YOU:
+                return PlayerUtils.getNearest(player -> player.getName() != null &&
+                        player.getName().toLowerCase().contains(preconditionParams[1].toLowerCase())
+                        && player.getInteracting() == client.getLocalPlayer()) != null;
+            case ANY_PLAYER_TARGETING_YOU:
+                return PlayerUtils.getNearest(player -> player.getInteracting() == client.getLocalPlayer()) != null;
+            case TARGETING_NAMED_PLAYER:
+                return client.getLocalPlayer().getInteracting() != null &&
+                        client.getLocalPlayer().getInteracting() instanceof Player &&
+                        ((Player) client.getLocalPlayer().getInteracting()).getName().toLowerCase().contains(preconditionParams[1].toLowerCase());
+            case TARGETING_ANY_PLAYER:
+                return client.getLocalPlayer().getInteracting() != null &&
+                        client.getLocalPlayer().getInteracting() instanceof Player;
+            case NAMED_NPC_NOT_TARGETING_YOU:
+                return NpcUtils.getNearest(npc -> npc.getName() != null && npc.getName().toLowerCase().contains(preconditionParams[1].toLowerCase())
+                        && npc.getInteracting() == client.getLocalPlayer()) == null;
+            case ID_NPC_NOT_TARGETING_YOU:
+                final int p1Int5 = param1Int;
+                return NpcUtils.getNearest(npc -> npc.getId() == p1Int5
+                        && npc.getInteracting() == client.getLocalPlayer()) == null;
+            case NO_NPC_TARGETING_YOU:
+                return NpcUtils.getNearest(npc -> npc.getInteracting() == client.getLocalPlayer()) == null;
+            case NAMED_PLAYER_NOT_TARGETING_YOU:
+                return PlayerUtils.getNearest(player -> player.getName() != null &&
+                        player.getName().toLowerCase().contains(preconditionParams[1].toLowerCase())
+                        && player.getInteracting() == client.getLocalPlayer()) == null;
+            case NO_PLAYER_TARGETING_YOU:
+                return PlayerUtils.getNearest(player -> player.getInteracting() == client.getLocalPlayer()) == null;
+                default:
                 return false;
         }
     }
@@ -988,10 +1061,20 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (actionParams[1].contains("%"))
             {
-                String varValue = userVariables.get(actionParams[1].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                if (action != Action.PRINT_VARIABLE)
                 {
-                    param1Int = Integer.parseInt(varValue);
+                    String varValue = getVarValue(actionParams[1].replaceAll("%", ""));
+                    if (varValue != null)
+                    {
+                        if (isNumeric(varValue))
+                        {
+                            param1Int = Integer.parseInt(varValue);
+                        }
+                        else
+                        {
+                            actionParams[1] = varValue;
+                        }
+                    }
                 }
             }
             else if (isNumeric(actionParams[1]))
@@ -1004,10 +1087,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (actionParams[2].contains("%"))
             {
-                String varValue = userVariables.get(actionParams[2].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                String varValue = getVarValue(actionParams[2].replaceAll("%", ""));
+                if (varValue != null)
                 {
-                    param2Int = Integer.parseInt(varValue);
+                    if (isNumeric(varValue))
+                    {
+                        param2Int = Integer.parseInt(varValue);
+                    }
+                    else
+                    {
+                        actionParams[2] = varValue;
+                    }
                 }
             }
             else if (isNumeric(actionParams[2]))
@@ -1020,10 +1110,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (actionParams[3].contains("%"))
             {
-                String varValue = userVariables.get(actionParams[3].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                String varValue = getVarValue(actionParams[3].replaceAll("%", ""));
+                if (varValue != null)
                 {
-                    param3Int = Integer.parseInt(varValue);
+                    if (isNumeric(varValue))
+                    {
+                        param3Int = Integer.parseInt(varValue);
+                    }
+                    else
+                    {
+                        actionParams[3] = varValue;
+                    }
                 }
             }
             else if (isNumeric(actionParams[3]))
@@ -1036,10 +1133,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (actionParams[4].contains("%"))
             {
-                String varValue = userVariables.get(actionParams[4].replaceAll("%", ""));
-                if (varValue != null && isNumeric(varValue))
+                String varValue = getVarValue(actionParams[4].replaceAll("%", ""));
+                if (varValue != null)
                 {
-                    param4Int = Integer.parseInt(varValue);
+                    if (isNumeric(varValue))
+                    {
+                        param4Int = Integer.parseInt(varValue);
+                    }
+                    else
+                    {
+                        actionParams[4] = varValue;
+                    }
                 }
             }
             else if (isNumeric(actionParams[4]))
@@ -1134,7 +1238,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 tickMetronomeCount = tickMetronomeMaxValue;
                 break;
             case ADD_VALUE_TO_VARIABLE:
-                String varVal = userVariables.get(actionParams[1]);
+                String varVal = getVarValue(actionParams[1]);
                 if (isNumeric(varVal))
                 {
                     int intVar = Integer.parseInt(varVal);
@@ -1200,48 +1304,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
 
     private void handleVariablePrinting(String variable)
     {
-        if (variable.contains("%"))
+        String userVar = variable.replaceAll("%", "");
+
+        String varValue = getVarValue(userVar);
+
+        if (varValue != null)
         {
-            String userVar = variable.replaceAll("%", "");
-
-            String varValue = userVariables.get(userVar);
-
-            if (varValue != null)
-            {
-                MessageUtils.addMessage(client, "Var " + userVar + ": " + varValue);
-            }
-            else
-            {
-                MessageUtils.addMessage(client, "Var " + userVar + " doesn't exist.");
-            }
-            return;
+            MessageUtils.addMessage(client, "Var " + userVar + ": " + varValue);
         }
-
-        switch (variable)
+        else
         {
-            case "tickcount":
-                MessageUtils.addMessage(client, "Client Tick Count: " + client.getTickCount());
-                break;
-            case "location":
-                final WorldPoint worldLocation = client.getLocalPlayer().getWorldLocation();
-                final int worldX = worldLocation.getX();
-                final int worldY = worldLocation.getY();
-                final int plane = client.getLocalPlayer().getPlane();
-
-                final LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-                final int regionId = client.getLocalPlayer().getWorldLocation().getRegionID();
-                final int localX = localLocation.getSceneX();
-                final int localY = localLocation.getSceneY();
-                MessageUtils.addMessage(client, "Location - World(" + worldX + ", " + worldY + ", " + plane + ") "
-                        + "LocalScene(" + localX + ", " + localY + ") Region: " + regionId);
-                break;
-            case "lastPlayerAnimationTick":
-                MessageUtils.addMessage(client, "Last Animation Tick: " + lastPlayerAnimationTick);
-                break;
-            case "lastPlayerAnimationId":
-                MessageUtils.addMessage(client, "Last Animation Id: " + lastPlayerAnimationId);
-                break;
-
+            MessageUtils.addMessage(client, "Var " + userVar + " doesn't exist.");
         }
     }
 
@@ -1289,5 +1362,92 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             userVariables.put(varName, varValue);
         }
     }
+
+    public String getVarValue(String varName)
+    {
+        if (isReservedVar(varName))
+        {
+            return reservedVarValue(varName);
+        }
+        else
+        {
+            String varValue = userVariables.getOrDefault(varName, "");
+            if (varValue.startsWith("*"))
+            {
+                return varValue.substring(1);
+            }
+            else
+            {
+                return varValue.replaceAll("_", " ");
+            }
+        }
+    }
+
+    private boolean isReservedVar(String varName)
+    {
+        final List<String> reservedVars = List.of(
+                "mypos",
+                "lastPlayerAnimationTick",
+                "ticksSinceLastAnimation",
+                "lastPlayerAnimationId",
+                "lpWorldX",
+                "lpWorldY",
+                "tickCount",
+                "metronomeCount",
+                "tickDelay",
+                "lastNpcNameYouTargeted",
+                "lastPlayerNameYouTargeted",
+                "lastNpcNameTargetedYou",
+                "lastPlayerNameTargetedYou"
+        );
+
+        return reservedVars.contains(varName);
+    }
+
+    public String reservedVarValue(String varName)
+    {
+        switch (varName)
+        {
+            case "mypos":
+                final WorldPoint worldLocation = client.getLocalPlayer().getWorldLocation();
+                final int worldX = worldLocation.getX();
+                final int worldY = worldLocation.getY();
+                final int plane = client.getLocalPlayer().getPlane();
+
+                final LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
+                final int regionId = client.getLocalPlayer().getWorldLocation().getRegionID();
+                final int localX = localLocation.getSceneX();
+                final int localY = localLocation.getSceneY();
+                return "Location - World(" + worldX + ", " + worldY + ", " + plane + ") "
+                        + "LocalScene(" + localX + ", " + localY + ") Region: " + regionId;
+            case "lastPlayerAnimationTick":
+                return String.valueOf(lastPlayerAnimationTick);
+            case "ticksSinceLastAnimation":
+                return String.valueOf(ticksSinceLastPlayerAnimation());
+            case "lastPlayerAnimationId":
+                return String.valueOf(lastPlayerAnimationId);
+            case "lpWorldX":
+                return String.valueOf(client.getLocalPlayer().getWorldLocation().getX());
+            case "lpWorldY":
+                return String.valueOf(client.getLocalPlayer().getWorldLocation().getY());
+            case "tickCount":
+                return String.valueOf(client.getTickCount());
+            case "metronomeCount":
+                return String.valueOf(tickMetronomeCount);
+            case "tickDelay":
+                return String.valueOf(tickDelay);
+            case "lastNpcNameYouTargeted":
+                return String.valueOf(lastNpcNameYouTargeted);
+            case "lastPlayerNameYouTargeted":
+                return String.valueOf(lastPlayerNameYouTargeted);
+            case "lastNpcNameTargetedYou":
+                return String.valueOf(lastNpcNameTargetedYou);
+            case "lastPlayerNameTargetedYou":
+                return String.valueOf(lastPlayerNameTargetedYou);
+            default:
+                return "";
+        }
+    }
+
 
 }

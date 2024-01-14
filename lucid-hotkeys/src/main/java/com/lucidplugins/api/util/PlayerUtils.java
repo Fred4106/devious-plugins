@@ -3,6 +3,8 @@ package com.lucidplugins.api.util;
 import net.runelite.api.Player;
 import net.unethicalite.api.entities.Players;
 
+import java.util.function.Predicate;
+
 public class PlayerUtils
 {
     public static void interactPlayer(String name, String action)
@@ -13,6 +15,11 @@ public class PlayerUtils
     public static Player getNearest(String name)
     {
         return Players.getNearest(player -> player.getName().contains(name));
+    }
+
+    public static Player getNearest(Predicate<Player> filter)
+    {
+        return Players.getNearest(filter);
     }
 
 }
