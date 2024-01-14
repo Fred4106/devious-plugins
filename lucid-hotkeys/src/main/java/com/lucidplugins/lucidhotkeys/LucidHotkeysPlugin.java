@@ -351,7 +351,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (!Strings.isNullOrEmpty(preconditions))
             {
-                MessageUtils.addMessage(client, "Pre-conditions length must match actions length for preset " + index + "!");
+                MessageUtils.addMessage(client, "Pre-conditions length (" + (splitPreconditions.length ) + ") must match actions length (" + splitActions.length + ") for preset " + index + "!" );
                 return;
             }
         }
@@ -603,18 +603,25 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (preconditionParams[1].contains("%"))
             {
-                String varValue = getVarValue(preconditionParams[1].replaceAll("%", ""));
-                if (varValue != null)
+                if (precondition != Precondition.VAR_VALUE_EQUALS &&
+                    precondition != Precondition.VAR_VALUE_GREATER_THAN &&
+                    precondition != Precondition.VAR_VALUE_LESS_THAN &&
+                    precondition != Precondition.VAR_VALUE_NOT_EQUAL)
                 {
-                    if (isNumeric(varValue))
+                    String varValue = getVarValue(preconditionParams[1].replaceAll("%", ""));
+                    if (varValue != null)
                     {
-                        param1Int = Integer.parseInt(varValue);
-                    }
-                    else
-                    {
-                        preconditionParams[1] = varValue;
+                        if (isNumeric(varValue))
+                        {
+                            param1Int = Integer.parseInt(varValue);
+                        }
+                        else
+                        {
+                            preconditionParams[1] = varValue;
+                        }
                     }
                 }
+
             }
             else if (isNumeric(preconditionParams[1]))
             {
@@ -1039,6 +1046,22 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                         && player.getInteracting() == client.getLocalPlayer()) == null;
             case NO_PLAYER_TARGETING_YOU:
                 return PlayerUtils.getNearest(player -> player.getInteracting() == client.getLocalPlayer()) == null;
+            case VAR_VALUE_EQUALS:
+                return getVarValue(preconditionParams[1]).equals(preconditionParams[2]);
+            case VAR_VALUE_NOT_EQUAL:
+                return !getVarValue(preconditionParams[1]).equals(preconditionParams[2]);
+            case VAR_VALUE_LESS_THAN:
+                if (!isNumeric(getVarValue(preconditionParams[1])))
+                {
+                    return false;
+                }
+                return param1Int < param2Int;
+            case VAR_VALUE_GREATER_THAN:
+                if (!isNumeric(getVarValue(preconditionParams[1])))
+                {
+                    return false;
+                }
+                return param1Int > param2Int;
                 default:
                 return false;
         }
@@ -1307,7 +1330,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
 
         String varValue = getVarValue(userVar);
 
-        if (varValue != null)
+        if (!varValue.isEmpty())
         {
             MessageUtils.addMessage(client, "Var " + userVar + ": " + varValue);
         }

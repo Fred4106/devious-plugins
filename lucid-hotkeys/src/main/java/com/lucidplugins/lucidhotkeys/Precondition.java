@@ -130,6 +130,11 @@ public enum Precondition
     NAMED_PLAYER_NOT_TARGETING_YOU(97, 2),
     NO_PLAYER_TARGETING_YOU(98, 1),
 
+    VAR_VALUE_EQUALS(99, 3),
+    VAR_VALUE_NOT_EQUAL(100, 3),
+    VAR_VALUE_LESS_THAN(101, 3),
+    VAR_VALUE_GREATER_THAN(102, 3),
+
     ;
     int id;
 
