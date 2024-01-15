@@ -11,6 +11,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -28,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,9 +86,10 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
     private Map<String, String> userVariables = new HashMap<>();
     private Map<Integer, Integer> playerAnimationTimes = new HashMap<>();
 
+    private List<Projectile> validProjectiles = new ArrayList<>();
+
     private int tickMetronomeMaxValue = 5;
     private int tickMetronomeCount = tickMetronomeMaxValue;
-    private boolean countDown = true;
 
     private String lastNpcNameYouTargeted = "";
 
@@ -433,6 +436,8 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             tickMetronomeCount = tickMetronomeMaxValue;
         }
+
+        validProjectiles.removeIf(projectile -> projectile.getRemainingCycles() <= 0);
     }
 
     @Subscribe
@@ -486,6 +491,15 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 lastPlayerAnimationId = client.getLocalPlayer().getAnimation();
                 playerAnimationTimes.put(client.getLocalPlayer().getAnimation(), client.getTickCount());
             }
+        }
+    }
+
+    @Subscribe
+    private void onProjectileMoved(final ProjectileMoved event)
+    {
+        if (!validProjectiles.contains(event.getProjectile()))
+        {
+            validProjectiles.add(event.getProjectile());
         }
     }
 
@@ -698,6 +712,18 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 param4Int = Integer.parseInt(preconditionParams[4]);
             }
         }
+
+        int hp1 = client.getBoostedSkillLevel(Skill.HITPOINTS);
+        int hp2 = client.getRealSkillLevel(Skill.HITPOINTS);
+        int playerHpPercent = hp1 * 100 / hp2;
+
+        Actor target = client.getLocalPlayer().getInteracting();
+        int ratio = target != null ? target.getHealthRatio() : -1;
+        int scale = target != null ? target.getHealthScale() : -1;
+
+        int targetHpPercent = target != null ? (int) Math.floor((double) ratio  / (double) scale * 100) : -1;
+
+        int targetAnimation = target != null ? target.getAnimation() : -2;
 
         switch (precondition)
         {
@@ -1087,6 +1113,50 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return client.getLocalPlayer().getLocalLocation().getSceneY() > param1Int;
             case LOCAL_PLAYER_SCENE_LOCATION_Y_LESS_THAN:
                 return client.getLocalPlayer().getLocalLocation().getSceneY() < param1Int;
+            case CURRENT_ANIMATION_EQUALS:
+                return client.getLocalPlayer().getAnimation() == param1Int;
+            case CURRENT_ANIMATION_NOT_EQUALS:
+                return client.getLocalPlayer().getAnimation() != param1Int;
+            case SPEC_ENERGY_EQUALS:
+                return CombatUtils.getSpecEnergy(client) == param1Int;
+            case SPEC_ENERGY_NOT_EQUALS:
+                return CombatUtils.getSpecEnergy(client) != param1Int;
+            case SPEC_ENERGY_GREATER_THAN:
+                return CombatUtils.getSpecEnergy(client) > param1Int;
+            case SPEC_ENERGY_LESS_THAN:
+                return CombatUtils.getSpecEnergy(client) < param1Int;
+            case PLAYER_HP_PERCENT_EQUALS:
+                return playerHpPercent == param1Int;
+            case PLAYER_HP_PERCENT_NOT_EQUALS:
+                return playerHpPercent != param1Int;
+            case PLAYER_HP_PERCENT_GREATER_THAN:
+                return playerHpPercent > param1Int;
+            case PLAYER_HP_PERCENT_LESS_THAN:
+                return playerHpPercent < param1Int;
+            case TARGET_HP_PERCENT_EQUALS:
+                return targetHpPercent == param1Int;
+            case TARGET_HP_PERCENT_NOT_EQUALS:
+                return targetHpPercent != param1Int;
+            case TARGET_HP_PERCENT_GREATER_THAN:
+                return targetHpPercent > param1Int;
+            case TARGET_HP_PERCENT_LESS_THAN:
+                return targetHpPercent < param1Int;
+            case TARGET_ANIMATION_EQUALS:
+                return targetAnimation == param1Int;
+            case TARGET_ANIMATION_NOT_EQUALS:
+                return targetAnimation != param1Int;
+            case IS_PROJECTILE_ID_TARGETING_PLAYER:
+                return isProjectileIdTargetingPlayer(param1Int);
+            case IS_PROJECTILE_ID_NOT_TARGETING_PLAYER:
+                return !isProjectileIdTargetingPlayer(param1Int);
+            case IS_PROJECTILE_ID_TARGETING_LOCAL_TILE:
+                return isProjectileIdTargetingTile(param1Int, param2Int, param3Int);
+            case IS_PROJECTILE_ID_NOT_TARGETING_LOCAL_TILE:
+                return !isProjectileIdTargetingTile(param1Int, param2Int, param3Int);
+            case IS_PROJECTILE_ID_TARGETING_PLAYERS_TILE:
+                return isProjectileIdTargetingTile(param1Int, client.getLocalPlayer().getLocalLocation().getSceneX(), client.getLocalPlayer().getLocalLocation().getSceneY());
+            case IS_PROJECTILE_ID_NOT_TARGETING_PLAYERS_TILE:
+                return !isProjectileIdTargetingTile(param1Int, client.getLocalPlayer().getLocalLocation().getSceneX(), client.getLocalPlayer().getLocalLocation().getSceneY());
         }
     }
 
@@ -1355,6 +1425,52 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         }
     }
 
+    private boolean isProjectileIdTargetingPlayer(int id)
+    {
+        if (validProjectiles.isEmpty())
+        {
+            return false;
+        }
+
+        for (Projectile proj : validProjectiles)
+        {
+            if (proj == null || proj.getId() != id || proj.getRemainingCycles() <= 0 || proj.getInteracting() == null)
+            {
+                continue;
+            }
+
+            if (proj.getInteracting() == client.getLocalPlayer())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isProjectileIdTargetingTile(int id, int x, int y)
+    {
+        if (validProjectiles.isEmpty())
+        {
+            return false;
+        }
+
+        for (Projectile proj : validProjectiles)
+        {
+            if (proj == null || proj.getId() != id || proj.getRemainingCycles() <= 0 || proj.getTarget() == null)
+            {
+                continue;
+            }
+
+            LocalPoint target = proj.getTarget();
+            if (target.getSceneX() == x && target.getSceneY() == y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private void handleVariablePrinting(String variable)
     {
         String userVar = variable.replaceAll("%", "");
@@ -1507,6 +1623,4 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return "";
         }
     }
-
-
 }
