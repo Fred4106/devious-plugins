@@ -82,11 +82,30 @@ public class InventoryUtils
 
     public static int count(String name)
     {
-        return Inventory.getCount(true, name);
+        List<Item> itemsToCount = Inventory.getAll(item -> item.getName().toLowerCase().contains(name.toLowerCase()));
+        int count = 0;
+        for (Item i : itemsToCount)
+        {
+            if (i != null)
+            {
+                count += i.getQuantity();
+            }
+        }
+
+        return count;
     }
 
     public static int count(int id)
     {
-        return Inventory.getCount(true, id);
+        List<Item> itemsToCount = Inventory.getAll(item -> item.getId() == id);
+        int count = 0;
+        for (Item i : itemsToCount)
+        {
+            if (i != null)
+            {
+                count += i.getQuantity();
+            }
+        }
+        return count;
     }
 }

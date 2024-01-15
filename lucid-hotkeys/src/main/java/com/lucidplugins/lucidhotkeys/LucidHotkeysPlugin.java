@@ -763,7 +763,14 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return InventoryUtils.count(param1Int) < param2Int;
             case INVENTORY_ID_COUNT_LESS_THAN_EQUAL_TO:
                 return InventoryUtils.count(param1Int) <= param2Int;
-
+            case INVENTORY_NAMED_CONTAINS:
+                return InventoryUtils.count(preconditionParams[1]) > 0;
+            case INVENTORY_NAMED_NOT_CONTAINS:
+                return InventoryUtils.count(preconditionParams[1]) == 0;
+            case INVENTORY_ID_CONTAINS:
+                return InventoryUtils.count(param1Int) > 0;
+            case INVENTORY_ID_NOT_CONTAINS:
+                return InventoryUtils.count(param1Int) == 0;
             case BANK_OPEN:
                 return BankUtils.isOpen();
             case BANK_NOT_OPEN:
