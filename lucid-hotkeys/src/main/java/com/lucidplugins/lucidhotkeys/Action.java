@@ -37,6 +37,7 @@ public enum Action
     TOGGLE_SPEC(28, 1),
     WALK_SCENE_LOCATION(29, 3),
 
+    INTERACT_INVENTORY_SLOT(30, 3),
     ;
 
     int id;

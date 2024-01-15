@@ -1176,7 +1176,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (actionParams[1].contains("%"))
             {
-                if (action != Action.PRINT_VARIABLE)
+                if (action != Action.PRINT_VARIABLE && action != Action.ADD_VALUE_TO_VARIABLE)
                 {
                     String varValue = getVarValue(actionParams[1].replaceAll("%", ""));
                     if (varValue != null)
@@ -1357,8 +1357,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 if (isNumeric(varVal))
                 {
                     int intVar = Integer.parseInt(varVal);
-                    int valueToAdd = Integer.parseInt(actionParams[2]);
-                    intVar += valueToAdd;
+                    intVar += param2Int;
                     userVariables.put(actionParams[1], String.valueOf(intVar));
                 }
                 break;
@@ -1421,6 +1420,9 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case WALK_SCENE_LOCATION:
                 LocalPoint lp = LocalPoint.fromScene(param1Int, param2Int);
                 InteractionUtils.walk(WorldPoint.fromLocal(client, lp));
+                break;
+            case INTERACT_INVENTORY_SLOT:
+                InventoryUtils.interactSlot(param1Int, actionParams[2]);
                 break;
         }
     }

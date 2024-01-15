@@ -64,6 +64,17 @@ public class InventoryUtils
         }
     }
 
+    public static void interactSlot(int slot, String action)
+    {
+        Item inSlot = Inventory.getItem(slot);
+
+        if (inSlot != null)
+        {
+            inSlot.interact(action);
+        }
+    }
+
+
     public static Item getFirstItem(String name)
     {
         return Inventory.getFirst(item -> item.getName().toLowerCase().contains(name.toLowerCase()));
