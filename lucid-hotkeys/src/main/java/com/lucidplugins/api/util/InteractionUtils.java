@@ -4,6 +4,7 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.unethicalite.api.entities.TileItems;
 import net.unethicalite.api.movement.Movement;
+import net.unethicalite.client.Static;
 
 public class InteractionUtils
 {
@@ -40,14 +41,48 @@ public class InteractionUtils
         Movement.walk(worldPoint);
     }
 
+    public static boolean tileItemNameExistsWithinDistance(String name, int distance)
+    {
+        TileItem item = TileItems.getNearest(tileItem -> tileItem.getName().toLowerCase().contains(name.toLowerCase()));
+
+        if (item != null && distanceTo2DHypotenuse(item.getWorldLocation(), Static.getClient().getLocalPlayer().getWorldLocation()) <= distance)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean tileItemIdExistsWithinDistance(int itemId, int distance)
+    {
+        TileItem item = TileItems.getNearest(itemId);
+
+        if (item != null && distanceTo2DHypotenuse(item.getWorldLocation(), Static.getClient().getLocalPlayer().getWorldLocation()) <= distance)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public static void interactWithTileItem(int itemId, String action)
     {
-        TileItems.getNearest(itemId).interact(action);
+        TileItem item = TileItems.getNearest(itemId);
+
+        if (item != null)
+        {
+            item.interact(action);
+        }
     }
 
     public static void interactWithTileItem(String name, String action)
     {
-        TileItems.getNearest(tileItem -> tileItem.getName().toLowerCase().contains(name.toLowerCase())).interact(action);
+        TileItem item = TileItems.getNearest(tileItem -> tileItem.getName().toLowerCase().contains(name.toLowerCase()));
+
+        if (item != null)
+        {
+            item.interact(action);
+        }
     }
 
     public static float distanceTo2DHypotenuse(WorldPoint main, WorldPoint other)

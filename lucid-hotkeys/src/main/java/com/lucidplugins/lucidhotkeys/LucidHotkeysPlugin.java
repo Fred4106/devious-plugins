@@ -1154,6 +1154,14 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return isProjectileIdTargetingTile(param1Int, client.getLocalPlayer().getLocalLocation().getSceneX(), client.getLocalPlayer().getLocalLocation().getSceneY());
             case IS_PROJECTILE_ID_NOT_TARGETING_PLAYERS_TILE:
                 return !isProjectileIdTargetingTile(param1Int, client.getLocalPlayer().getLocalLocation().getSceneX(), client.getLocalPlayer().getLocalLocation().getSceneY());
+            case ID_TILE_ITEM_EXISTS_WITHIN_DISTANCE:
+                return InteractionUtils.tileItemIdExistsWithinDistance(param1Int, param2Int);
+            case NAMED_TILE_ITEM_EXISTS_WITHIN_DISTANCE:
+                return InteractionUtils.tileItemNameExistsWithinDistance(preconditionParams[1], param2Int);
+            case ID_TILE_ITEM_NOT_EXISTS_WITHIN_DISTANCE:
+                return !InteractionUtils.tileItemIdExistsWithinDistance(param1Int, param2Int);
+            case NAMED_TILE_ITEM_NOT_EXISTS_WITHIN_DISTANCE:
+                return !InteractionUtils.tileItemNameExistsWithinDistance(preconditionParams[1], param2Int);
         }
     }
 
