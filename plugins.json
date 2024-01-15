@@ -58,9 +58,9 @@
   "id": "luciddiscordlogger-plugin",
   "releases": [{
     "date": "2024-01-14",
-    "sha512sum": "09FF263AAE7091A7CA0DAAB238C259AC068BCCB6D2384587D573D85194F0A0B9891C924E6EE0068AD9FC8F017D8FF444EAC9F36E055B589436B24DD2ABB98108",
-    "version": "1.0.2",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-discord-logger-1.0.2.jar?raw=true",
+    "sha512sum": "500B56475810D65174B70AF0A0C0BF1BCCA4DB2575FFC978C0211F2A1C0A21CB5763E0B5B356A172F259F2CCF74F1991326E760390D12D55A2491626D83A8A47",
+    "version": "1.0.3",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-discord-logger-1.0.3.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

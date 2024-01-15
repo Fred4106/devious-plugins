@@ -116,6 +116,16 @@ public class LucidDiscordLoggerPlugin extends Plugin
             messageBuilder.append(currentTimestamp).append(" ");
         }
 
+        if (messageType == ChatMessageType.PRIVATECHAT)
+        {
+            messageBuilder.append("From ");
+        }
+
+        if (messageType == ChatMessageType.PRIVATECHATOUT)
+        {
+            messageBuilder.append("To ");
+        }
+
         if (!Strings.isNullOrEmpty(clanName))
         {
             messageBuilder.append("**[").append(clanName).append("]** ");

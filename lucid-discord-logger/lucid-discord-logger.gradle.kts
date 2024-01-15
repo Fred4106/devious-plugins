@@ -1,4 +1,4 @@
-version = "1.0.2"
+version = "1.0.3"
 
 project.extra["PluginName"] = "Lucid Discord Logger"
 project.extra["PluginDescription"] = "A plugin that sends various messages to a specified Discord webhook URL"
