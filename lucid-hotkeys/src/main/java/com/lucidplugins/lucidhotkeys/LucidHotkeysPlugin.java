@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Provides;
 import com.lucidplugins.api.util.*;
+import com.lucidplugins.lucidhotkeys.overlay.TileMarkersOverlay;
+import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -19,6 +21,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import org.pf4j.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +66,12 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
     @Inject
     private ClientThread clientThread;
 
+    @Inject
+    private TileMarkersOverlay tileMarkersOverlay;
+
+    @Inject
+    private OverlayManager overlayManager;
+
     private Logger log = LoggerFactory.getLogger(getName());
 
     public static final String GROUP_NAME = "lucid-hotkeys";
@@ -83,10 +92,25 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
 
     private boolean lastActionSucceeded = false;
 
+    private List<String> playerNamesTracked = new ArrayList<>();
+    private List<String> npcNamesTracked = new ArrayList<>();
+
+    @Getter
+    private List<Player> playersTracked = new ArrayList<>();
+
+    @Getter
+    private List<NPC> npcsTracked = new ArrayList<>();
+
     private Map<String, String> userVariables = new HashMap<>();
     private Map<Integer, Integer> playerAnimationTimes = new HashMap<>();
 
     private List<Projectile> validProjectiles = new ArrayList<>();
+
+    @Getter
+    private Map<WorldPoint, String> worldPointTileMarkers = new HashMap<>();
+
+    @Getter
+    private Map<Point, String> localPointTileMarkers = new HashMap<>();
 
     private int tickMetronomeMaxValue = 5;
     private int tickMetronomeCount = tickMetronomeMaxValue;
@@ -123,6 +147,11 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         keyManager.registerKeyListener(this);
 
         initUserVariables();
+
+        if (!overlayManager.anyMatch(p -> p == tileMarkersOverlay))
+        {
+            overlayManager.add(tileMarkersOverlay);
+        }
     }
 
     @Override
@@ -131,6 +160,11 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         log.info(getName() + " Stopped");
 
         keyManager.unregisterKeyListener(this);
+
+        if (overlayManager.anyMatch(p -> p == tileMarkersOverlay))
+        {
+            overlayManager.remove(tileMarkersOverlay);
+        }
     }
 
     private void loadPreset()
@@ -435,6 +469,41 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         else if (tickMetronomeCount == 0)
         {
             tickMetronomeCount = tickMetronomeMaxValue;
+        }
+
+        if (playersTracked != null)
+        {
+            playersTracked.clear();
+        }
+
+        if (npcsTracked != null)
+        {
+            npcsTracked.clear();
+        }
+
+        if (playerNamesTracked.size() > 0)
+        {
+            for (String s : playerNamesTracked)
+            {
+                Player p = PlayerUtils.getNearest(s);
+                if (p != null)
+                {
+                    playersTracked.add(p);
+                }
+
+            }
+        }
+
+        if (npcNamesTracked.size() > 0)
+        {
+            for (String s : npcNamesTracked)
+            {
+                List<NPC> tracked = NpcUtils.getAll(npc -> npc.getName().toLowerCase().contains(s.toLowerCase()));
+                if (tracked != null && !tracked.isEmpty())
+                {
+                    npcsTracked.addAll(tracked);
+                }
+            }
         }
 
         validProjectiles.removeIf(projectile -> projectile.getRemainingCycles() <= 0);
@@ -1429,6 +1498,48 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case INTERACT_INVENTORY_SLOT:
                 InventoryUtils.interactSlot(param1Int, actionParams[2]);
                 break;
+            case ADD_TILE_MARKER_WORLD_POINT:
+                addWorldPointTileMarker(param1Int, param2Int, "");
+                break;
+            case ADD_TILE_MARKER_WORLD_POINT_WITH_TEXT:
+                addWorldPointTileMarker(param1Int, param2Int, actionParams[3]);
+                break;
+            case REMOVE_TILE_MARKER_WORLD_POINT:
+                removeWorldPointTileMarker(param1Int, param2Int);
+                break;
+            case ADD_TILE_MARKER_LOCAL_POINT:
+                addLocalPointTileMarker(param1Int, param2Int, "");
+                break;
+            case ADD_TILE_MARKER_LOCAL_POINT_WITH_TEXT:
+                addLocalPointTileMarker(param1Int, param2Int, actionParams[3]);
+                break;
+            case REMOVE_TILE_MARKER_LOCAL_POINT:
+                removeLocalTileMarkerAt(param1Int, param2Int);
+                break;
+            case RESET_ALL_LOCAL_POINT_TILE_MARKERS:
+                localPointTileMarkers.clear();
+                break;
+            case RESET_ALL_WORLD_POINT_TILE_MARKERS:
+                worldPointTileMarkers.clear();
+                break;
+            case ADD_TILE_MARKER_FOR_NPC_NAME:
+                trackNpcName(actionParams[1]);
+                break;
+            case REMOVE_TILE_MARKER_FOR_NPC_NAME:
+                npcNamesTracked.remove(actionParams[1]);
+                break;
+            case ADD_TILE_MARKER_FOR_PLAYER_NAME:
+                trackPlayerName(actionParams[1]);
+                break;
+            case REMOVE_TILE_MARKER_FOR_PLAYER_NAME:
+                playerNamesTracked.remove(actionParams[1]);
+                break;
+            case REMOVE_ALL_NPC_MARKERS:
+                resetTrackedNpcs();
+                break;
+            case REMOVE_ALL_PLAYER_MARKERS:
+                resetTrackedPlayers();
+                break;
         }
     }
 
@@ -1629,5 +1740,79 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             default:
                 return "";
         }
+    }
+
+    private void trackPlayerName(String playerName)
+    {
+        if (!playerNamesTracked.contains(playerName))
+        {
+            playerNamesTracked.add(playerName);
+        }
+    }
+
+    private void trackNpcName(String npcName)
+    {
+        if (!npcNamesTracked.contains(npcName))
+        {
+            npcNamesTracked.add(npcName);
+        }
+    }
+
+    private void resetTrackedPlayers()
+    {
+        playerNamesTracked.clear();
+    }
+
+    private void resetTrackedNpcs()
+    {
+        npcNamesTracked.clear();
+    }
+
+
+
+    private void addLocalPointTileMarker(int x, int y, String text)
+    {
+        boolean inList = false;
+        for (Point p : localPointTileMarkers.keySet())
+        {
+            if (p.getX() == x && p.getY() == y)
+            {
+                inList = true;
+                break;
+            }
+        }
+
+        if (!inList)
+        {
+            localPointTileMarkers.put(new Point(x, y), text);
+        }
+    }
+
+    private void addWorldPointTileMarker(int worldX, int worldY, String text)
+    {
+        boolean inList = false;
+        for (WorldPoint wp : worldPointTileMarkers.keySet())
+        {
+            if (wp.getX() == worldX && wp.getY() == worldY)
+            {
+                inList = true;
+                break;
+            }
+        }
+
+        if (!inList)
+        {
+            worldPointTileMarkers.put(new WorldPoint(worldX, worldY, client.getLocalPlayer().getWorldLocation().getPlane()), text);
+        }
+    }
+
+    private void removeLocalTileMarkerAt(int x, int y)
+    {
+        localPointTileMarkers.keySet().removeIf(p -> p.getX() == x && p.getY() == y);
+    }
+
+    private void removeWorldPointTileMarker(int worldX, int worldY)
+    {
+        worldPointTileMarkers.keySet().removeIf(wp -> wp.getX() == worldX && wp.getY() == worldY);
     }
 }

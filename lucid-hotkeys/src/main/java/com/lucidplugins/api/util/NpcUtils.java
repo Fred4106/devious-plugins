@@ -3,10 +3,16 @@ package com.lucidplugins.api.util;
 import net.runelite.api.NPC;
 import net.unethicalite.api.entities.NPCs;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 public class NpcUtils
 {
+
+    public static List<NPC> getAll(Predicate<NPC> filter)
+    {
+        return NPCs.getAll(filter);
+    }
 
     public static NPC getNearest(String name)
     {
