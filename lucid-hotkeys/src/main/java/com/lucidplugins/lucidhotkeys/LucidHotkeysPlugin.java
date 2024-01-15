@@ -619,8 +619,6 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             if (preconditionParams[1].contains("%"))
             {
                 if (precondition != Precondition.VAR_VALUE_EQUALS &&
-                    precondition != Precondition.VAR_VALUE_GREATER_THAN &&
-                    precondition != Precondition.VAR_VALUE_LESS_THAN &&
                     precondition != Precondition.VAR_VALUE_NOT_EQUAL)
                 {
                     String varValue = getVarValue(preconditionParams[1].replaceAll("%", ""));
@@ -1078,16 +1076,8 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case VAR_VALUE_NOT_EQUAL:
                 return !getVarValue(preconditionParams[1]).equals(preconditionParams[2]);
             case VAR_VALUE_LESS_THAN:
-                if (!isNumeric(getVarValue(preconditionParams[1])))
-                {
-                    return false;
-                }
                 return param1Int < param2Int;
             case VAR_VALUE_GREATER_THAN:
-                if (!isNumeric(getVarValue(preconditionParams[1])))
-                {
-                    return false;
-                }
                 return param1Int > param2Int;
                 default:
                 return false;
@@ -1176,7 +1166,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         {
             if (actionParams[1].contains("%"))
             {
-                if (action != Action.PRINT_VARIABLE && action != Action.ADD_VALUE_TO_VARIABLE)
+                if (action != Action.PRINT_VARIABLE && action != Action.ADD_VALUE_TO_VARIABLE && action != Action.SET_VAR_VALUE)
                 {
                     String varValue = getVarValue(actionParams[1].replaceAll("%", ""));
                     if (varValue != null)

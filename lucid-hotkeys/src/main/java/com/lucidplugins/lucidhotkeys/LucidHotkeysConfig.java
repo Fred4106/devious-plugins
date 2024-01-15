@@ -93,13 +93,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions1", section = section1)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions1", section = section1)
     default String actions1()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions1", section = section1)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions1", section = section1)
     default String preconditions1()
     {
         return "";
@@ -113,13 +113,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions2", section = section2)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions2", section = section2)
     default String actions2()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions2", section = section2)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions2", section = section2)
     default String preconditions2()
     {
         return "";
@@ -133,13 +133,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions3", section = section3)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions3", section = section3)
     default String actions3()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions3", section = section3)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions3", section = section3)
     default String preconditions3()
     {
         return "";
@@ -153,13 +153,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions4", section = section4)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions4", section = section4)
     default String actions4()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions4", section = section4)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions4", section = section4)
     default String preconditions4()
     {
         return "";
@@ -173,13 +173,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions5", section = section5)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions5", section = section5)
     default String actions5()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions5", section = section5)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions5", section = section5)
     default String preconditions5()
     {
         return "";
@@ -193,13 +193,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions6", section = section6)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions6", section = section6)
     default String actions6()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions6", section = section6)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions6", section = section6)
     default String preconditions6()
     {
         return "";
@@ -213,13 +213,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions7", section = section7)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions7", section = section7)
     default String actions7()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions7", section = section7)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions7", section = section7)
     default String preconditions7()
     {
         return "";
@@ -233,13 +233,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions8", section = section8)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions8", section = section8)
     default String actions8()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions8", section = section8)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions8", section = section8)
     default String preconditions8()
     {
         return "";
@@ -253,13 +253,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions9", section = section9)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions9", section = section9)
     default String actions9()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions9", section = section9)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions9", section = section9)
     default String preconditions9()
     {
         return "";
@@ -273,13 +273,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions10", section = section10)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions10", section = section10)
     default String actions10()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions10", section = section10)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions10", section = section10)
     default String preconditions10()
     {
         return "";
@@ -293,13 +293,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions11", section = section11)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions11", section = section11)
     default String actions11()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions11", section = section11)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions11", section = section11)
     default String preconditions11()
     {
         return "";
@@ -313,13 +313,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions12", section = section12)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions12", section = section12)
     default String actions12()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions12", section = section12)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions12", section = section12)
     default String preconditions12()
     {
         return "";
@@ -333,13 +333,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions13", section = section13)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions13", section = section13)
     default String actions13()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions13", section = section13)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions13", section = section13)
     default String preconditions13()
     {
         return "";
@@ -353,13 +353,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions14", section = section14)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions14", section = section14)
     default String actions14()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions14", section = section14)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions14", section = section14)
     default String preconditions14()
     {
         return "";
@@ -373,13 +373,13 @@ public interface LucidHotkeysConfig extends Config
         return Keybind.NOT_SET;
     }
 
-    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 1, keyName = "actions15", section = section15)
+    @ConfigItem(name = "Hotkey Actions", description = "What actions the hotkey does. For info on how to setup, visit the Discord.", position = 2, keyName = "actions15", section = section15)
     default String actions15()
     {
         return "";
     }
 
-    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 2, keyName = "preconditions15", section = section15)
+    @ConfigItem(name = "Hotkey Pre-conditions", description = "What conditions are required for activation. For info on how to setup, visit the Discord.", position = 1, keyName = "preconditions15", section = section15)
     default String preconditions15()
     {
         return "";
