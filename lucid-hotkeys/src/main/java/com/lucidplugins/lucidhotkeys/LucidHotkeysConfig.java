@@ -81,7 +81,7 @@ public interface LucidHotkeysConfig extends Config
     @ConfigItem(name = "Custom Variables", description = "format: variableName=value,variableName=value  e.g. time=1", position = 0, keyName = "customVariables", section = customVariablesSection)
     default String customVariables()
     {
-        return "i=1";
+        return "i=1 /";
     }
 
 

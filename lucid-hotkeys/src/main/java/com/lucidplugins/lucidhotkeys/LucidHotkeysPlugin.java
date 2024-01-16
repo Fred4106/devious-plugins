@@ -1231,6 +1231,14 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return !InteractionUtils.tileItemIdExistsWithinDistance(param1Int, param2Int);
             case NAMED_TILE_ITEM_NOT_EXISTS_WITHIN_DISTANCE:
                 return !InteractionUtils.tileItemNameExistsWithinDistance(preconditionParams[1], param2Int);
+            case PRAYER_POINTS_EQUALS:
+                return client.getBoostedSkillLevel(Skill.PRAYER) == param1Int;
+            case PRAYER_POINTS_NOT_EQUALS:
+                return client.getBoostedSkillLevel(Skill.PRAYER) != param1Int;
+            case PRAYER_POINTS_GREATER_THAN:
+                return client.getBoostedSkillLevel(Skill.PRAYER) > param1Int;
+            case PRAYER_POINTS_LESS_THAN:
+                return client.getBoostedSkillLevel(Skill.PRAYER) < param1Int;
         }
     }
 
