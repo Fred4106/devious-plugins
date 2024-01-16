@@ -22,6 +22,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.unethicalite.api.movement.Movement;
 import org.pf4j.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
@@ -110,7 +108,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
     private Map<WorldPoint, String> worldPointTileMarkers = new HashMap<>();
 
     @Getter
-    private Map<Point, String> localPointTileMarkers = new HashMap<>();
+    private Map<LocalRegionTile, String> regionPointTileMarkers = new HashMap<>();
 
     private int tickMetronomeMaxValue = 5;
     private int tickMetronomeCount = tickMetronomeMaxValue;
@@ -1239,6 +1237,32 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return client.getBoostedSkillLevel(Skill.PRAYER) > param1Int;
             case PRAYER_POINTS_LESS_THAN:
                 return client.getBoostedSkillLevel(Skill.PRAYER) < param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionX() == param1Int &&
+                        client.getLocalPlayer().getWorldLocation().getRegionY() == param2Int;
+            case LOCAL_PLAYER_REGION_LOCATION_NOT_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionX() != param1Int ||
+                        client.getLocalPlayer().getWorldLocation().getRegionY() != param2Int;
+            case LOCAL_PLAYER_REGION_LOCATION_X_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionX() == param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_X_NOT_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionX() != param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_X_GREATER_THAN:
+                return client.getLocalPlayer().getWorldLocation().getRegionX() > param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_X_LESS_THAN:
+                return client.getLocalPlayer().getWorldLocation().getRegionX() < param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_Y_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionY() == param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_Y_NOT_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionY() != param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_Y_GREATER_THAN:
+                return client.getLocalPlayer().getWorldLocation().getRegionY() > param1Int;
+            case LOCAL_PLAYER_REGION_LOCATION_Y_LESS_THAN:
+                return client.getLocalPlayer().getWorldLocation().getRegionY() < param1Int;
+            case LOCAL_PLAYER_REGION_ID_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionID() == param1Int;
+            case LOCAL_PLAYER_REGION_ID_NOT_EQUALS:
+                return client.getLocalPlayer().getWorldLocation().getRegionID() != param1Int;
         }
     }
 
@@ -1515,17 +1539,17 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case REMOVE_TILE_MARKER_WORLD_POINT:
                 removeWorldPointTileMarker(param1Int, param2Int);
                 break;
-            case ADD_TILE_MARKER_LOCAL_POINT:
-                addLocalPointTileMarker(param1Int, param2Int, "");
+            case ADD_TILE_MARKER_REGION_POINT:
+                addRegionPointTileMarker(param1Int, param2Int, param3Int, "");
                 break;
-            case ADD_TILE_MARKER_LOCAL_POINT_WITH_TEXT:
-                addLocalPointTileMarker(param1Int, param2Int, actionParams[3]);
+            case ADD_TILE_MARKER_REGION_POINT_WITH_TEXT:
+                addRegionPointTileMarker(param1Int, param2Int, param3Int, actionParams[4]);
                 break;
-            case REMOVE_TILE_MARKER_LOCAL_POINT:
-                removeLocalTileMarkerAt(param1Int, param2Int);
+            case REMOVE_TILE_MARKER_REGION_POINT:
+                removeRegionTileMarkerAt(param1Int, param2Int, param3Int);
                 break;
-            case RESET_ALL_LOCAL_POINT_TILE_MARKERS:
-                localPointTileMarkers.clear();
+            case RESET_ALL_REGION_POINT_TILE_MARKERS:
+                regionPointTileMarkers.clear();
                 break;
             case RESET_ALL_WORLD_POINT_TILE_MARKERS:
                 worldPointTileMarkers.clear();
@@ -1547,6 +1571,13 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 break;
             case REMOVE_ALL_PLAYER_MARKERS:
                 resetTrackedPlayers();
+                break;
+            case WALK_REGION_LOCATION:
+                LocalPoint lp1 = LocalRegionTile.getInstanceLocalPoint(param1Int, param2Int, param3Int);
+                if (lp1 != null)
+                {
+                    Movement.walk(WorldPoint.fromLocal(client, lp1));
+                }
                 break;
         }
     }
@@ -1687,6 +1718,10 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 "lastPlayerAnimationId",
                 "lpWorldX",
                 "lpWorldY",
+                "lpLocalX",
+                "lpLocalY",
+                "lpRegionX",
+                "lpRegionY",
                 "lpSceneX",
                 "lpSceneY",
                 "tickCount",
@@ -1695,7 +1730,8 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 "lastNpcNameYouTargeted",
                 "lastPlayerNameYouTargeted",
                 "lastNpcNameTargetedYou",
-                "lastPlayerNameTargetedYou"
+                "lastPlayerNameTargetedYou",
+                "regionId"
         );
 
         return reservedVars.contains(varName);
@@ -1727,6 +1763,14 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return String.valueOf(client.getLocalPlayer().getWorldLocation().getX());
             case "lpWorldY":
                 return String.valueOf(client.getLocalPlayer().getWorldLocation().getY());
+            case "lpLocalX":
+                return String.valueOf(client.getLocalPlayer().getLocalLocation().getX());
+            case "lpLocalY":
+                return String.valueOf(client.getLocalPlayer().getLocalLocation().getY());
+            case "lpRegionX":
+                return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionX());
+            case "lpRegionY":
+                return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionY());
             case "lpSceneX":
                 return String.valueOf(client.getLocalPlayer().getLocalLocation().getSceneX());
             case "lpSceneY":
@@ -1745,6 +1789,8 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 return String.valueOf(lastNpcNameTargetedYou);
             case "lastPlayerNameTargetedYou":
                 return String.valueOf(lastPlayerNameTargetedYou);
+            case "regionId":
+                return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionID());
             default:
                 return "";
         }
@@ -1778,12 +1824,12 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
 
 
 
-    private void addLocalPointTileMarker(int x, int y, String text)
+    private void addRegionPointTileMarker(int regionId, int x, int y, String text)
     {
         boolean inList = false;
-        for (Point p : localPointTileMarkers.keySet())
+        for (LocalRegionTile p : regionPointTileMarkers.keySet())
         {
-            if (p.getX() == x && p.getY() == y)
+            if (p.getLpX() == x && p.getLpY() == y)
             {
                 inList = true;
                 break;
@@ -1792,7 +1838,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
 
         if (!inList)
         {
-            localPointTileMarkers.put(new Point(x, y), text);
+            regionPointTileMarkers.put(new LocalRegionTile(regionId, x, y), text);
         }
     }
 
@@ -1814,13 +1860,15 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
         }
     }
 
-    private void removeLocalTileMarkerAt(int x, int y)
+    private void removeRegionTileMarkerAt(int regionId, int x, int y)
     {
-        localPointTileMarkers.keySet().removeIf(p -> p.getX() == x && p.getY() == y);
+        regionPointTileMarkers.keySet().removeIf(p -> p.getRegionId() == regionId && p.getLpX() == x && p.getLpY() == y);
     }
 
     private void removeWorldPointTileMarker(int worldX, int worldY)
     {
         worldPointTileMarkers.keySet().removeIf(wp -> wp.getX() == worldX && wp.getY() == worldY);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.lucidplugins.lucidhotkeys.overlay;
 
+import com.lucidplugins.lucidhotkeys.LocalRegionTile;
 import com.lucidplugins.lucidhotkeys.LucidHotkeysConfig;
 import com.lucidplugins.lucidhotkeys.LucidHotkeysPlugin;
 import net.runelite.api.*;
@@ -54,14 +55,13 @@ public class TileMarkersOverlay extends Overlay
 
     private void renderTileMarkers(Graphics2D graphics2D)
     {
-        for (Map.Entry<Point, String> entry : plugin.getLocalPointTileMarkers().entrySet())
+        for (Map.Entry<LocalRegionTile, String> entry : plugin.getRegionPointTileMarkers().entrySet())
         {
-            final Point point = entry.getKey();
+            final LocalRegionTile tile = entry.getKey();
             final String text = entry.getValue();
-            LocalPoint localPoint = LocalPoint.fromScene(point.getX(), point.getY());
-            if (localPoint.isInScene())
+            if (tile.getLocalTile().isInScene())
             {
-                renderTileMarkerLocalPoint(localPoint, graphics2D, text, Color.BLUE);
+                renderTileMarkerLocalPoint(tile.getLocalTile(), graphics2D, text, Color.BLUE);
             }
         }
 
@@ -102,6 +102,11 @@ public class TileMarkersOverlay extends Overlay
 
     private void renderTileMarkerLocalPoint(LocalPoint lp, Graphics2D graphics2D, String text, Color color)
     {
+        if (lp == null)
+        {
+            return;
+        }
+
         final Polygon polygon = Perspective.getCanvasTileAreaPoly(client, lp, 1);
         if (polygon == null)
         {
@@ -124,6 +129,11 @@ public class TileMarkersOverlay extends Overlay
 
     private void renderTileMarkerWorldPoint(WorldPoint wp, Graphics2D graphics2D, String text, Color color)
     {
+        if (wp == null)
+        {
+            return;
+        }
+
         renderTileMarkerLocalPoint(LocalPoint.fromWorld(Static.getClient(), wp), graphics2D, text, color);
     }
 }
