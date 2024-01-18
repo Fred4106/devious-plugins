@@ -5,6 +5,10 @@ import net.runelite.client.config.Keybind;
 
 public class ExportableConfig
 {
+
+    @Getter
+    String userVars;
+
     @Getter
     public Keybind[] hotkey;
 
@@ -14,8 +18,9 @@ public class ExportableConfig
     @Getter
     public String[] preconditions;
 
-    public ExportableConfig()
+    public ExportableConfig(String uservars)
     {
+        userVars = uservars;
         hotkey = new Keybind[15];
         actions = new String[15];
         preconditions = new String[15];

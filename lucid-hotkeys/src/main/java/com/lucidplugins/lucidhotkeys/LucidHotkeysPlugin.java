@@ -22,7 +22,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.unethicalite.api.movement.Movement;
 import org.pf4j.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,6 +184,8 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 log.info("Loaded preset: " + presetNameFormatted);
             }
 
+            configManager.setConfiguration(GROUP_NAME, "customVariables", loadedConfig.getUserVars());
+
             for (int i = 0; i < 15; i++)
             {
                 configManager.setConfiguration(GROUP_NAME, "hotkey" + (i + 1), loadedConfig.getHotkey()[i]);
@@ -211,7 +212,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             return;
         }
 
-        ExportableConfig exportableConfig = new ExportableConfig();
+        ExportableConfig exportableConfig = new ExportableConfig(config.customVariables());
 
         exportableConfig.setHotkeyConfig(0, config.hotkey1(), config.actions1(), config.preconditions1());
         exportableConfig.setHotkeyConfig(1, config.hotkey2(), config.actions2(), config.preconditions2());
@@ -1576,7 +1577,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 LocalPoint lp1 = LocalRegionTile.getInstanceLocalPoint(param1Int, param2Int, param3Int);
                 if (lp1 != null)
                 {
-                    Movement.walk(WorldPoint.fromLocal(client, lp1));
+                    InteractionUtils.walk(WorldPoint.fromLocal(client, lp1));
                 }
                 break;
         }
