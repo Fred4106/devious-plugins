@@ -194,6 +194,8 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             }
 
             JOptionPane.showMessageDialog(null, "Successfully loaded preset '" + presetNameFormatted + "'", "Preset Load Success", INFORMATION_MESSAGE);
+
+            initUserVariables();
         }
         catch (Exception e)
         {
