@@ -59,7 +59,7 @@ public class TileMarkersOverlay extends Overlay
         {
             final LocalRegionTile tile = entry.getKey();
             final String text = entry.getValue();
-            if (tile.getLocalTile().isInScene())
+            if (tile.getLocalTile() != null && tile.getLocalTile().isInScene())
             {
                 renderTileMarkerLocalPoint(tile.getLocalTile(), graphics2D, text, Color.BLUE);
             }
@@ -69,7 +69,7 @@ public class TileMarkersOverlay extends Overlay
         {
             final WorldPoint worldPoint = entry.getKey();
             final String text = entry.getValue();
-            if (worldPoint.isInScene(Static.getClient()))
+            if (worldPoint != null && worldPoint.isInScene(Static.getClient()))
             {
                 renderTileMarkerWorldPoint(worldPoint, graphics2D, text, Color.BLUE);
             }

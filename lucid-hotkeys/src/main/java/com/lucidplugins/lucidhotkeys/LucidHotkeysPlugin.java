@@ -184,7 +184,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 log.info("Loaded preset: " + presetNameFormatted);
             }
 
-            configManager.setConfiguration(GROUP_NAME, "customVariables", loadedConfig.getUserVars());
+            configManager.setConfiguration(GROUP_NAME, "customVariables", loadedConfig.getUserVars() != null ? loadedConfig.getUserVars() : "");
 
             for (int i = 0; i < 15; i++)
             {
@@ -214,7 +214,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             return;
         }
 
-        ExportableConfig exportableConfig = new ExportableConfig(config.customVariables());
+        ExportableConfig exportableConfig = new ExportableConfig(config.customVariables() != null ? config.customVariables() : "");
 
         exportableConfig.setHotkeyConfig(0, config.hotkey1(), config.actions1(), config.preconditions1());
         exportableConfig.setHotkeyConfig(1, config.hotkey2(), config.actions2(), config.preconditions2());
@@ -531,9 +531,9 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             }
         }
 
-        if (event.getTarget() == client.getLocalPlayer())
+        if (event.getTarget() != null && event.getTarget() == client.getLocalPlayer())
         {
-            Actor target = client.getLocalPlayer().getInteracting();
+            Actor target = event.getSource();
             if (target != null)
             {
                 if (target instanceof NPC)
@@ -1528,7 +1528,7 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 break;
             case WALK_SCENE_LOCATION:
                 LocalPoint lp = LocalPoint.fromScene(param1Int, param2Int);
-                InteractionUtils.walk(WorldPoint.fromLocal(client, lp));
+                InteractionUtils.walk(WorldPoint.fromLocalInstance(client, lp));
                 break;
             case INTERACT_INVENTORY_SLOT:
                 InventoryUtils.interactSlot(param1Int, actionParams[2]);
@@ -1576,11 +1576,9 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 resetTrackedPlayers();
                 break;
             case WALK_REGION_LOCATION:
-                LocalPoint lp1 = LocalRegionTile.getInstanceLocalPoint(param1Int, param2Int, param3Int);
-                if (lp1 != null)
-                {
-                    InteractionUtils.walk(WorldPoint.fromLocal(client, lp1));
-                }
+                WorldPoint wp = WorldPoint.fromRegion(param1Int, param2Int, param3Int, client.getLocalPlayer().getWorldLocation().getPlane());
+                Collection<WorldPoint> localInstanceWp = WorldPoint.toLocalInstance(client, wp);
+                localInstanceWp.stream().findFirst().ifPresent(InteractionUtils::walk);
                 break;
         }
     }
@@ -1771,9 +1769,25 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case "lpLocalY":
                 return String.valueOf(client.getLocalPlayer().getLocalLocation().getY());
             case "lpRegionX":
-                return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionX());
+                if (client.isInInstancedRegion())
+                {
+                    WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+                    return String.valueOf(worldPoint.getRegionX());
+                }
+                else
+                {
+                    return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionX());
+                }
             case "lpRegionY":
-                return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionY());
+                if (client.isInInstancedRegion())
+                {
+                    WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+                    return String.valueOf(worldPoint.getRegionY());
+                }
+                else
+                {
+                    return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionY());
+                }
             case "lpSceneX":
                 return String.valueOf(client.getLocalPlayer().getLocalLocation().getSceneX());
             case "lpSceneY":
@@ -1793,7 +1807,15 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
             case "lastPlayerNameTargetedYou":
                 return String.valueOf(lastPlayerNameTargetedYou);
             case "regionId":
-                return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionID());
+                if (client.isInInstancedRegion())
+                {
+                    WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+                    return String.valueOf(worldPoint.getRegionID());
+                }
+                else
+                {
+                    return String.valueOf(client.getLocalPlayer().getWorldLocation().getRegionID());
+                }
             default:
                 return "";
         }

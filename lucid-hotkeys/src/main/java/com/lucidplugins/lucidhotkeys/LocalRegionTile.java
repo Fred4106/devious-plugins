@@ -27,7 +27,7 @@ public class LocalRegionTile
     public static LocalPoint getInstanceLocalPoint(int regionId, int x, int y)
     {
         final Collection<WorldPoint> worldPoints = WorldPoint.toLocalInstance(Static.getClient(),
-                WorldPoint.fromRegion(Static.getClient().getLocalPlayer().getWorldLocation().getRegionID(), x, y, Static.getClient().getLocalPlayer().getWorldLocation().getPlane()));
+                WorldPoint.fromRegion(regionId, x, y, Static.getClient().getLocalPlayer().getWorldLocation().getPlane()));
 
         final WorldPoint worldPoint = worldPoints.stream().findFirst().orElse(null);
 
