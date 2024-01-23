@@ -1,7 +1,5 @@
 package com.lucidplugins.lucidgauntlet.overlay;
 
-import com.lucidplugins.lucidgauntlet.GauntletExtendedConfig;
-import com.lucidplugins.lucidgauntlet.GauntletExtendedPlugin;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Prayer;
@@ -13,6 +11,8 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import com.lucidplugins.lucidgauntlet.LucidGauntletConfig;
+import com.lucidplugins.lucidgauntlet.LucidGauntletPlugin;
 import com.lucidplugins.lucidgauntlet.entity.Hunllef;
 
 import javax.inject.Inject;
@@ -27,8 +27,8 @@ public class OverlayPrayerBox extends Overlay
 
     private final Client client;
 
-    private final GauntletExtendedPlugin plugin;
-    private final GauntletExtendedConfig config;
+    private final LucidGauntletPlugin plugin;
+    private final LucidGauntletConfig config;
 
     private final SpriteManager spriteManager;
 
@@ -39,7 +39,7 @@ public class OverlayPrayerBox extends Overlay
     private BufferedImage spriteProtectFromRange;
 
     @Inject
-    OverlayPrayerBox(final Client client, final GauntletExtendedPlugin plugin, final GauntletExtendedConfig config, final SpriteManager spriteManager)
+    OverlayPrayerBox(final Client client, final LucidGauntletPlugin plugin, final LucidGauntletConfig config, final SpriteManager spriteManager)
     {
         super(plugin);
 
@@ -66,9 +66,9 @@ public class OverlayPrayerBox extends Overlay
     @Override
     public Dimension render(final Graphics2D graphics)
     {
-        final GauntletExtendedConfig.PrayerHighlightMode prayerHighlightMode = config.prayerOverlay();
+        final LucidGauntletConfig.PrayerHighlightMode prayerHighlightMode = config.prayerOverlay();
 
-        if (prayerHighlightMode == GauntletExtendedConfig.PrayerHighlightMode.NONE || prayerHighlightMode == GauntletExtendedConfig.PrayerHighlightMode.WIDGET)
+        if (prayerHighlightMode == LucidGauntletConfig.PrayerHighlightMode.NONE || prayerHighlightMode == LucidGauntletConfig.PrayerHighlightMode.WIDGET)
         {
             return null;
         }

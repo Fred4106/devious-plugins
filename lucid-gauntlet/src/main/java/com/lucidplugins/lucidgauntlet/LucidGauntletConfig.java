@@ -2,19 +2,21 @@ package com.lucidplugins.lucidgauntlet;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Prayer;
 import net.runelite.client.config.*;
 
 import java.awt.*;
 
-@ConfigGroup("gauntlet-extended")
-public interface GauntletExtendedConfig extends Config
+@ConfigGroup("lucid-gauntlet")
+public interface LucidGauntletConfig extends Config
 {
     // Sections
     @ConfigSection(
             name = "Resources",
             description = "Resources section.",
             position = 0,
-            keyName = "resourcesSection"
+            keyName = "resourcesSection",
+            closedByDefault = true
     )
     String resourcesSection = "Resources";
 
@@ -22,7 +24,8 @@ public interface GauntletExtendedConfig extends Config
             name = "Utilities",
             description = "Utilities section.",
             position = 1,
-            keyName = "utilitiesSection"
+            keyName = "utilitiesSection",
+            closedByDefault = true
     )
     String utilitiesSection = "Utilities";
 
@@ -30,7 +33,8 @@ public interface GauntletExtendedConfig extends Config
             name = "Npcs",
             description = "Other npcs section.",
             position = 2,
-            keyName = "npcSection"
+            keyName = "npcSection",
+            closedByDefault = true
     )
     String npcSection = "Npcs";
 
@@ -38,7 +42,8 @@ public interface GauntletExtendedConfig extends Config
             name = "Hunllef",
             description = "Hunllef section.",
             position = 3,
-            keyName = "hunllefSection"
+            keyName = "hunllefSection",
+            closedByDefault = true
     )
     String hunllefSection = "Hunllef";
 
@@ -46,7 +51,8 @@ public interface GauntletExtendedConfig extends Config
             name = "Projectiles",
             description = "Projectiles section.",
             position = 4,
-            keyName = "projectilesSection"
+            keyName = "projectilesSection",
+            closedByDefault = true
     )
     String projectilesSection = "Projectiles";
 
@@ -54,7 +60,8 @@ public interface GauntletExtendedConfig extends Config
             name = "Tornadoes",
             description = "Tornadoes section.",
             position = 5,
-            keyName = "tornadoesSection"
+            keyName = "tornadoesSection",
+            closedByDefault = true
     )
     String tornadoesSection = "Tornadoes";
 
@@ -62,7 +69,8 @@ public interface GauntletExtendedConfig extends Config
             name = "Player",
             description = "Player section.",
             position = 6,
-            keyName = "playerSection"
+            keyName = "playerSection",
+            closedByDefault = true
     )
     String playerSection = "Player";
 
@@ -70,7 +78,8 @@ public interface GauntletExtendedConfig extends Config
             name = "Timer",
             description = "Timer section.",
             position = 7,
-            keyName = "timerSection"
+            keyName = "timerSection",
+            closedByDefault = true
     )
     String timerSection = "Timer";
 
@@ -78,9 +87,19 @@ public interface GauntletExtendedConfig extends Config
             name = "Other",
             description = "Other section.",
             position = 8,
-            keyName = "otherSection"
+            keyName = "otherSection",
+            closedByDefault = true
     )
     String otherSection = "Other";
+
+    @ConfigSection(
+            name = "Offensive prayers",
+            description = "Select which offensive prayers to activate",
+            position = 9,
+            keyName = "prayerSection",
+            closedByDefault = true
+    )
+    String prayerSection = "Offensive prayers";
 
     // Resources Section
 
@@ -927,9 +946,69 @@ public interface GauntletExtendedConfig extends Config
         return PrayerHighlightMode.NONE;
     }
     @ConfigItem(
+            name = "Auto defense pray",
+            description = "Automatically selects the correct protection prayer on disable and on attack style change.",
+            position = 1,
+            keyName = "autoPrayer",
+            section = playerSection
+    )
+    public default boolean autoPrayer()
+    {
+        return false;
+    }
+    @ConfigItem(
+            name = "Auto switch weapons",
+            description = "Auto selects the correct prayer on disable and on attack style change.",
+            position = 2,
+            keyName = "autoWeapon",
+            section = playerSection,
+            enumClass = WeaponSwitchStyle.class
+    )
+    public default WeaponSwitchStyle weaponSwitchMode()
+    {
+        return WeaponSwitchStyle.OFF;
+    }
+    @ConfigItem(
+            name = "Auto offense pray",
+            description = "Auto selects offensive prayer when weapon swapping.",
+            position = 3,
+            keyName = "autoOffensive",
+            section = playerSection
+    )
+    public default boolean autoOffense()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Auto re-attack (mage/range)",
+            description = "Automatically re-attacks after swapping to mage/range.",
+            position = 4,
+            keyName = "autoAttack",
+            section = playerSection
+    )
+    public default boolean autoAttack()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            name = "Auto re-attack (melee)",
+            description = "Automatically re-attacks after swapping to melee" +
+                    "<br>Warning: Can cause you to run into an unsafe tile!",
+            position = 5,
+            keyName = "autoAttackMelee",
+            section = playerSection
+    )
+    public default boolean autoAttackMelee()
+    {
+        return false;
+    }
+
+    @ConfigItem(
             name = "Flash on wrong attack style",
             description = "Flash the screen if you use the wrong attack style.",
-            position = 4,
+            position = 6,
             keyName = "flashOnWrongAttack",
             section = playerSection
     )
@@ -945,7 +1024,7 @@ public interface GauntletExtendedConfig extends Config
     @ConfigItem(
             name = "Flash duration",
             description = "Change the duration of the flash.",
-            position = 5,
+            position = 7,
             keyName = "flashOnWrongAttackDuration",
             section = playerSection,
             hidden = true,
@@ -960,7 +1039,7 @@ public interface GauntletExtendedConfig extends Config
     @ConfigItem(
             name = "Flash color",
             description = "Color of the flash notification.",
-            position = 6,
+            position = 8,
             keyName = "flashOnWrongAttackColor",
             section = playerSection,
             hidden = true,
@@ -974,7 +1053,7 @@ public interface GauntletExtendedConfig extends Config
     @ConfigItem(
             name = "Flash on 5:1 method",
             description = "Flash the screen to weapon switch when using 5:1 method.",
-            position = 7,
+            position = 9,
             keyName = "flashOn51Method",
             section = playerSection
     )
@@ -990,7 +1069,7 @@ public interface GauntletExtendedConfig extends Config
     @ConfigItem(
             name = "Flash duration",
             description = "Change the duration of the flash.",
-            position = 8,
+            position = 10,
             keyName = "flashOn51MethodDuration",
             section = playerSection,
             hidden = true,
@@ -1005,7 +1084,7 @@ public interface GauntletExtendedConfig extends Config
     @ConfigItem(
             name = "Flash color",
             description = "Color of the flash notification.",
-            position = 9,
+            position = 11,
             keyName = "flashOn51MethodColor",
             section = playerSection,
             hidden = true,
@@ -1067,6 +1146,42 @@ public interface GauntletExtendedConfig extends Config
     public default boolean discoMode()
     {
         return false;
+    }
+
+    // Prayer Section
+
+    @ConfigItem(
+            name = "Ranged Prayer",
+            description = "Which ranged prayer to use for auto-offense",
+            position = 0,
+            keyName = "offenseRangePrayer",
+            section = prayerSection
+    )
+    public default RangedPrayer offenseRangePrayer()
+    {
+        return RangedPrayer.EAGLE_EYE;
+    }
+    @ConfigItem(
+            name = "Magic Prayer",
+            description = "Which magic prayer to use for auto-offense",
+            position = 1,
+            keyName = "offenseMagicPrayer",
+            section = prayerSection
+    )
+    public default MagicPrayer offenseMagicPrayer()
+    {
+        return MagicPrayer.MYSTIC_MIGHT;
+    }
+    @ConfigItem(
+            name = "Melee Prayer",
+            description = "Which melee prayer to use for auto-offense",
+            position = 2,
+            keyName = "offenseMeleePrayer",
+            section = prayerSection
+    )
+    public default MeleePrayer offenseMeleePrayer()
+    {
+        return MeleePrayer.PIETY;
     }
 
     // Constants
@@ -1132,6 +1247,42 @@ public interface GauntletExtendedConfig extends Config
 
     public enum WeaponSwitchStyle
     {
-        OFF, NORMAL, RANGED_5_1;
+        OFF, NORMAL, RANGED_5_1, MAGE_5_1;
+    }
+
+    enum RangedPrayer
+    {
+        EAGLE_EYE(Prayer.EAGLE_EYE), RIGOUR(Prayer.RIGOUR), NONE(null);
+
+        @Getter
+        Prayer prayer;
+        RangedPrayer(Prayer prayer)
+        {
+            this.prayer = prayer;
+        }
+    }
+
+    enum MagicPrayer
+    {
+        MYSTIC_MIGHT(Prayer.MYSTIC_MIGHT), AUGURY(Prayer.AUGURY), NONE(null);
+
+        @Getter
+        Prayer prayer;
+        MagicPrayer(Prayer prayer)
+        {
+            this.prayer = prayer;
+        }
+    }
+
+    enum MeleePrayer
+    {
+        ULTIMATE_STRENGTH(Prayer.ULTIMATE_STRENGTH), CHIVALRY(Prayer.CHIVALRY), PIETY(Prayer.PIETY), NONE(null);
+
+        @Getter
+        Prayer prayer;
+        MeleePrayer(Prayer prayer)
+        {
+            this.prayer = prayer;
+        }
     }
 }

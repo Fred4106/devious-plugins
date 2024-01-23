@@ -1,7 +1,7 @@
-version = "1.0.3"
+version = "1.0.4"
 
 project.extra["PluginName"] = "Lucid Muspah"
-project.extra["PluginDescription"] = "Helper plugin for the Phantom Muspah (still in development)"
+project.extra["PluginDescription"] = "Helper plugin for the Phantom Muspah"
 
 tasks {
     jar {

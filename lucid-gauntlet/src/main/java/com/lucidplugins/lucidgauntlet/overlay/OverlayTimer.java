@@ -1,7 +1,5 @@
 package com.lucidplugins.lucidgauntlet.overlay;
 
-import com.lucidplugins.lucidgauntlet.GauntletExtendedConfig;
-import com.lucidplugins.lucidgauntlet.GauntletExtendedPlugin;
 import com.openosrs.client.ui.overlay.components.table.TableAlignment;
 import com.openosrs.client.ui.overlay.components.table.TableComponent;
 import com.openosrs.client.ui.overlay.components.table.TableElement;
@@ -16,6 +14,8 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import com.lucidplugins.lucidgauntlet.LucidGauntletConfig;
+import com.lucidplugins.lucidgauntlet.LucidGauntletPlugin;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +26,7 @@ import java.util.Arrays;
 @Singleton
 public class OverlayTimer extends Overlay
 {
-    private final GauntletExtendedConfig config;
+    private final LucidGauntletConfig config;
     private final ChatMessageManager chatMessageManager;
 
     private final PanelComponent panelComponent;
@@ -39,7 +39,7 @@ public class OverlayTimer extends Overlay
     private long timeHunllefStart;
 
     @Inject
-    public OverlayTimer(final GauntletExtendedPlugin plugin, final GauntletExtendedConfig config, final ChatMessageManager chatMessageManager)
+    public OverlayTimer(final LucidGauntletPlugin plugin, final LucidGauntletConfig config, final ChatMessageManager chatMessageManager)
     {
         super(plugin);
 

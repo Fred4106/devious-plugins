@@ -1,6 +1,6 @@
 package com.lucidplugins.lucidgauntlet.resource;
 
-import com.lucidplugins.lucidgauntlet.GauntletExtendedPlugin;
+import com.lucidplugins.lucidgauntlet.LucidGauntletPlugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
@@ -13,7 +13,7 @@ class ResourceCounter extends Counter
     private int count;
     private String text;
 
-    ResourceCounter(final GauntletExtendedPlugin plugin, final Resource resource, final BufferedImage bufferedImage, final int count)
+    ResourceCounter(final LucidGauntletPlugin plugin, final Resource resource, final BufferedImage bufferedImage, final int count)
     {
         super(bufferedImage, plugin, count);
 

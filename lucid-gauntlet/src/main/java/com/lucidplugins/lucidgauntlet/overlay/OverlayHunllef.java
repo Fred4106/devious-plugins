@@ -1,7 +1,5 @@
 package com.lucidplugins.lucidgauntlet.overlay;
 
-import com.lucidplugins.lucidgauntlet.GauntletExtendedConfig;
-import com.lucidplugins.lucidgauntlet.GauntletExtendedPlugin;
 import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -11,6 +9,8 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import com.lucidplugins.lucidgauntlet.LucidGauntletConfig;
+import com.lucidplugins.lucidgauntlet.LucidGauntletPlugin;
 import com.lucidplugins.lucidgauntlet.entity.Hunllef;
 import com.lucidplugins.lucidgauntlet.entity.Missile;
 import com.lucidplugins.lucidgauntlet.entity.Tornado;
@@ -42,8 +42,8 @@ public class OverlayHunllef extends Overlay
     private static final int COLOR_DURATION = 10;
 
     private final Client client;
-    private final GauntletExtendedPlugin plugin;
-    private final GauntletExtendedConfig config;
+    private final LucidGauntletPlugin plugin;
+    private final LucidGauntletConfig config;
     private final ModelOutlineRenderer modelOutlineRenderer;
 
     private Hunllef hunllef;
@@ -52,7 +52,7 @@ public class OverlayHunllef extends Overlay
     private int idx;
 
     @Inject
-    private OverlayHunllef(final Client client, final GauntletExtendedPlugin plugin, final GauntletExtendedConfig config, final ModelOutlineRenderer modelOutlineRenderer)
+    private OverlayHunllef(final Client client, final LucidGauntletPlugin plugin, final LucidGauntletConfig config, final ModelOutlineRenderer modelOutlineRenderer)
     {
         super(plugin);
 

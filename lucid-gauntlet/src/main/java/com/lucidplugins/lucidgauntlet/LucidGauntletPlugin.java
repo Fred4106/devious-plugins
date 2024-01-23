@@ -1,6 +1,10 @@
 package com.lucidplugins.lucidgauntlet;
 
 import com.google.inject.Provides;
+import com.lucidplugins.api.util.CombatUtils;
+import com.lucidplugins.api.util.EquipmentUtils;
+import com.lucidplugins.api.util.InventoryUtils;
+import com.lucidplugins.api.util.NpcUtils;
 import com.lucidplugins.lucidgauntlet.entity.*;
 import com.lucidplugins.lucidgauntlet.overlay.*;
 import lombok.Getter;
@@ -19,7 +23,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import com.lucidplugins.lucidgauntlet.resource.ResourceManager;
 import org.pf4j.Extension;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Arrays;
@@ -29,13 +32,13 @@ import java.util.Set;
 
 @Extension
 @PluginDescriptor(
-        name = "Gauntlet Extended",
+        name = "<html><font color=\"#32CD32\">Lucid Gauntlet</font></html>",
         enabledByDefault = false,
-        description = "All-in-one plugin for the Gauntlet. Original plugin by xKylee.",
+        description = "Gauntlet Extended by xKylee updated with auto-features for Hunllef added in.",
         tags = {"gauntlet"}
 )
 @Singleton
-public class GauntletExtendedPlugin extends Plugin
+public class LucidGauntletPlugin extends Plugin
 {
     public static final int ONEHAND_SLASH_AXE_ANIMATION = 395;
     public static final int ONEHAND_CRUSH_PICKAXE_ANIMATION = 400;
@@ -143,7 +146,7 @@ public class GauntletExtendedPlugin extends Plugin
     private ClientThread clientThread;
 
     @Inject
-    private GauntletExtendedConfig config;
+    private LucidGauntletConfig config;
 
     @Inject
     private ResourceManager resourceManager;
@@ -208,10 +211,17 @@ public class GauntletExtendedPlugin extends Plugin
     private boolean inGauntlet;
     private boolean inHunllef;
 
+    private int lastSwitchTick = 0;
+
+    private int removeWepTick = 0;
+
+    private int lastAttackTick = 0;
+
     @Provides
-    GauntletExtendedConfig getConfig(final ConfigManager configManager)
+
+    LucidGauntletConfig getConfig(final ConfigManager configManager)
     {
-        return configManager.getConfig(GauntletExtendedConfig.class);
+        return configManager.getConfig(LucidGauntletConfig.class);
     }
 
     @Override
@@ -250,7 +260,7 @@ public class GauntletExtendedPlugin extends Plugin
     @Subscribe
     private void onConfigChanged(final ConfigChanged event)
     {
-        if (!event.getGroup().equals("gauntlet"))
+        if (!event.getGroup().equals("lucid-gauntlet"))
         {
             return;
         }
@@ -341,6 +351,54 @@ public class GauntletExtendedPlugin extends Plugin
         if (!tornadoes.isEmpty())
         {
             tornadoes.forEach(Tornado::updateTimeLeft);
+        }
+
+        if (client.getTickCount() - lastAttackTick == 1)
+        {
+            if (hunllef.getPlayerAttackCount() == 6 && config.weaponSwitchMode() == LucidGauntletConfig.WeaponSwitchStyle.NORMAL)
+            {
+                swapWeaponNormal();
+            }
+
+            if ((hunllef.getPlayerAttackCount() == 6 || hunllef.getPlayerAttackCount() == 1) && config.weaponSwitchMode() == LucidGauntletConfig.WeaponSwitchStyle.RANGED_5_1 || config.weaponSwitchMode() == LucidGauntletConfig.WeaponSwitchStyle.MAGE_5_1)
+            {
+                swapWeapon51(hunllef.getPlayerAttackCount(), hunllef.getNpc().getComposition().getOverheadIcon());
+            }
+        }
+
+        if (client.getTickCount() == removeWepTick)
+        {
+            EquipmentUtils.removeWepSlotItem();
+        }
+
+        if (client.getTickCount() - lastSwitchTick == 1)
+        {
+            final Item wep = EquipmentUtils.getWepSlotItem();
+
+            if (wep != null)
+            {
+                if (wep.getName().contains("bow") || wep.getName().contains("staff"))
+                {
+                    if (config.autoAttack())
+                    {
+                        attackHunllef();
+                    }
+                }
+                else
+                {
+                    if (config.autoAttackMelee())
+                    {
+                        attackHunllef();
+                    }
+                }
+            }
+            else
+            {
+                if (config.autoAttackMelee())
+                {
+                    attackHunllef();
+                }
+            }
         }
     }
 
@@ -434,6 +492,22 @@ public class GauntletExtendedPlugin extends Plugin
     }
 
     @Subscribe
+    private void onItemContainerChanged(ItemContainerChanged event)
+    {
+        if (!inHunllef)
+        {
+            return;
+        }
+        if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
+        {
+            if (config.autoOffense())
+            {
+                CombatUtils.togglePrayer(client, getPrayerBasedOnWeapon());
+            }
+        }
+    }
+
+    @Subscribe
     private void onNpcDespawned(final NpcDespawned event)
     {
         final NPC npc = event.getNpc();
@@ -497,6 +571,17 @@ public class GauntletExtendedPlugin extends Plugin
             resourceManager.parseChatMessage(event.getMessage());
         }
 
+        if (event.getMessage().contains("prayers have been disabled"))
+        {
+            if (config.autoPrayer())
+            {
+                CombatUtils.togglePrayer(client, hunllef.getAttackPhase().getPrayer());
+            }
+            if (config.autoOffense())
+            {
+                CombatUtils.togglePrayer(client, getPrayerBasedOnWeapon());
+            }
+        }
     }
 
     @Subscribe
@@ -533,6 +618,7 @@ public class GauntletExtendedPlugin extends Plugin
 
             if (validAttack)
             {
+
                 wrongAttackStyle = false;
 
                 hunllef.updatePlayerAttackCount();
@@ -541,6 +627,8 @@ public class GauntletExtendedPlugin extends Plugin
                 {
                     switchWeapon = true;
                 }
+
+                lastAttackTick = client.getTickCount();
             }
             else
             {
@@ -557,6 +645,11 @@ public class GauntletExtendedPlugin extends Plugin
             if (animationId == HUNLLEF_STYLE_SWITCH_TO_MAGE || animationId == HUNLLEF_STYLE_SWITCH_TO_RANGE)
             {
                 hunllef.toggleAttackHunllefAttackStyle();
+
+                if (config.autoPrayer())
+                {
+                    CombatUtils.togglePrayer(client, hunllef.getAttackPhase().getPrayer());
+                }
             }
         }
     }
@@ -656,6 +749,145 @@ public class GauntletExtendedPlugin extends Plugin
     private boolean isHunllefVarbitSet()
     {
         return client.getVarbitValue(9177) == 1;
+    }
+
+    private Prayer getPrayerBasedOnWeapon()
+    {
+        if (EquipmentUtils.contains(RANGE_WEAPONS))
+        {
+            return config.offenseRangePrayer().getPrayer();
+        }
+
+        if (EquipmentUtils.contains(MAGE_WEAPONS))
+        {
+            return config.offenseMagicPrayer().getPrayer();
+        }
+        if (EquipmentUtils.contains(MELEE_WEAPONS))
+        {
+            return config.offenseMeleePrayer().getPrayer();
+        }
+        return config.offenseMeleePrayer().getPrayer();
+    }
+
+
+    private void swapWeaponNormal()
+    {
+        if (InventoryUtils.contains(RANGE_WEAPONS))
+        {
+            Item wep = InventoryUtils.getFirstItem(RANGE_WEAPONS);
+
+            InventoryUtils.wieldItem(wep.getId());
+
+            lastSwitchTick = client.getTickCount();
+        }
+        else if (InventoryUtils.contains(MAGE_WEAPONS))
+        {
+            Item wep = InventoryUtils.getFirstItem(MAGE_WEAPONS);
+
+            InventoryUtils.wieldItem(wep.getId());
+
+            lastSwitchTick = client.getTickCount();
+        }
+        else if (InventoryUtils.contains(MELEE_WEAPONS))
+        {
+            Item wep = InventoryUtils.getFirstItem(MELEE_WEAPONS);
+
+            InventoryUtils.wieldItem(wep.getId());
+
+            lastSwitchTick = client.getTickCount();
+        }
+        else
+        {
+            EquipmentUtils.removeWepSlotItem();
+
+            lastSwitchTick = client.getTickCount();
+        }
+    }
+
+    private void swapWeapon51(int attackCount, HeadIcon current)
+    {
+        if (attackCount == 1)
+        {
+            if (current == HeadIcon.RANGED || current == HeadIcon.MAGIC)
+            {
+                if (InventoryUtils.contains(MELEE_WEAPONS))
+                {
+                    Item wep = InventoryUtils.getFirstItem(MELEE_WEAPONS);
+
+                    InventoryUtils.wieldItem(wep.getId());
+                }
+                else
+                {
+                    EquipmentUtils.removeWepSlotItem();
+                }
+                lastSwitchTick = client.getTickCount();
+            }
+
+            if (current == HeadIcon.MELEE)
+            {
+                if (config.weaponSwitchMode() == LucidGauntletConfig.WeaponSwitchStyle.MAGE_5_1)
+                {
+                    if (InventoryUtils.contains(RANGE_WEAPONS))
+                    {
+                        Item wep = InventoryUtils.getFirstItem(RANGE_WEAPONS);
+
+                        InventoryUtils.wieldItem(wep.getId());
+
+                        lastSwitchTick = client.getTickCount();
+                    }
+                }
+                else
+                {
+                    if (InventoryUtils.contains(MAGE_WEAPONS))
+                    {
+                        Item wep = InventoryUtils.getFirstItem(MAGE_WEAPONS);
+
+                        InventoryUtils.wieldItem(wep.getId());
+
+                        lastSwitchTick = client.getTickCount();
+                    }
+                }
+            }
+        }
+
+        if (attackCount == 6)
+        {
+            if (config.weaponSwitchMode() == LucidGauntletConfig.WeaponSwitchStyle.MAGE_5_1)
+            {
+                if (InventoryUtils.contains(MAGE_WEAPONS))
+                {
+                    Item wep = InventoryUtils.getFirstItem(MAGE_WEAPONS);
+
+                    InventoryUtils.wieldItem(wep.getId());
+
+                    lastSwitchTick = client.getTickCount();
+                }
+
+            }
+            else
+            {
+                if (InventoryUtils.contains(RANGE_WEAPONS))
+                {
+                    Item wep = InventoryUtils.getFirstItem(RANGE_WEAPONS);
+
+                    InventoryUtils.wieldItem(wep.getId());
+
+                    lastSwitchTick = client.getTickCount();
+                }
+
+            }
+        }
+    }
+
+    private void attackHunllef()
+    {
+        final NPC hunllef = NpcUtils.getNearestNpc(npc -> npc.getName().contains("Hunllef"));
+        if (hunllef == null)
+        {
+            return;
+        }
+
+        NpcUtils.attackNpc(hunllef);
     }
 
 }

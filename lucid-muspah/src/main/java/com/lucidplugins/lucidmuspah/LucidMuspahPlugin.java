@@ -24,7 +24,7 @@ import java.util.List;
 @Extension
 @PluginDescriptor(
         name = "Lucid Muspah",
-        description = "Helper plugin for the Phantom Muspah (still in development)",
+        description = "Helper plugin for the Phantom Muspah",
         enabledByDefault = false,
         tags = {"muspah"}
 )

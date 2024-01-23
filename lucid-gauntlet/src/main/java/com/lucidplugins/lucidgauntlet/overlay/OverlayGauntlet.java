@@ -1,8 +1,5 @@
 package com.lucidplugins.lucidgauntlet.overlay;
 
-import com.lucidplugins.lucidgauntlet.GauntletExtendedConfig;
-import com.lucidplugins.lucidgauntlet.GauntletExtendedPlugin;
-import com.lucidplugins.lucidgauntlet.entity.Demiboss;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -10,6 +7,9 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import com.lucidplugins.lucidgauntlet.LucidGauntletConfig;
+import com.lucidplugins.lucidgauntlet.LucidGauntletPlugin;
+import com.lucidplugins.lucidgauntlet.entity.Demiboss;
 import com.lucidplugins.lucidgauntlet.entity.Resource;
 
 import javax.inject.Inject;
@@ -21,14 +21,14 @@ public class OverlayGauntlet extends Overlay
 {
 
     private final Client client;
-    private final GauntletExtendedPlugin plugin;
-    private final GauntletExtendedConfig config;
+    private final LucidGauntletPlugin plugin;
+    private final LucidGauntletConfig config;
     private final ModelOutlineRenderer modelOutlineRenderer;
 
     private Player player;
 
     @Inject
-    private OverlayGauntlet(final Client client, final GauntletExtendedPlugin plugin, final GauntletExtendedConfig config, final ModelOutlineRenderer modelOutlineRenderer)
+    private OverlayGauntlet(final Client client, final LucidGauntletPlugin plugin, final LucidGauntletConfig config, final ModelOutlineRenderer modelOutlineRenderer)
     {
         super(plugin);
 

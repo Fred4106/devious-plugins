@@ -1,13 +1,13 @@
 package com.lucidplugins.lucidgauntlet.overlay;
 
-import com.lucidplugins.lucidgauntlet.GauntletExtendedConfig;
-import com.lucidplugins.lucidgauntlet.GauntletExtendedPlugin;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Prayer;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import com.lucidplugins.lucidgauntlet.LucidGauntletConfig;
+import com.lucidplugins.lucidgauntlet.LucidGauntletPlugin;
 import com.lucidplugins.lucidgauntlet.entity.Hunllef;
 
 import javax.inject.Inject;
@@ -18,11 +18,11 @@ import java.awt.*;
 public class OverlayPrayerWidget extends Overlay
 {
     private final Client client;
-    private final GauntletExtendedPlugin plugin;
-    private final GauntletExtendedConfig config;
+    private final LucidGauntletPlugin plugin;
+    private final LucidGauntletConfig config;
 
     @Inject
-    OverlayPrayerWidget(final Client client, final GauntletExtendedPlugin plugin, final GauntletExtendedConfig config)
+    OverlayPrayerWidget(final Client client, final LucidGauntletPlugin plugin, final LucidGauntletConfig config)
     {
         super(plugin);
 
@@ -38,9 +38,9 @@ public class OverlayPrayerWidget extends Overlay
     @Override
     public Dimension render(final Graphics2D graphics2D)
     {
-        final GauntletExtendedConfig.PrayerHighlightMode prayerHighlightMode = config.prayerOverlay();
+        final LucidGauntletConfig.PrayerHighlightMode prayerHighlightMode = config.prayerOverlay();
 
-        if (prayerHighlightMode == GauntletExtendedConfig.PrayerHighlightMode.NONE || prayerHighlightMode == GauntletExtendedConfig.PrayerHighlightMode.BOX)
+        if (prayerHighlightMode == LucidGauntletConfig.PrayerHighlightMode.NONE || prayerHighlightMode == LucidGauntletConfig.PrayerHighlightMode.BOX)
         {
             return null;
         }

@@ -1,7 +1,7 @@
 package com.lucidplugins.lucidgauntlet.resource;
 
-import com.lucidplugins.lucidgauntlet.GauntletExtendedConfig;
-import com.lucidplugins.lucidgauntlet.GauntletExtendedPlugin;
+import com.lucidplugins.lucidgauntlet.LucidGauntletConfig;
+import com.lucidplugins.lucidgauntlet.LucidGauntletPlugin;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.util.Text;
@@ -29,10 +29,10 @@ public class ResourceManager
     private Client client;
 
     @Inject
-    private GauntletExtendedPlugin plugin;
+    private LucidGauntletPlugin plugin;
 
     @Inject
-    private GauntletExtendedConfig config;
+    private LucidGauntletConfig config;
 
     @Inject
     private ItemManager itemManager;
@@ -65,7 +65,7 @@ public class ResourceManager
 
     public void parseChatMessage(String chatMessage)
     {
-        if (config.resourceTracker() == GauntletExtendedConfig.ResourceFilter.OFF || region == Region.UNKNOWN || prefix == null)
+        if (config.resourceTracker() == LucidGauntletConfig.ResourceFilter.OFF || region == Region.UNKNOWN || prefix == null)
         {
             return;
         }
@@ -103,8 +103,8 @@ public class ResourceManager
         final Resource resource = Resource.fromName(itemName, region == Region.CORRUPTED);
 
         if (resource == null ||
-                (config.resourceTracker() == GauntletExtendedConfig.ResourceFilter.CUSTOM && !resources.containsKey(resource)) ||
-                (config.resourceTracker() == GauntletExtendedConfig.ResourceFilter.BASIC && isNonBasicResource(resource)))
+                (config.resourceTracker() == LucidGauntletConfig.ResourceFilter.CUSTOM && !resources.containsKey(resource)) ||
+                (config.resourceTracker() == LucidGauntletConfig.ResourceFilter.BASIC && isNonBasicResource(resource)))
         {
             return;
         }
@@ -126,7 +126,7 @@ public class ResourceManager
 
         final Resource resource = mapping.keySet().iterator().next();
 
-        if (config.resourceTracker() == GauntletExtendedConfig.ResourceFilter.CUSTOM && !resources.containsKey(resource))
+        if (config.resourceTracker() == LucidGauntletConfig.ResourceFilter.CUSTOM && !resources.containsKey(resource))
         {
             return;
         }
@@ -145,7 +145,7 @@ public class ResourceManager
         else
         {
             ResourceCounter counter = resources.get(resource);
-            if (config.resourceTracker() == GauntletExtendedConfig.ResourceFilter.CUSTOM)
+            if (config.resourceTracker() == LucidGauntletConfig.ResourceFilter.CUSTOM)
             {
                 counter.decrementCount(itemCount);
             }
@@ -167,7 +167,7 @@ public class ResourceManager
 
     private void createCustomCounters()
     {
-        if (config.resourceTracker() != GauntletExtendedConfig.ResourceFilter.CUSTOM || region == Region.UNKNOWN)
+        if (config.resourceTracker() != LucidGauntletConfig.ResourceFilter.CUSTOM || region == Region.UNKNOWN)
         {
             return;
         }
