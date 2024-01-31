@@ -3,6 +3,7 @@ package com.lucidplugins.api.util;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.unethicalite.api.widgets.Prayers;
 
 public class CombatUtils
@@ -48,6 +49,11 @@ public class CombatUtils
         {
             Prayers.toggleQuickPrayer(true);
         }
+    }
+
+    public static boolean isQuickPrayersEnabled(Client client)
+    {
+        return client.getVarbitValue(Varbits.QUICK_PRAYER) == 1;
     }
 
 }

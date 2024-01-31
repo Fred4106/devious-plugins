@@ -19,9 +19,9 @@
   "id": "lucidcustomprayers-plugin",
   "releases": [{
     "date": "2024-01-31",
-    "sha512sum": "448498C4682864DF7F74B995487F138F4A529D93E77F028F83755BFFF9D0258B28B1DDF720C3906FDEED1B5FA34351D644CB5F9C9D06CE7A3E3A338A632322F4",
-    "version": "2.1.5",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-custom-prayers-2.1.5.jar?raw=true",
+    "sha512sum": "17AB4FB46F007AA95AD9622C299AAB552D770341EFA69490F67F7C52B53F8741DEE51746052E2926872DC81C25F0F211A38A2FDEE3FA2EEFF574266BE6AACD90",
+    "version": "2.1.6",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-custom-prayers-2.1.6.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {
