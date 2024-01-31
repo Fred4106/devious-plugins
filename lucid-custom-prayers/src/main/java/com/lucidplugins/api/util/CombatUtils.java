@@ -26,4 +26,28 @@ public class CombatUtils
 
         Prayers.toggle(prayer);
     }
+
+    public static void toggleQuickPrayers(Client client)
+    {
+        if (client == null || (client.getBoostedSkillLevel(Skill.PRAYER) == 0 && !Prayers.isQuickPrayerEnabled()))
+        {
+            return;
+        }
+
+        Prayers.toggleQuickPrayer(!Prayers.isQuickPrayerEnabled());
+    }
+
+    public static void activateQuickPrayers(Client client)
+    {
+        if (client == null || (client.getBoostedSkillLevel(Skill.PRAYER) == 0 && !Prayers.isQuickPrayerEnabled()))
+        {
+            return;
+        }
+
+        if (!Prayers.isQuickPrayerEnabled())
+        {
+            Prayers.toggleQuickPrayer(true);
+        }
+    }
+
 }
