@@ -19,9 +19,9 @@
   "id": "lucidcombat-plugin",
   "releases": [{
     "date": "2024-02-04",
-    "sha512sum": "C45EC7DCBD1D6EC53ACC11D8332F438BA7FF627CC6566E8F9F25BEAB2B8D38FBA749430ECC134A302391B78393EE4FF1B3E07DE0643C14B26DD9AE0CF8D6C1FF",
-    "version": "1.0.1",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-combat-1.0.1.jar?raw=true",
+    "sha512sum": "75DDE94287D8E71A22D6B5305C5EA69BFFB198289A1FDDD52E7811A3083FED58C4E3C7CD06C30552BE9A1A8A124661357A4B0401F17B742F2871656CC8EF5801",
+    "version": "1.0.2",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-combat-1.0.2.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

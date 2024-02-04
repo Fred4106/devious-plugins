@@ -492,6 +492,7 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
 
             return nameContains && (((npc.getInteracting() == client.getLocalPlayer() && npc.getHealthRatio() != 0)) ||
                     (npc.getInteracting() == null && noPlayerFightingNpc(npc))) &&
+                    Arrays.asList(npc.getComposition().getActions()).contains("Attack") &&
                     InteractionUtils.isWalkable(npc.getWorldLocation());
         });
     }
