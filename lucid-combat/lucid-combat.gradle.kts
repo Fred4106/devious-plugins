@@ -1,7 +1,7 @@
-version = "1.0.0"
+version = "1.0.1"
 
 project.extra["PluginName"] = "Lucid Combat"
-project.extra["PluginDescription"] = "Can do auto-combat plus can upkeep HP, prayer, boosts and auto-spec, all are toggle-able."
+project.extra["PluginDescription"] = "Helps with Combat related stuff"
 
 tasks {
     jar {
