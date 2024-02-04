@@ -1,7 +1,7 @@
 package com.lucidplugins.lucidmuspah;
 
 import com.google.inject.Provides;
-import com.lucidplugins.api.util.CombatUtils;
+import com.lucidplugins.lucidmuspah.api.util.CombatUtils;
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.events.AnimationChanged;

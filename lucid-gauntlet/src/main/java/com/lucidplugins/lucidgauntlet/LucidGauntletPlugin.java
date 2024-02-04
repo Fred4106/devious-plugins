@@ -1,10 +1,10 @@
 package com.lucidplugins.lucidgauntlet;
 
 import com.google.inject.Provides;
-import com.lucidplugins.api.util.CombatUtils;
-import com.lucidplugins.api.util.EquipmentUtils;
-import com.lucidplugins.api.util.InventoryUtils;
-import com.lucidplugins.api.util.NpcUtils;
+import com.lucidplugins.lucidgauntlet.api.util.CombatUtils;
+import com.lucidplugins.lucidgauntlet.api.util.EquipmentUtils;
+import com.lucidplugins.lucidgauntlet.api.util.InventoryUtils;
+import com.lucidplugins.lucidgauntlet.api.util.NpcUtils;
 import com.lucidplugins.lucidgauntlet.entity.*;
 import com.lucidplugins.lucidgauntlet.overlay.*;
 import lombok.Getter;

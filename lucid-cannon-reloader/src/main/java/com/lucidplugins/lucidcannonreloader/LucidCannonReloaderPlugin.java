@@ -1,9 +1,9 @@
 package com.lucidplugins.lucidcannonreloader;
 
 import com.google.inject.Provides;
-import com.lucidplugins.api.util.GameObjectUtils;
-import com.lucidplugins.api.util.InventoryUtils;
-import com.lucidplugins.api.util.MessageUtils;
+import com.lucidplugins.lucidcannonreloader.api.util.GameObjectUtils;
+import com.lucidplugins.lucidcannonreloader.api.util.InventoryUtils;
+import com.lucidplugins.lucidcannonreloader.api.util.MessageUtils;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;

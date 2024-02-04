@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Provides;
-import com.lucidplugins.api.util.*;
+import com.lucidplugins.lucidhotkeys.api.util.*;
 import com.lucidplugins.lucidhotkeys.overlay.TileMarkersOverlay;
 import lombok.Getter;
 import net.runelite.api.*;

@@ -1,7 +1,10 @@
 package com.lucidplugins.lucidspices;
 
 import com.google.inject.Provides;
-import com.lucidplugins.api.util.*;
+import com.lucidplugins.lucidspices.api.util.DialogUtils;
+import com.lucidplugins.lucidspices.api.util.InteractionUtils;
+import com.lucidplugins.lucidspices.api.util.InventoryUtils;
+import com.lucidplugins.lucidspices.api.util.KeyboardUtils;
 import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.InventoryItemQuery;

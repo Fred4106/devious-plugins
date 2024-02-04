@@ -35,6 +35,7 @@ include("lucid-cannon-reloader")
 include("lucid-disable-rendering")
 include("lucid-discord-logger")
 include("lucid-hotkeys")
+include("lucid-combat")
 
 for (project in rootProject.children) {
     project.apply {
