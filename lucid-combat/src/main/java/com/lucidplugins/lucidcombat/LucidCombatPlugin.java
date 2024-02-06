@@ -101,6 +101,8 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
 
     private LocalPoint lastLootedTile = null;
 
+    private int nextLootAttempt = 0;
+
     private boolean taskEnded = false;
 
     private List<NPC> npcsKilled = new ArrayList<>();
@@ -325,14 +327,16 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
             {
                 secondaryStatus = "Auto-Spec";
             }
-
-            handleReAttack();
-
         }
 
         if (!actionTakenThisTick)
         {
             actionTakenThisTick = handleLooting();
+
+            if (!actionTakenThisTick && (nextLootAttempt - client.getTickCount()) < 0 && lastTarget != null)
+            {
+                actionTakenThisTick = handleReAttack();
+            }
         }
 
         if (!actionTakenThisTick)
@@ -342,15 +346,23 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
 
     }
 
-    private void handleReAttack()
+    public boolean isMoving()
     {
-        if (lastTarget != null)
+        return client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation();
+    }
+
+    private boolean handleReAttack()
+    {
+        if (lastTarget != null && !isMoving())
         {
             if (lastTarget instanceof Player && (lastTarget.getInteracting() == client.getLocalPlayer() && client.getLocalPlayer().getInteracting() != lastTarget))
             {
                 if (isPlayerEligible((Player)lastTarget))
                 {
                     PlayerUtils.interactPlayer(lastTarget.getName(), "Attack");
+                    lastTarget = null;
+                    secondaryStatus = "Re-attacking previous target";
+                    return true;
                 }
             }
             else if (lastTarget instanceof NPC && (lastTarget.getInteracting() == client.getLocalPlayer() && client.getLocalPlayer().getInteracting() != lastTarget))
@@ -358,11 +370,14 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
                 if (isNpcEligible((NPC)lastTarget))
                 {
                     NpcUtils.interact((NPC)lastTarget, "Attack");
+                    lastTarget = null;
+                    secondaryStatus = "Re-attacking previous target";
+                    return true;
                 }
             }
-
-            lastTarget = null;
         }
+
+        return false;
     }
 
 
@@ -459,7 +474,19 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
             return false;
         }
 
-        if (!canReact())
+        if (nextLootAttempt == 0)
+        {
+            nextLootAttempt = client.getTickCount();
+        }
+
+        if (ticksUntilNextLootAttempt() > 0)
+        {
+            return false;
+        }
+
+        boolean ignoringTargetLimitation = ticksUntilNextLootAttempt() < -config.maxTicksBetweenLooting();
+
+        if (config.onlyLootWithNoTarget() && !(targetDeadOrNoTargetIgnoreAttackingUs() || ignoringTargetLimitation))
         {
             return false;
         }
@@ -469,10 +496,32 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
             boolean nameContains = false;
             for (String itemName : config.lootNames().split(","))
             {
+                itemName = itemName.trim();
+
                 if (composition.getName() != null && composition.getName().contains(itemName))
                 {
                     nameContains = true;
                     break;
+                }
+            }
+
+            boolean inBlacklist = false;
+            if (!config.lootBlacklist().trim().isEmpty())
+            {
+                for (String itemName : config.lootBlacklist().split(","))
+                {
+                    itemName = itemName.trim();
+
+                    if (itemName.length() < 2)
+                    {
+                        continue;
+                    }
+
+                    if (composition.getName() != null && composition.getName().contains(itemName))
+                    {
+                        inBlacklist = true;
+                        break;
+                    }
                 }
             }
 
@@ -483,7 +532,7 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
                 antiLureActivated = InteractionUtils.distanceTo2DHypotenuse(tileItem.getWorldLocation(), startLocation) > (config.maxRange() + 3);
             }
 
-            return nameContains && expectedLootLocations.containsKey(tileItem.getLocalLocation()) &&
+            return (!inBlacklist && nameContains) && expectedLootLocations.containsKey(tileItem.getLocalLocation()) &&
                     InteractionUtils.distanceTo2DHypotenuse(tileItem.getWorldLocation(), client.getLocalPlayer().getWorldLocation()) <= config.lootRange() &&
                     !antiLureActivated;
         });
@@ -494,7 +543,7 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
 
                 if (config.buryScatter())
                 {
-                    return !isStackable(loot.getId()) && !canBuryOrScatter(loot.getId());
+                    return (!isStackable(loot.getId()) && !canBuryOrScatter(loot.getId())) || (loot.getId() == ItemID.CURVED_BONE || loot.getId() == ItemID.LONG_BONE);
                 }
 
                 return !isStackable(loot.getId());
@@ -510,12 +559,37 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
 
         if (config.enableLooting() && nearest != null)
         {
+            if (client.getLocalPlayer().getInteracting() != null)
+            {
+                lastTarget = client.getLocalPlayer().getInteracting();
+            }
+
             InteractionUtils.interactWithTileItem(nearest.getId(), "Take");
             lastLootedTile = nearest.getLocalLocation();
 
             if (!client.getLocalPlayer().getLocalLocation().equals(nearest.getLocalLocation()))
             {
-                nextReactionTick = client.getTickCount() + 2;
+                if (config.onlyLootWithNoTarget())
+                {
+                    if (ignoringTargetLimitation && lootableItems.size() <= 1)
+                    {
+                        nextLootAttempt = client.getTickCount() + 2;
+                    }
+                }
+                else
+                {
+                    nextLootAttempt = client.getTickCount() + 2;
+                }
+            }
+            else
+            {
+                if (config.onlyLootWithNoTarget())
+                {
+                    if (ignoringTargetLimitation && lootableItems.size() <= 1)
+                    {
+                        nextLootAttempt = client.getTickCount() + 2;
+                    }
+                }
             }
 
             secondaryStatus = "Looting!";
@@ -527,7 +601,8 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
         {
             List<SlottedItem> itemsToBury = InventoryUtils.getAll(item -> {
                 ItemComposition composition = client.getItemDefinition(item.getItem().getId());
-                return Arrays.asList(composition.getInventoryActions()).contains("Bury");
+                return Arrays.asList(composition.getInventoryActions()).contains("Bury") &&
+                        !(composition.getName().contains("Long") || composition.getName().contains("Curved"));
             });
 
             List<SlottedItem> itemsToScatter = InventoryUtils.getAll(item -> {
@@ -593,7 +668,12 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
             return false;
         }
 
-        if (!canReact())
+        if (!canReact() || isMoving())
+        {
+            return false;
+        }
+
+        if (ticksUntilNextLootAttempt() > 0)
         {
             return false;
         }
@@ -712,6 +792,8 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
             boolean nameContains = false;
             for (String npcName : config.npcToFight().split(","))
             {
+                npcName = npcName.trim();
+
                 if (npc.getName() != null && npc.getName().contains(npcName))
                 {
                     nameContains = true;
@@ -741,6 +823,8 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
         boolean nameContains = false;
         for (String npcName : config.npcToFight().split(","))
         {
+            npcName = npcName.trim();
+
             if (npc.getName() != null && npc.getName().contains(npcName))
             {
                 nameContains = true;
@@ -794,6 +878,24 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
         return false;
     }
 
+    private boolean targetDeadOrNoTargetIgnoreAttackingUs()
+    {
+        if (client.getLocalPlayer().getInteracting() == null)
+        {
+            return true;
+        }
+
+        if (client.getLocalPlayer().getInteracting() instanceof NPC)
+        {
+            NPC npcTarget = (NPC) client.getLocalPlayer().getInteracting();
+            int ratio = npcTarget.getHealthRatio();
+
+            return ratio == 0;
+        }
+
+        return false;
+    }
+
     private NPC getEligibleNpcInteractingWithUs()
     {
 
@@ -802,6 +904,8 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
             boolean nameContains = false;
             for (String npcName : config.npcToFight().split(","))
             {
+                npcName = npcName.trim();
+
                 if (npc.getName() != null && npc.getName().contains(npcName))
                 {
                     nameContains = true;
@@ -959,6 +1063,15 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
 
                 InventoryUtils.itemInteract(karambwan.getItem().getId(), "Eat");
                 karambwanned = true;
+            }
+        }
+
+        if (config.stopIfNoFood() && config.enableHpRestore() && needToRestoreHp() && !ateFood && !brewed && !karambwanned)
+        {
+            if (autoCombatRunning)
+            {
+                secondaryStatus = "Ran out of food";
+                autoCombatRunning = false;
             }
         }
 
@@ -1398,6 +1511,11 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
     public int getInactiveTicks()
     {
         return client.getTickCount() - lastTickActive;
+    }
+
+    public int ticksUntilNextLootAttempt()
+    {
+        return nextLootAttempt - client.getTickCount();
     }
 
     public float getDistanceToStart()
