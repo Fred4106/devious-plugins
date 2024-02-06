@@ -1,20 +1,23 @@
 package com.lucidplugins.lucidcombat;
 
-import net.runelite.client.ui.overlay.OverlayPanel;
+import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.*;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
 
-public class LucidCombatOverlay extends OverlayPanel
+public class LucidCombatPanelOverlay extends OverlayPanel
 {
+    private final Client client;
     private final LucidCombatPlugin plugin;
     private final LucidCombatConfig config;
 
     @Inject
-    private LucidCombatOverlay(LucidCombatPlugin plugin, LucidCombatConfig config)
+    private LucidCombatPanelOverlay(Client client, LucidCombatPlugin plugin, LucidCombatConfig config)
     {
+        this.client = client;
         this.plugin = plugin;
         this.config = config;
     }
@@ -32,7 +35,6 @@ public class LucidCombatOverlay extends OverlayPanel
                 .text("Lucid Combat")
                 .color(Color.WHITE)
                 .build());
-
 
         panelComponent.getChildren().add(LineComponent.builder()
                 .left("Run State:")

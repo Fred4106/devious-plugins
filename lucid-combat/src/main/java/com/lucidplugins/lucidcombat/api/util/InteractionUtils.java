@@ -5,7 +5,11 @@ import net.runelite.api.coords.WorldPoint;
 import net.unethicalite.api.entities.TileItems;
 import net.unethicalite.api.movement.Movement;
 import net.unethicalite.api.movement.Reachable;
+import net.unethicalite.api.scene.Tiles;
 import net.unethicalite.client.Static;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class InteractionUtils
 {
@@ -60,6 +64,21 @@ public class InteractionUtils
         }
 
         return false;
+    }
+
+    public static List<Tile> getTiles(Predicate<Tile> filter)
+    {
+        return Tiles.getAll(filter);
+    }
+
+    public static TileItem nearestTileItem(Predicate<TileItem> filter)
+    {
+        return TileItems.getNearest(filter);
+    }
+
+    public static List<TileItem> getAllTileItems(Predicate<TileItem> filter)
+    {
+        return TileItems.getAll(filter);
     }
 
     public static boolean tileItemIdExistsWithinDistance(int itemId, int distance)
