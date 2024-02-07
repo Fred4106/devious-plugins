@@ -652,7 +652,9 @@ public class LucidCombatPlugin extends Plugin implements KeyListener
                 antiLureActivated = InteractionUtils.distanceTo2DHypotenuse(tileItem.getWorldLocation(), startLocation) > (config.maxRange() + 3);
             }
 
-            return (!inBlacklist && nameContains) && expectedLootLocations.containsKey(tileItem.getLocalLocation()) &&
+            boolean inAnExpectedLocation = (config.lootGoblin() || expectedLootLocations.containsKey(tileItem.getLocalLocation()));
+
+            return (!inBlacklist && nameContains) && inAnExpectedLocation &&
                     InteractionUtils.distanceTo2DHypotenuse(tileItem.getWorldLocation(), client.getLocalPlayer().getWorldLocation()) <= config.lootRange() &&
                     !antiLureActivated;
         });
