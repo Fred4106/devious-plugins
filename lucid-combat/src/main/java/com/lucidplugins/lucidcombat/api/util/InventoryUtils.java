@@ -6,6 +6,9 @@ import net.runelite.api.Item;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.unethicalite.api.items.Inventory;
+import net.unethicalite.api.magic.Magic;
+import net.unethicalite.api.magic.SpellBook;
+import net.unethicalite.api.packets.MousePackets;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +25,15 @@ public class InventoryUtils
     public static List<SlottedItem> getAll(Predicate<SlottedItem> filter)
     {
         return Inventory.getAll().stream().map(item -> new SlottedItem(item.getId(), item.getQuantity(), item.getSlot())).filter(filter).collect(Collectors.toList());
+    }
+
+    public static void castAlchemyOnItem(int id, boolean highAlch)
+    {
+        if (InventoryUtils.getFirstItem(id) != null)
+        {
+            MousePackets.queueClickPacket();
+            Magic.cast(highAlch ? SpellBook.Standard.HIGH_LEVEL_ALCHEMY : SpellBook.Standard.LOW_LEVEL_ALCHEMY, InventoryUtils.getFirstItem(id));
+        }
     }
 
     public static boolean contains(String itemName)
@@ -78,6 +90,11 @@ public class InventoryUtils
     public static Item getFirstItem(String name)
     {
         return Inventory.getFirst(item -> item.getName().toLowerCase().contains(name.toLowerCase()));
+    }
+
+    public static Item getFirstItem(int id)
+    {
+        return Inventory.getFirst(id);
     }
 
     public static int count(String name)
