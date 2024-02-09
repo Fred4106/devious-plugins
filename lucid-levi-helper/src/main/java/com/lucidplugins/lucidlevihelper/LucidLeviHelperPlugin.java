@@ -9,9 +9,9 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import org.pf4j.Extension;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
         enabledByDefault = false,
         tags = {"leviathan", "dt2", "lucid"}
 )
-@Singleton
+@Extension
 public class LucidLeviHelperPlugin extends Plugin
 {
 

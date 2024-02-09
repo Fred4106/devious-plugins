@@ -123,9 +123,9 @@
   "id": "lucidlevihelper-plugin",
   "releases": [{
     "date": "2024-02-09",
-    "sha512sum": "FECD071BDDC295CF2F0738166394163338E60FD02E8C712CB560BB55FB3EB0FB1C689354A58E3C925C42EA482A797DA0568F3C67949A40AF37ED3420B8EFD00A",
-    "version": "1.0.0",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-levi-helper-1.0.0.jar?raw=true",
+    "sha512sum": "971A00AABA01AEC0BFFBA1FD5AC135C7CC743D78A989ECA93D414AAF1C5A4976C4A4D3C47B1D43AFA0BED0B140889C65B3B3988FE007CF1360A214D0CB3B6936",
+    "version": "1.0.1",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-levi-helper-1.0.1.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {
