@@ -1,10 +1,7 @@
 package com.lucidplugins.lucidspices;
 
 import com.google.inject.Provides;
-import com.lucidplugins.lucidspices.api.util.DialogUtils;
-import com.lucidplugins.lucidspices.api.util.InteractionUtils;
-import com.lucidplugins.lucidspices.api.util.InventoryUtils;
-import com.lucidplugins.lucidspices.api.util.KeyboardUtils;
+import com.lucidplugins.lucidspices.api.util.*;
 import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.InventoryItemQuery;
@@ -180,12 +177,7 @@ public class LucidSpicesPlugin extends Plugin
             return;
         }
 
-        if (!DialogUtils.hasOption(client, "Don't insert your cat."))
-        {
-            return;
-        }
-
-        KeyboardUtils.type(client, 1);
+        DialogUtils.queueResumePauseDialog(14352385, DialogUtils.getOptionIndex("Insert your"));
 
         lastInteract = client.getTickCount();
     }
@@ -198,13 +190,13 @@ public class LucidSpicesPlugin extends Plugin
             return;
         }
 
-        if (!DialogUtils.getOptions(client).isEmpty())
+        if (DialogUtils.getOptionIndex("Insert your") != -1)
         {
             selectDialogOption();
         }
         else if (canContinue(client))
         {
-            KeyboardUtils.sendSpace(client);
+            DialogUtils.queueResumePauseDialog(15007746, -1);
         }
         else
         {
@@ -233,7 +225,7 @@ public class LucidSpicesPlugin extends Plugin
 
     private boolean canContinue(Client client)
     {
-        final Widget continueWidget = client.getWidget(229, 2);
+        final Widget continueWidget = client.getWidget(229, 0);
         if (continueWidget != null && continueWidget.isVisible())
         {
             return true;
