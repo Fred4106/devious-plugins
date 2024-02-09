@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @PluginDescriptor(
-        name = "<html><font color=\"#32CD32\">Lucid </font>Whisperer Helper</html>",
+        name = "Lucid Whisperer Helper",
         description = "Auto-prays against whisperer and more",
         enabledByDefault = false,
         tags = {"whisperer", "dt2"}
