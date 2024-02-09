@@ -37,6 +37,7 @@ include("lucid-hotkeys")
 include("lucid-muspah")
 include("lucid-scurrius-helper")
 include("lucid-spices")
+include("lucid-tob-prayers")
 include("lucid-whisperer-helper")
 
 for (project in rootProject.children) {

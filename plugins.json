@@ -157,6 +157,19 @@
 }, {
   "projectUrl": "https://discord.gg/lucid-plugs",
   "provider": "lucid-plugins",
+  "name": "Lucid ToB Prayers",
+  "description": "Helps with prayers (and tick-eating sote ball) at ToB",
+  "id": "lucidtobprayers-plugin",
+  "releases": [{
+    "date": "2024-02-09",
+    "sha512sum": "D1E2D764F611300640691A0A95725A6ADA3CD4FE60FB89D6A54FCE7331896B7E5F7A36BE28AD809B8857B556F2500A1A9F4A4925698EC399B256FFF433291575",
+    "version": "1.0.0",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-tob-prayers-1.0.0.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://discord.gg/lucid-plugs",
+  "provider": "lucid-plugins",
   "name": "Lucid Whisperer Helper",
   "description": "Auto-prays against whisperer and more",
   "id": "lucidwhispererhelper-plugin",
