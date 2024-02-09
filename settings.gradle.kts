@@ -25,17 +25,18 @@
 
 rootProject.name = "public-plugins"
 
-include("lucid-gauntlet")
-include("lucid-gear-swapper")
-include("lucid-muspah")
-include("lucid-custom-prayers")
-include("lucid-example-plugin")
-include("lucid-spices")
 include("lucid-cannon-reloader")
+include("lucid-combat")
+include("lucid-custom-prayers")
 include("lucid-disable-rendering")
 include("lucid-discord-logger")
+include("lucid-example-plugin")
+include("lucid-gauntlet")
+include("lucid-gear-swapper")
 include("lucid-hotkeys")
-include("lucid-combat")
+include("lucid-muspah")
+include("lucid-scurrius-helper")
+include("lucid-spices")
 
 for (project in rootProject.children) {
     project.apply {
