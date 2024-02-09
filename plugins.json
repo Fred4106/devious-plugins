@@ -118,6 +118,19 @@
 }, {
   "projectUrl": "https://discord.gg/lucid-plugs",
   "provider": "lucid-plugins",
+  "name": "Lucid Levi Helper",
+  "description": "Auto-prays against leviathan and more",
+  "id": "lucidlevihelper-plugin",
+  "releases": [{
+    "date": "2024-02-09",
+    "sha512sum": "FECD071BDDC295CF2F0738166394163338E60FD02E8C712CB560BB55FB3EB0FB1C689354A58E3C925C42EA482A797DA0568F3C67949A40AF37ED3420B8EFD00A",
+    "version": "1.0.0",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-levi-helper-1.0.0.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://discord.gg/lucid-plugs",
+  "provider": "lucid-plugins",
   "name": "Lucid Muspah",
   "description": "Helper plugin for the Phantom Muspah",
   "id": "lucidmuspah-plugin",
