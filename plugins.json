@@ -154,4 +154,17 @@
     "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-spices-1.0.3.jar?raw=true",
     "requires": "^1.0.0"
   }]
+}, {
+  "projectUrl": "https://discord.gg/lucid-plugs",
+  "provider": "lucid-plugins",
+  "name": "Lucid Whisperer Helper",
+  "description": "Auto-prays against whisperer and more",
+  "id": "lucidwhispererhelper-plugin",
+  "releases": [{
+    "date": "2024-02-09",
+    "sha512sum": "3C172DBEB1B4F0F59CE2570808B131B4D6E9973D10EA943155717D3B33BCF8F02B4A3207ED8D7211B70B17A3F6E2DF1DDDCB0AA365CFD4DB311E8C70353A6AAB",
+    "version": "1.0.0",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-whisperer-helper-1.0.0.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
 }]
