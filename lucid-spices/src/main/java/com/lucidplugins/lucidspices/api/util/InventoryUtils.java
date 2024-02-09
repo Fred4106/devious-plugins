@@ -52,7 +52,7 @@ public class InventoryUtils
 
     public static boolean itemHasAction(Client client, int itemId, String action)
     {
-        return Arrays.stream(client.getItemDefinition(itemId).getInventoryActions()).anyMatch(a -> a.equalsIgnoreCase(action));
+        return Arrays.stream(client.getItemDefinition(itemId).getInventoryActions()).anyMatch(a -> a != null && a.equalsIgnoreCase(action));
     }
 
     public static void itemInteract(int itemId, String action)
@@ -64,4 +64,52 @@ public class InventoryUtils
         }
     }
 
+    public static void interactSlot(int slot, String action)
+    {
+        Item inSlot = Inventory.getItem(slot);
+
+        if (inSlot != null)
+        {
+            inSlot.interact(action);
+        }
+    }
+
+
+    public static Item getFirstItem(String name)
+    {
+        return Inventory.getFirst(item -> item.getName().toLowerCase().contains(name.toLowerCase()));
+    }
+
+    public static Item getFirstItem(int id)
+    {
+        return Inventory.getFirst(id);
+    }
+    public static int count(String name)
+    {
+        List<Item> itemsToCount = Inventory.getAll(item -> item.getName().toLowerCase().contains(name.toLowerCase()));
+        int count = 0;
+        for (Item i : itemsToCount)
+        {
+            if (i != null)
+            {
+                count += i.getQuantity();
+            }
+        }
+
+        return count;
+    }
+
+    public static int count(int id)
+    {
+        List<Item> itemsToCount = Inventory.getAll(item -> item.getId() == id);
+        int count = 0;
+        for (Item i : itemsToCount)
+        {
+            if (i != null)
+            {
+                count += i.getQuantity();
+            }
+        }
+        return count;
+    }
 }

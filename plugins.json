@@ -162,9 +162,9 @@
   "id": "lucidspices-plugin",
   "releases": [{
     "date": "2024-02-09",
-    "sha512sum": "7391664D9A39977031D1D3106F0A35D0CD8A8D9D1EE7B621892A7B91D97A2DFC2538F97B98C3320B4082C7BFBFAA9695210DD0F97A5B3827575F8F90EA51D099",
-    "version": "1.0.4",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-spices-1.0.4.jar?raw=true",
+    "sha512sum": "713F5490E96BBDDC21267CA1CF682F1F876C90D16F8132D1E842CE52F94EB9F44F96C3A06460F2EB8270CB60D200AB57C15544965D6E740A67047620B9E1BC6B",
+    "version": "1.0.5",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-spices-1.0.5.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {

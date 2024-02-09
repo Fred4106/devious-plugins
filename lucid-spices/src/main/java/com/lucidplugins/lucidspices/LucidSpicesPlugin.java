@@ -4,9 +4,6 @@ import com.google.inject.Provides;
 import com.lucidplugins.lucidspices.api.util.*;
 import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.queries.NPCQuery;
-import net.runelite.api.queries.WallObjectQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -110,7 +107,7 @@ public class LucidSpicesPlugin extends Plugin
 
         Item food = getFood();
         NPC cat = getCat();
-        WallObject curtain = getCurtain();
+        TileObject curtain = getCurtain();
 
         if (food == null || cat == null || curtain == null)
         {
@@ -211,14 +208,14 @@ public class LucidSpicesPlugin extends Plugin
             return;
         }
 
-        WallObject curtain = getCurtain();
+        TileObject curtain = getCurtain();
 
         if (curtain == null)
         {
             return;
         }
 
-        curtain.interact("Enter");
+        GameObjectUtils.interact(curtain, "Enter");
 
         lastInteract = client.getTickCount();
     }
@@ -236,17 +233,17 @@ public class LucidSpicesPlugin extends Plugin
 
     private NPC getCat()
     {
-        return new NPCQuery().filter(it -> it.getName().toLowerCase().contains("cat") && it.hasAction("Pick-up") ).result(client).nearestTo(client.getLocalPlayer());
+        return NpcUtils.getNearest(it -> it.getName().toLowerCase().contains("cat") && it.hasAction("Pick-up"));
     }
 
-    private WallObject getCurtain()
+    private TileObject getCurtain()
     {
-        return new WallObjectQuery().nameEquals("Curtain").result(client).nearestTo(client.getLocalPlayer());
+        return GameObjectUtils.nearest("Curtain");
     }
 
     private Item getFood()
     {
-        return new InventoryItemQuery(InventoryID.INVENTORY).idEquals(config.foodId()).result(client).first();
+        return InventoryUtils.getFirstItem(config.foodId());
     }
 
     private int ticksSinceLastHeal()

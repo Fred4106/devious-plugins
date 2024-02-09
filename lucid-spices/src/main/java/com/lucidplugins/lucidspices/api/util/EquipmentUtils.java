@@ -2,6 +2,7 @@ package com.lucidplugins.lucidspices.api.util;
 
 import com.lucidplugins.lucidspices.api.item.SlottedItem;
 import net.unethicalite.api.items.Equipment;
+
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
