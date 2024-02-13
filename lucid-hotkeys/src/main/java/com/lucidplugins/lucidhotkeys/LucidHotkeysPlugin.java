@@ -1580,6 +1580,26 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 Collection<WorldPoint> localInstanceWp = WorldPoint.toLocalInstance(client, wp);
                 localInstanceWp.stream().findFirst().ifPresent(InteractionUtils::walk);
                 break;
+            case NAMED_ITEM_ON_ITEM:
+                Item first = InventoryUtils.getFirstItem(actionParams[1]);
+                Item second = InventoryUtils.getFirstItem(actionParams[2]);
+                InventoryUtils.itemOnItem(first, second);
+                break;
+            case ID_ITEM_ON_ITEM:
+                Item firstId = InventoryUtils.getFirstItem(param1Int);
+                Item secondId = InventoryUtils.getFirstItem(param2Int);
+                InventoryUtils.itemOnItem(firstId, secondId);
+                break;
+            case NAMED_ITEM_ON_NPC:
+                Item firstNamedItem = InventoryUtils.getFirstItem(actionParams[1]);
+                NPC firstNamedNpc = NpcUtils.getNearest(actionParams[2]);
+                InteractionUtils.useItemOnNPC(firstNamedItem, firstNamedNpc);
+                break;
+            case ID_ITEM_ON_NPC:
+                Item firstIdItem = InventoryUtils.getFirstItem(param1Int);
+                NPC firstIDNpc = NpcUtils.getNearest(param2Int);
+                InteractionUtils.useItemOnNPC(firstIdItem, firstIDNpc);
+                break;
         }
     }
 

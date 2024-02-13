@@ -6,6 +6,7 @@ import net.runelite.api.Item;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.unethicalite.api.items.Inventory;
+import net.unethicalite.client.Static;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,17 @@ import java.util.stream.Collectors;
 
 public class InventoryUtils
 {
+    public static void itemOnItem(Item use, Item useOn)
+    {
+        if (use == null || useOn == null)
+        {
+            return;
+        }
+
+        use.useOn(useOn);
+        Static.getClient().invokeMenuAction("Cancel", "", 0, 1006, 0, 0);
+    }
+
     public static List<SlottedItem> getAll()
     {
         return Inventory.getAll().stream().map(item -> new SlottedItem(item.getId(), item.getQuantity(), item.getSlot())).collect(Collectors.toList());
@@ -72,6 +84,11 @@ public class InventoryUtils
         {
             inSlot.interact(action);
         }
+    }
+
+    public static Item getFirstItem(int id)
+    {
+        return Inventory.getFirst(item -> item.getId() == id);
     }
 
 

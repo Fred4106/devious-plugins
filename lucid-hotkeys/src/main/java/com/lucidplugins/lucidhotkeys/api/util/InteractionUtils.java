@@ -16,6 +16,14 @@ public class InteractionUtils
         client.invokeMenuAction("Use", "<col=ff9040>" + itemComposition.getName() + "</col><col=ffffff> -> <col=ffff>" + objectComposition.getName(), wallObject.getId(), MenuAction.WIDGET_TARGET_ON_GAME_OBJECT.getId(), wallObject.getLocalLocation().getSceneX(), wallObject.getLocalLocation().getSceneY(), -1, -1);
     }
 
+    public static void useItemOnNPC(Item item, NPC npc)
+    {
+        if (item != null && npc != null)
+        {
+            item.useOn(npc);
+        }
+    }
+
     public static boolean sleep(Client client, long ms)
     {
         if (client.isClientThread())
