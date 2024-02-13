@@ -66,6 +66,19 @@
 }, {
   "projectUrl": "https://discord.gg/lucid-plugs",
   "provider": "lucid-plugins",
+  "name": "Lucid Duke Helper",
+  "description": "Auto-prayers and other helper features and overlays for Duke Succ",
+  "id": "luciddukehelper-plugin",
+  "releases": [{
+    "date": "2024-02-12",
+    "sha512sum": "44FACC13D456B070CD85DCAF13889BE79C593BC5FB2010BD75CAAEFBD04E211C8E129732A6A98D2E956FAA67FF2BE6946BCA7C995D1F67B52CDA5B911925555F",
+    "version": "1.0.0",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-duke-helper-1.0.0.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://discord.gg/lucid-plugs",
+  "provider": "lucid-plugins",
   "name": "Lucid Example",
   "description": "An example plugin that can be copied to use as a plugin skeleton. Does nothing functionally.",
   "id": "lucidexample-plugin",
