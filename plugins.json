@@ -201,9 +201,9 @@
   "id": "lucidwhispererhelper-plugin",
   "releases": [{
     "date": "2024-02-15",
-    "sha512sum": "AB8EC9D32D70CDCDE9B4376DD943F606D56F4E8272E13DBBC2A43ED4A9CE23615D358AD9B432118E974D91CDC547670FAFA8C98E97A803915FE1AA226EAAEC00",
-    "version": "1.0.1",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-whisperer-helper-1.0.1.jar?raw=true",
+    "sha512sum": "775AFC003DAABE40A97E47BD4A05E956EC9C46294A23AD65BA2192170DBBB4244E9BE300FFFEB3D3765C611ABB23A0895DA852F0BC0AAFCF4E764515AEC1B7DF",
+    "version": "1.0.2",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-whisperer-helper-1.0.2.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }]

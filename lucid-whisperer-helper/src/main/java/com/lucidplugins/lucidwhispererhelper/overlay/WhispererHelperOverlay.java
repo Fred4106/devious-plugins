@@ -14,6 +14,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 public class WhispererHelperOverlay extends Overlay
@@ -77,6 +78,14 @@ public class WhispererHelperOverlay extends Overlay
             if (plugin.getLeastHealthPillar() != null)
             {
                 renderTileMarkerLocalPoint(plugin.getLeastHealthPillar(), graphics2D, "1", Color.GREEN);
+            }
+        }
+
+        if (config.showUnsafeTiles() && !plugin.getUnsafeTiles().isEmpty())
+        {
+            for (Map.Entry<LocalPoint, Integer> entry : plugin.getUnsafeTiles().entrySet())
+            {
+                renderTileMarkerLocalPoint(entry.getKey(), graphics2D, "" + (entry.getValue() - client.getTickCount()), Color.RED);
             }
         }
 

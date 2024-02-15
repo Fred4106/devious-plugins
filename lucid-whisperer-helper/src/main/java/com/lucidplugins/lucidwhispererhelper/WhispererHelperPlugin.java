@@ -21,7 +21,9 @@ import org.pf4j.Extension;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @PluginDescriptor(
         name = "Lucid Whisperer Helper",
@@ -89,6 +91,9 @@ public class WhispererHelperPlugin extends Plugin
     private final int MELEE_PROJ = 2467;
     private final int RANGED_PROJ = 2444;
 
+    @Getter
+    private final Map<LocalPoint, Integer> unsafeTiles = new HashMap<>();
+
     @Provides
     WhispererHelperConfig getConfig(final ConfigManager configManager)
     {
@@ -109,14 +114,11 @@ public class WhispererHelperPlugin extends Plugin
                 setPillars(activePillars);
             }
         }
-        else
+        else if (getTicksSincePillarSpawn() > 23)
         {
-            if (getTicksSincePillarSpawn() > 23)
-            {
-                mostHealthPillar = null;
-                nextMostHealthPillar = null;
-                leastHealthPillar = null;
-            }
+            mostHealthPillar = null;
+            nextMostHealthPillar = null;
+            leastHealthPillar = null;
         }
 
         if (bindTicks > 0)
@@ -128,10 +130,15 @@ public class WhispererHelperPlugin extends Plugin
         if (whisperer != null && whisperer.getAnimation() == 10257)
         {
             Item venator = InventoryUtils.getFirstItem(ItemID.VENATOR_BOW);
-            if (venator != null)
+            if (config.autoVenator() && venator != null)
             {
                 InventoryUtils.itemInteract(venator.getId(), "Wield");
             }
+        }
+
+        if (!unsafeTiles.isEmpty() && NpcUtils.getNearest(npc -> npc != null && npc.getId() == TENTACLE_NPC_ID) != null && client.getTickCount() != lastDodgeTick)
+        {
+            dodgeUnsafeTiles();
         }
 
         if (lastDodgeTick != client.getTickCount() && (client.getTickCount() - lastDodgeTick) < 3)
@@ -170,7 +177,7 @@ public class WhispererHelperPlugin extends Plugin
         }
 
 
-        if (config.autoPray())
+        if (config.autoPray() && whisperer != null)
         {
             if (attackProjectiles == null || attackProjectiles.size() == 0)
             {
@@ -230,7 +237,8 @@ public class WhispererHelperPlugin extends Plugin
 
         if (nextMostHealth != null)
         {
-            List<NPC> nextCandidates = NpcUtils.getAll(npc -> npc.getId() == PILLAR_NPC_ID && getHpPercent(npc) == 35);
+            final NPC compareTo = nextMostHealth;
+            List<NPC> nextCandidates = NpcUtils.getAll(npc -> npc.getId() == PILLAR_NPC_ID && getHpPercent(npc) <= 67 && npc != compareTo);
             float leastDistance = 999;
             NPC closest = null;
 
@@ -307,6 +315,7 @@ public class WhispererHelperPlugin extends Plugin
     private void onClientTick(final ClientTick tick)
     {
         attackProjectiles.removeIf(proj -> proj.getRemainingCycles() < 1);
+        unsafeTiles.values().removeIf(i -> client.getTickCount() > i);
 
         WorldPoint fromInstance = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
         leeches.removeIf(leech -> {
@@ -339,29 +348,65 @@ public class WhispererHelperPlugin extends Plugin
     @Subscribe
     private void onNpcSpawned(final NpcSpawned event)
     {
-        if (event.getNpc().getId() == TENTACLE_NPC_ID && lastDodgeTick != client.getTickCount())
+        if (config.autoDodge() && event.getNpc().getId() == TENTACLE_NPC_ID)
         {
-            lastDodgeTick = client.getTickCount();
-            if (config.autoDodge())
+            int dx = 0;
+            int dy = 0;
+
+            switch (event.getNpc().getOrientation())
             {
-                switch (event.getNpc().getOrientation())
+                case 0: // FACING SOUTH
+                    dy = -1;
+                    break;
+                case 256: // SOUTH-WEST
+                    dx = -1;
+                    dy = -1;
+                    break;
+                case 512: // WEST
+                    dx = -1;
+                    break;
+                case 768: // NORTH-WEST
+                    dx = -1;
+                    dy = 1;
+                    break;
+                case 1024: // NORTH
+                    dy = 1;
+                    break;
+                case 1280: // NORTH-EAST
+                    dx = 1;
+                    dy = 1;
+                    break;
+                case 1536: // EAST
+                    dx = 1;
+                    break;
+                case 1792: // SOUTH-EAST
+                    dx = 1;
+                    dy = -1;
+                    break;
+            }
+
+            if (dx != 0 || dy != 0)
+            {
+                for (int i = 0; i < 5; i++)
                 {
-                    case 1536:
-                    case 1024:
-                    case 512:
-                    case 0:
-                        negativeDiag = !negativeDiag;
-                        InteractionUtils.walk(client.getLocalPlayer().getWorldLocation().dx(negativeDiag ? negativeVert ? 1 : -1 : 1).dy(negativeDiag ? negativeVert ? 1 : -1 : 1));
-                        if (negativeVert)
-                        {
-                            negativeVert = false;
-                        }
-                        break;
-                    default:
-                        negativeVert = !negativeVert;
-                        InteractionUtils.walk(client.getLocalPlayer().getWorldLocation().dx(negativeVert ? -1 : 1));
-                        break;
+                    final LocalPoint fromWorld = LocalPoint.fromWorld(client, event.getNpc().getWorldLocation().dx(dx * i).dy(dy * i).dx(1).dy(1));
+                    unsafeTiles.put(fromWorld, client.getTickCount() + 2);
                 }
+            }
+        }
+    }
+
+    private void dodgeUnsafeTiles()
+    {
+        NPC whisperer = NpcUtils.getNearest(npc -> npc != null && npc.getName().contains("Whisperer"));
+
+        if (unsafeTiles.getOrDefault(client.getLocalPlayer().getLocalLocation(), null) != null)
+        {
+            WorldPoint safeTile = InteractionUtils.getClosestSafeLocationNotInNPCMeleeDistance(client, new ArrayList<>(unsafeTiles.keySet()), whisperer, config.maxWeaponRange());
+            if (safeTile != null)
+            {
+                InteractionUtils.walk(safeTile);
+                lastDodgeTick = client.getTickCount();
             }
         }
     }
@@ -441,3 +486,4 @@ public class WhispererHelperPlugin extends Plugin
         }
     }
 }
+
