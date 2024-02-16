@@ -123,9 +123,9 @@
   "id": "lucidhotkeys-plugin",
   "releases": [{
     "date": "2024-02-15",
-    "sha512sum": "4D83345A52B18A7870D15F69A453229F53755DBF035053ED5693A69A0167335932E389A7787C6B96B179109890C1E618C9731755F2BE1C5E112E7B0025870411",
-    "version": "1.2.2",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-hotkeys-1.2.2.jar?raw=true",
+    "sha512sum": "59D98EE236555AB29C4FD3BD0E8DC425DB12A8DF60B1494572E94C2CB20393C149D407ABBB05F4DAC8FF15AFA9640C434F0AD11B156E0A61B05CA86806DDB6F6",
+    "version": "1.2.3",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-hotkeys-1.2.3.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }, {
@@ -201,9 +201,9 @@
   "id": "lucidwhispererhelper-plugin",
   "releases": [{
     "date": "2024-02-15",
-    "sha512sum": "775AFC003DAABE40A97E47BD4A05E956EC9C46294A23AD65BA2192170DBBB4244E9BE300FFFEB3D3765C611ABB23A0895DA852F0BC0AAFCF4E764515AEC1B7DF",
-    "version": "1.0.2",
-    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-whisperer-helper-1.0.2.jar?raw=true",
+    "sha512sum": "73DF64E0E6D541DADD09F08B1E4D6BC891F952077704AAD4F94586E387DEC9383866C123DEF0FB82FB556AE691FB09612E2E25824A9E18C9D8D26E2E15AA8DBD",
+    "version": "1.0.3",
+    "url": "https://github.com/lucid-plugins/public-plugins/blob/master/release/lucid-whisperer-helper-1.0.3.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }]

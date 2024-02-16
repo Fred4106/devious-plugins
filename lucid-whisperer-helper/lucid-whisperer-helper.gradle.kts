@@ -1,5 +1,5 @@
 
-version = "1.0.2"
+version = "1.0.3"
 
 project.extra["PluginName"] = "Lucid Whisperer Helper"
 project.extra["PluginDescription"] = "Auto-prays against whisperer and more"

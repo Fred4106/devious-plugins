@@ -60,6 +60,7 @@ public class WhispererHelperPlugin extends Plugin
     private boolean negativeVert = false;
     private boolean negativeDiag = false;
 
+    private int enrageStartTick = 0;
     private int pillarSpawnTick = 0;
 
     @Getter
@@ -136,30 +137,20 @@ public class WhispererHelperPlugin extends Plugin
             }
         }
 
-        if (!unsafeTiles.isEmpty() && NpcUtils.getNearest(npc -> npc != null && npc.getId() == TENTACLE_NPC_ID) != null && client.getTickCount() != lastDodgeTick)
+        if (whisperer == null)
         {
-            dodgeUnsafeTiles();
+            enrageStartTick = 0;
+            return;
         }
 
-        if (lastDodgeTick != client.getTickCount() && (client.getTickCount() - lastDodgeTick) < 3)
+        if (config.autoAttack() && client.getTickCount() - lastDodgeTick < 3 && client.getLocalPlayer().getInteracting() != whisperer)
         {
-            if (whisperer == null || client.getLocalPlayer().getInteracting() == whisperer)
-            {
-                return;
-            }
+            NpcUtils.interact(whisperer, "Attack");
+        }
 
-            int hpPercent = getHpPercent(whisperer);
-
-            if (hpPercent <= 0)
-            {
-                return;
-            }
-
-            if (config.autoAttack())
-            {
-                NpcUtils.interact(whisperer, "Attack");
-            }
-
+        if (config.autoDodge())
+        {
+            dodgeUnsafeTiles();
         }
 
         if (activateFragment)
@@ -177,7 +168,7 @@ public class WhispererHelperPlugin extends Plugin
         }
 
 
-        if (config.autoPray() && whisperer != null)
+        if (config.autoPray())
         {
             if (attackProjectiles == null || attackProjectiles.size() == 0)
             {
@@ -195,6 +186,11 @@ public class WhispererHelperPlugin extends Plugin
                 }
             }
         }
+    }
+
+    public int getTicksSinceEnrageStarted()
+    {
+        return client.getTickCount() - enrageStartTick;
     }
 
     private void setPillars(List<NPC> activePillars)
@@ -309,6 +305,11 @@ public class WhispererHelperPlugin extends Plugin
         {
             bindTicks = 8;
         }
+
+        if (event.getMessage().contains("pulls you into the"))
+        {
+            enrageStartTick = client.getTickCount();
+        }
     }
 
     @Subscribe
@@ -348,7 +349,7 @@ public class WhispererHelperPlugin extends Plugin
     @Subscribe
     private void onNpcSpawned(final NpcSpawned event)
     {
-        if (config.autoDodge() && event.getNpc().getId() == TENTACLE_NPC_ID)
+        if (event.getNpc().getId() == TENTACLE_NPC_ID)
         {
             int dx = 0;
             int dy = 0;
@@ -390,7 +391,7 @@ public class WhispererHelperPlugin extends Plugin
                 for (int i = 0; i < 5; i++)
                 {
                     final LocalPoint fromWorld = LocalPoint.fromWorld(client, event.getNpc().getWorldLocation().dx(dx * i).dy(dy * i).dx(1).dy(1));
-                    unsafeTiles.put(fromWorld, client.getTickCount() + 2);
+                    unsafeTiles.put(fromWorld, client.getTickCount() + (getTicksSinceEnrageStarted() < 200 ? 3 : 2));
                 }
             }
         }
@@ -400,10 +401,10 @@ public class WhispererHelperPlugin extends Plugin
     {
         NPC whisperer = NpcUtils.getNearest(npc -> npc != null && npc.getName().contains("Whisperer"));
 
-        if (unsafeTiles.getOrDefault(client.getLocalPlayer().getLocalLocation(), null) != null)
+        if (!unsafeTiles.isEmpty())
         {
             WorldPoint safeTile = InteractionUtils.getClosestSafeLocationNotInNPCMeleeDistance(client, new ArrayList<>(unsafeTiles.keySet()), whisperer, config.maxWeaponRange());
-            if (safeTile != null)
+            if (safeTile != null && !safeTile.equals(client.getLocalPlayer().getWorldLocation()))
             {
                 InteractionUtils.walk(safeTile);
                 lastDodgeTick = client.getTickCount();
