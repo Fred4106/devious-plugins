@@ -50,6 +50,11 @@ public class InteractionUtils
         }
     }
 
+    public static boolean isMoving()
+    {
+        return Static.getClient().getLocalPlayer().getPoseAnimation() != Static.getClient().getLocalPlayer().getIdlePoseAnimation();
+    }
+
     public static void walk(WorldPoint worldPoint)
     {
         Movement.walk(worldPoint);
