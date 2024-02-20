@@ -1609,6 +1609,16 @@ public class LucidHotkeysPlugin extends Plugin implements KeyListener
                 NPC firstIDNpc = NpcUtils.getNearest(param2Int);
                 InteractionUtils.useItemOnNPC(firstIdItem, firstIDNpc);
                 break;
+            case NAMED_ITEM_ON_OBJECT:
+                Item firstNamedItem1 = InventoryUtils.getFirstItem(actionParams[1]);
+                TileObject namedTileObject = GameObjectUtils.nearest(actionParams[2]);
+                InteractionUtils.useItemOnTileObject(firstNamedItem1, namedTileObject);
+                break;
+            case ID_ITEM_ON_OBJECT:
+                Item firstIdItem1 = InventoryUtils.getFirstItem(param1Int);
+                TileObject idObject = GameObjectUtils.nearest(param2Int);
+                InteractionUtils.useItemOnTileObject(firstIdItem1, idObject);
+                break;
         }
     }
 

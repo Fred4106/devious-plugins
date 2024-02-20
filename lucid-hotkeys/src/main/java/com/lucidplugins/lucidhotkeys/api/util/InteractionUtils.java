@@ -8,6 +8,12 @@ import net.unethicalite.client.Static;
 
 public class InteractionUtils
 {
+    public static void useItemOnTileObject(Item item, TileObject object)
+    {
+        item.useOn(object);
+        Static.getClient().invokeMenuAction("Cancel", "", 0, 1006, 0, 0);
+    }
+
     public static void useItemOnWallObject(Client client, Item item, WallObject wallObject)
     {
         final ItemComposition itemComposition = client.getItemComposition(item.getId());
