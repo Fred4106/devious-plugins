@@ -2,12 +2,68 @@ package com.lucidplugins.lucidhotkeys.api.util;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.Widget;
 import net.unethicalite.api.entities.TileItems;
 import net.unethicalite.api.movement.Movement;
+import net.unethicalite.api.packets.WidgetPackets;
 import net.unethicalite.client.Static;
 
 public class InteractionUtils
 {
+    public static boolean isWidgetHidden(int parentId, int childId, int grandchildId)
+    {
+        Widget target = Static.getClient().getWidget(parentId, childId);
+        if (grandchildId != -1)
+        {
+            if (target == null || target.isSelfHidden())
+            {
+                return true;
+            }
+
+            Widget subTarget = target.getChild(grandchildId);
+            if (subTarget != null)
+            {
+                return subTarget.isSelfHidden();
+            }
+        }
+
+        if (target != null)
+        {
+            return target.isSelfHidden();
+        }
+
+        return true;
+    }
+
+    public static boolean isWidgetHidden(int parentId, int childId)
+    {
+        return isWidgetHidden(parentId, childId, -1);
+    }
+
+    public static void widgetInteract(int parentId, int childId, int grandchildId, String action)
+    {
+        Widget target = Static.getClient().getWidget(parentId, childId);
+        if (target != null && grandchildId != -1)
+        {
+            target = target.getChild(grandchildId);
+        }
+
+        if (target != null)
+        {
+            target.interact(action);
+        }
+    }
+
+    public static void widgetInteract(int parentId, int childId, String action)
+    {
+        widgetInteract(parentId, childId, -1, action);
+    }
+
+    public static void queueResumePause(int parentId, int childId)
+    {
+        WidgetPackets.queueResumePauseWidgetPacket(parentId, childId);
+    }
+
     public static void useItemOnTileObject(Item item, TileObject object)
     {
         item.useOn(object);
