@@ -28,6 +28,7 @@ allprojects {
     project.extra["PluginLicense"] = "3-Clause BSD License"
 
     apply<JavaPlugin>()
+
     apply(plugin = "java-library")
     apply(plugin = "checkstyle")
     apply(plugin = "kotlin")
@@ -83,7 +84,7 @@ allprojects {
 
         register<Copy>("copyDeps") {
             into("./build/deps/")
-            from(configurations["runtimeClasspath"])
+            from(configurations["runtimeClasspath"].exclude("org.jetbrains.kotlin"))
         }
 
     }
