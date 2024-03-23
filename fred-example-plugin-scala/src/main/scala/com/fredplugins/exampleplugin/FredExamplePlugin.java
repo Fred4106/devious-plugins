@@ -10,7 +10,7 @@ import org.pf4j.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
-
+import javax.inject.Singleton;
 
 @Extension
 @PluginDescriptor(
@@ -44,7 +44,7 @@ public class FredExamplePlugin extends Plugin
 
         if (client.getGameState() == GameState.LOGGED_IN)
         {
-            DemibossType tpe = Demiboss$.MODULE$.fromId(NpcID.CRYSTALLINE_DRAGON).getOrElse(null);
+            Demiboss.DemibossType tpe = Demiboss.DemibossType$.MODULE$.fromId(NpcID.CRYSTALLINE_DRAGON).getOrElse(null);
             client.getLogger().debug("Demiboss.fromId({}) = {}", NpcID.CRYSTALLINE_DRAGON, tpe);
             MessageUtils.addMessage(getName() + " Started");
         }

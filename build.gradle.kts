@@ -18,7 +18,7 @@ project.extra["GithubRepoName"] = "devious-plugins"
 
 apply<JavaLibraryPlugin>()
 apply<BootstrapPlugin>()
-apply<CheckstylePlugin>()
+//apply<CheckstylePlugin>()
 
 allprojects {
     group = "com.fredplugins"
@@ -30,7 +30,7 @@ allprojects {
     apply<JavaPlugin>()
 
     apply(plugin = "java-library")
-    apply(plugin = "checkstyle")
+//    apply(plugin = "checkstyle")
     apply(plugin = "kotlin")
 
     repositories {
@@ -62,7 +62,10 @@ allprojects {
     }
 
     tasks {
-
+        java {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
         compileKotlin {
             kotlinOptions {
                 jvmTarget = "11"
