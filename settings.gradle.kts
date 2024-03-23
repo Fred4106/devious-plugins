@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "public-plugins"
+rootProject.name = "fred-plugins"
 
 include("lucid-cannon-reloader")
 include("lucid-combat")

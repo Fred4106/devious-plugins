@@ -12,19 +12,19 @@ plugins {
     kotlin("kapt") version "1.6.21"
 }
 
-project.extra["GithubUrl"] = "https://github.com/lucid-plugins/public-plugins"
-project.extra["GithubUserName"] = "lucid-plugins"
-project.extra["GithubRepoName"] = "public-plugins"
+project.extra["GithubUrl"] = "https://github.com/fred4106/devious-plugins"
+project.extra["GithubUserName"] = "fred4106"
+project.extra["GithubRepoName"] = "devious-plugins"
 
 apply<JavaLibraryPlugin>()
 apply<BootstrapPlugin>()
 apply<CheckstylePlugin>()
 
 allprojects {
-    group = "com.lucidplugins"
+    group = "com.fredplugins"
 
-    project.extra["PluginProvider"] = "lucid-plugins"
-    project.extra["ProjectSupportUrl"] = "https://discord.gg/lucid-plugs"
+    project.extra["PluginProvider"] = "fred-plugins"
+    project.extra["ProjectSupportUrl"] = "https://github.com/fred4106/devious-plugins" //https://discord.gg/lucid-plugs"
     project.extra["PluginLicense"] = "3-Clause BSD License"
 
     apply<JavaPlugin>()
@@ -79,6 +79,11 @@ allprojects {
             isReproducibleFileOrder = true
             dirMode = 493
             fileMode = 420
+        }
+
+        register<Copy>("copyDeps") {
+            into("./build/deps/")
+            from(configurations["runtimeClasspath"])
         }
 
     }
