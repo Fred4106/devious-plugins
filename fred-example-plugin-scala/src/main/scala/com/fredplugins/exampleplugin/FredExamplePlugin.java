@@ -40,12 +40,12 @@ public class FredExamplePlugin extends Plugin
     @Override
     protected void startUp()
     {
-        log.info(getName() + " Started");
+        log.info("{} Started", getName());
 
         if (client.getGameState() == GameState.LOGGED_IN)
         {
             Demiboss.DemibossType tpe = Demiboss.DemibossType$.MODULE$.fromId(NpcID.CRYSTALLINE_DRAGON).getOrElse(null);
-            client.getLogger().debug("Demiboss.fromId({}) = {}", NpcID.CRYSTALLINE_DRAGON, tpe);
+            log.debug("Demiboss.fromId({}) = {}", NpcID.CRYSTALLINE_DRAGON, tpe);
             MessageUtils.addMessage(getName() + " Started");
         }
     }
@@ -53,6 +53,10 @@ public class FredExamplePlugin extends Plugin
     @Override
     protected void shutDown()
     {
-        log.info(getName() + " Stopped");
+        log.info("{} Stopped", getName());
+        if (client.getGameState() == GameState.LOGGED_IN)
+        {
+            MessageUtils.addMessage(getName() + " Stopped");
+        }
     }
 }
