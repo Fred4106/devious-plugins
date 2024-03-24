@@ -34,6 +34,8 @@ rootProject.name = "fred-plugins"
 //include("fred-example-plugin")
 include("fred-example-plugin-scala")
 include("fred-gauntlet")
+include("fred-gauntletV2")
+
 //include("lucid-gauntlet")
 //include("lucid-gear-swapper")
 //include("lucid-hotkeys")

@@ -9,7 +9,6 @@ buildscript {
 
 plugins {
     kotlin("jvm") version "1.6.21"
-    kotlin("kapt") version "1.6.21"
 }
 
 project.extra["GithubUrl"] = "https://github.com/fred4106/devious-plugins"
@@ -31,7 +30,6 @@ allprojects {
 
     apply(plugin = "java-library")
 //    apply(plugin = "checkstyle")
-    apply(plugin = "kotlin")
 
     repositories {
         mavenCentral()
@@ -65,13 +63,6 @@ allprojects {
         java {
             sourceCompatibility = JavaVersion.VERSION_11
             targetCompatibility = JavaVersion.VERSION_11
-        }
-        compileKotlin {
-            kotlinOptions {
-                jvmTarget = "11"
-                freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
-            }
-            sourceCompatibility = "11"
         }
 
         withType<JavaCompile> {

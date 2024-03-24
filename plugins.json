@@ -6,7 +6,7 @@
   "id": "fredscalaexample-plugin",
   "releases": [{
     "date": "2024-03-23",
-    "sha512sum": "2FEA31CADFFF563DF751FA182562529140A330011CC015E28E187F1F4B60657799CB6660BE710FD433A6A1C462B0FA001EFB04A3D838584E1C5B938EACAAB389",
+    "sha512sum": "D752C4BB8923FCDBFC705F4DBA35B596CDBFBB98A3BC63F78832A6361DCEB6D4C17F96899034B8FA5E5DF82927EB9B0AFEB8AE921D3E2C35053552169D79B5F1",
     "version": "0.0.1",
     "url": "https://github.com/fred4106/devious-plugins/blob/master/release/fred-example-plugin-scala-0.0.1.jar?raw=true",
     "requires": "^1.0.0"
@@ -22,6 +22,19 @@
     "sha512sum": "8C08FD972F12C5F2FB2CB2477A3D3EB2C7255CB49419A0201588593A20716254A3AD796ADC6AC7DF713B04491C42D19496C4D2857FFA733050A2492BF304FDF3",
     "version": "0.0.1",
     "url": "https://github.com/fred4106/devious-plugins/blob/master/release/fred-gauntlet-0.0.1.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://github.com/fred4106/devious-plugins",
+  "provider": "fred-plugins",
+  "name": "Fred GauntletV2",
+  "description": "Helps with Gauntlet",
+  "id": "fredgauntletv-plugin",
+  "releases": [{
+    "date": "2024-03-23",
+    "sha512sum": "DC949D2D94DA5E1F0B7B66D2FCFC769956FD5732ED4EDBBCAEEC5E5E1DEF26F7CE10E083AB3625DB55475422909792C058CFCA3F38636DEF238AFED98C14AA84",
+    "version": "0.0.1",
+    "url": "https://github.com/fred4106/devious-plugins/blob/master/release/fred-gauntletV2-0.0.1.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }]
