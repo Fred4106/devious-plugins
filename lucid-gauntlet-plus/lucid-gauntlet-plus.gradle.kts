@@ -1,18 +1,21 @@
 import ProjectVersions.unethicaliteVersion
-version = "0.0.1"
 
-plugins {
-    scala
-}
+version = "2.0.0"
 
-project.extra["PluginName"] = "Fred GauntletV3"
-project.extra["PluginDescription"] = "Helps with Gauntlet"
-
-val scalaMajorVersion = '3'
-val scalaVersion = "$scalaMajorVersion.4.0"
+project.extra["PluginName"] = "Lucid Gauntlet Plus"
+project.extra["PluginDescription"] = "Full-auto gauntlet plugin"
 
 dependencies {
-    implementation("org.scala-lang", "scala3-library_" + scalaMajorVersion, "" + scalaVersion)
+    annotationProcessor(Libraries.lombok)
+    annotationProcessor(Libraries.pf4j)
+
+    compileOnly("net.unethicalite:runelite-api:${unethicaliteVersion}")
+    compileOnly("net.unethicalite:runelite-client:${unethicaliteVersion}")
+
+    compileOnly(Libraries.guice)
+    compileOnly(Libraries.lombok)
+    compileOnly(Libraries.pf4j)
+    compileOnly(Libraries.rxjava)
 }
 
 tasks {

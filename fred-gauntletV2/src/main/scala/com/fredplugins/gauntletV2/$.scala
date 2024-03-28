@@ -1,5 +1,8 @@
 package com.fredplugins.gauntletV2
 
+import com.fredplugins.gauntletV2.AttackStyle.Melee
+import com.fredplugins.gauntletV2.AttackStyle.Range
+import com.fredplugins.gauntletV2.AttackStyle.Magic
 import net.runelite.api.{NPC, NpcID, NullNpcID}
 
 enum AttackStyle {
@@ -7,7 +10,6 @@ enum AttackStyle {
   case Range extends AttackStyle
   case Magic extends AttackStyle
 }
-
 sealed trait DemibossType(val attackStyle: AttackStyle) {
   self: NpcType =>
 }
@@ -20,65 +22,54 @@ enum NpcType(val ids: Int*) {
   case Boss extends NpcType(NpcID.CRYSTALLINE_HUNLLEF, NpcID.CRYSTALLINE_HUNLLEF_9022, NpcID.CRYSTALLINE_HUNLLEF_9023, NpcID.CRYSTALLINE_HUNLLEF_9024, NpcID.CORRUPTED_HUNLLEF, NpcID.CORRUPTED_HUNLLEF_9036, NpcID.CORRUPTED_HUNLLEF_9037, NpcID.CORRUPTED_HUNLLEF_9038)
   case Tornado extends NpcType(NullNpcID.NULL_9025, NullNpcID.NULL_9039)
 }
+
 object NpcType {
   def fromId(id: Int): Option[NpcType] = {
     NpcType.values.find(dt => dt.ids.contains(id))
   }
 }
 
-class Tornado(w: NPC) {
-  private var timeLeft = 21;
+sealed trait AttackAnimation(val style: AttackStyle) {
+  self: AnimationType =>
+}
 
-  def getWrapped: NPC = w
-  def getTimeRemaining: Int = timeLeft
-  object Control {
-    def tick(): Unit = timeLeft -= (if (getTimeRemaining > 0) 1 else 0)
+sealed trait HunllefAnimation {
+  self: AnimationType =>
+}
+
+sealed trait PlayerAnimation {
+  self: AnimationType =>
+}
+
+enum AnimationType(val ids: Int*) {
+  case Melee_Attack extends AnimationType(422, 423, 390,386, 395, 401, 400, 428, 440) with AttackAnimation(Melee) with PlayerAnimation
+  case Bow_Attack extends AnimationType(426) with AttackAnimation(Range) with PlayerAnimation
+  case Magic_Attack extends AnimationType(1167) with AttackAnimation(Magic) with PlayerAnimation
+
+  case Hunllef_Tornado extends AnimationType(8418) with HunllefAnimation
+  case Hunllef_Attack_Unknown extends AnimationType(8419) with HunllefAnimation
+  case Hunllef_Attack_Mage extends AnimationType(8754) with AttackAnimation(Magic) with HunllefAnimation
+  case Hunllef_Attack_Range extends AnimationType(8755) with AttackAnimation(Range) with HunllefAnimation
+
+  def isPlayer: Boolean = this match {
+    case _: (AnimationType & PlayerAnimation) => true
+    case _ => false
+  }
+
+  def isHunllef: Boolean = this match {
+    case _: (AnimationType & HunllefAnimation) => true
+    case _ => false
   }
 }
-object Hunllef {
-  private val ATTACK_TICK_SPEED = 6
-  private val MAX_ATTACK_COUNT = 4
-  private val MAX_PLAYER_ATTACK_COUNT = 6
-}
-class Hunllef(w: NPC) {
-  private var attackPhase: AttackStyle = AttackStyle.Range
-  private var attackCount: Int = Hunllef.MAX_ATTACK_COUNT
-  private var playerAttackCount: Int = Hunllef.MAX_PLAYER_ATTACK_COUNT
-  private var ticksUntilNextAttack: Int = 0
-
-  def getWrapped: NPC = w
-
-  def getAttackPhase: AttackStyle = attackPhase
-  def getAttackCount: Int = attackCount
-  def getPlayerAttackCount: Int = playerAttackCount
-  def getTicksUntilNextAttack: Int = ticksUntilNextAttack
-
-  object Control {
-    def decrementTicksUntilNextAttack(): Unit = {
-      if (getTicksUntilNextAttack > 0) ticksUntilNextAttack -= 1
-    }
-
-    def updatePlayerAttackCount(): Unit = {
-      playerAttackCount =
-        if (playerAttackCount > 1) playerAttackCount - 1
-        else Hunllef.MAX_PLAYER_ATTACK_COUNT
-    }
-
-    def updateAttackCount(): Unit = {
-      ticksUntilNextAttack = Hunllef.ATTACK_TICK_SPEED
-      attackCount =
-        if (attackCount > 1) attackCount - 1
-        else Hunllef.MAX_ATTACK_COUNT
-    }
-
-    def toggleAttackHunllefAttackStyle(): Unit = {
-      import AttackStyle.*
-      attackPhase = attackPhase match {
-        case Range => Magic
-        case Magic => Range
-        case Melee => ???
-      }
-    }
+object AnimationType {
+  def fromId(id: Int): Option[AnimationType] = {
+    AnimationType.values.find(dt => dt.ids.contains(id))
   }
-}
 
+//  private val attackAnim = List(Melee_Attack,
+//    Bow_Attack,
+//    Magic_Attack)
+//  def isAttackAnim(id: Int): Boolean = {
+//    fromId(id).exists(attackAnim.contains(_))
+//  }
+}

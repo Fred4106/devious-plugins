@@ -6,7 +6,7 @@
   "id": "fredscalaexample-plugin",
   "releases": [{
     "date": "2024-03-23",
-    "sha512sum": "D752C4BB8923FCDBFC705F4DBA35B596CDBFBB98A3BC63F78832A6361DCEB6D4C17F96899034B8FA5E5DF82927EB9B0AFEB8AE921D3E2C35053552169D79B5F1",
+    "sha512sum": "84004058DF7B473111D3C4F36FC2D0A80A322927DBD20ED33EC55A7A9C9F914657A2E861DC86FF0F9CF7BAF1D0C05ED6FB85A5B1099B9DBA7AF72A6C963097D1",
     "version": "0.0.1",
     "url": "https://github.com/fred4106/devious-plugins/blob/master/release/fred-example-plugin-scala-0.0.1.jar?raw=true",
     "requires": "^1.0.0"
@@ -19,7 +19,7 @@
   "id": "fredgauntlet-plugin",
   "releases": [{
     "date": "2024-03-23",
-    "sha512sum": "8C08FD972F12C5F2FB2CB2477A3D3EB2C7255CB49419A0201588593A20716254A3AD796ADC6AC7DF713B04491C42D19496C4D2857FFA733050A2492BF304FDF3",
+    "sha512sum": "5A09EA44EA7CEEB9A6EFC532BDC420C2A2FC85E2C2A147B5792A8A69A9E62408FDC402B9BC6E55B521EA008ED4C1E5FC9B26C0B0F41D308AFB60D9B8994E0F6A",
     "version": "0.0.1",
     "url": "https://github.com/fred4106/devious-plugins/blob/master/release/fred-gauntlet-0.0.1.jar?raw=true",
     "requires": "^1.0.0"
@@ -32,9 +32,22 @@
   "id": "fredgauntletv-plugin",
   "releases": [{
     "date": "2024-03-23",
-    "sha512sum": "DC949D2D94DA5E1F0B7B66D2FCFC769956FD5732ED4EDBBCAEEC5E5E1DEF26F7CE10E083AB3625DB55475422909792C058CFCA3F38636DEF238AFED98C14AA84",
+    "sha512sum": "1C6103F0AFB8011FA893B8CB81F752618EA10A014A6C5690C8559807DC87EA85E8F97E053AC35FE0648AF7F79CC09A9C19D48130870B010AFC4446AD489DA860",
     "version": "0.0.1",
     "url": "https://github.com/fred4106/devious-plugins/blob/master/release/fred-gauntletV2-0.0.1.jar?raw=true",
+    "requires": "^1.0.0"
+  }]
+}, {
+  "projectUrl": "https://github.com/fred4106/devious-plugins",
+  "provider": "fred-plugins",
+  "name": "Lucid Gauntlet Plus",
+  "description": "Full-auto gauntlet plugin",
+  "id": "lucidgauntletplus-plugin",
+  "releases": [{
+    "date": "2024-03-24",
+    "sha512sum": "DCBF3924F0C3B01F8C39BB088E3BF59076BC58E3FAA444E7460C83E1F98F38FF7923B526088919FF88D4E5BA8B8D20747A8A239A91C3FED2CB0988B1DE12DD90",
+    "version": "2.0.0",
+    "url": "https://github.com/fred4106/devious-plugins/blob/master/release/lucid-gauntlet-plus-2.0.0.jar?raw=true",
     "requires": "^1.0.0"
   }]
 }]
